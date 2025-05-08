@@ -1,0 +1,61 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "blog-template",
+      "settings": {
+        "blog_show_tag_filter": false,
+        "blog_show_rss": false,
+        "blog_show_tags": false,
+        "blog_show_date": false,
+        "blog_show_comments": true,
+        "blog_show_author": false,
+        "blog_show_excerpt": false,
+        "blog_image_size": "wide"
+      }
+    },
+    "08f72875-6fc4-45d4-ba11-bb7e5a7c6d17": {
+      "type": "newsletter",
+      "blocks": {
+        "template--18499959226707__08f72875-6fc4-45d4-ba11-bb7e5a7c6d17-1680543607addaba3e-0": {
+          "type": "title",
+          "settings": {
+            "title": "UNLOCK THE WORLD OF LUXURY FASHION"
+          }
+        },
+        "template--18499959226707__08f72875-6fc4-45d4-ba11-bb7e5a7c6d17-1680543607addaba3e-1": {
+          "type": "text",
+          "settings": {
+            "text": "<h6>JOIN OUR VIBRANT COMMUNITY AND BE THE FIRST TO KNOW WHEN WE GET NEW STOCK, GAIN ACCESS TO EXCLUSIVE DEALS AND DISCOUNTS ONLY AVAILABLE TO OUR VALUED MEMBERS. SIGN UP TODAY FOR FREE AND START ENJOYING THE BENEFITS<\/h6>"
+          }
+        },
+        "template--18499959226707__08f72875-6fc4-45d4-ba11-bb7e5a7c6d17-1680543607addaba3e-2": {
+          "type": "form",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "template--18499959226707__08f72875-6fc4-45d4-ba11-bb7e5a7c6d17-1680543607addaba3e-0",
+        "template--18499959226707__08f72875-6fc4-45d4-ba11-bb7e5a7c6d17-1680543607addaba3e-1",
+        "template--18499959226707__08f72875-6fc4-45d4-ba11-bb7e5a7c6d17-1680543607addaba3e-2"
+      ],
+      "settings": {
+        "color_background": "#f9f9f9",
+        "color_text": "#1c1d1d"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "08f72875-6fc4-45d4-ba11-bb7e5a7c6d17"
+  ]
+}

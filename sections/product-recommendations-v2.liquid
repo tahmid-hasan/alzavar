@@ -1,0 +1,262 @@
+{{ 'slider-component.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign recommend_products = true
+  assign gender = ''
+
+  if product.tags contains 'men'
+    assign gender = 'men'
+  elsif product.tags contains 'women'
+    assign gender = 'women'
+  endif
+
+  if recommendations.products and recommendations.products_count > 0
+    assign related_collection = recommendations
+  endif
+
+  for tag in product.tags
+    if tag contains '_related'
+      assign include_collection_handle = tag | split: '_' | last
+      assign include_collection = collections[include_collection_handle]
+      if include_collection != empty and include_collection.products_count > 0
+        assign related_collection = include_collection
+        assign recommend_products = false
+        break
+      endif
+    endif
+  endfor
+
+  assign related_collection_custom = blank
+  assign product_url_with_collection = product.url | within: collection
+  assign url_array = product_url_with_collection | split: '/'
+
+  if url_array[1] == 'collections'
+    assign related_collection_custom = collections[url_array[2]]
+    assign recommend_products = false
+  endif
+
+  if related_collection_custom == blank
+    for _collection in product.collections
+      assign type_array = product.title | split: ' '
+      assign handleize_title = _collection.title | handleize
+  
+      for keyword in type_array
+        assign down_keyword = keyword | downcase
+        if handleize_title contains down_keyword
+          unless _collection.products_count == 0
+            assign related_collection_custom = _collection
+            assign recommend_products = false
+          endunless
+          break
+        endif
+      endfor
+  
+      if related_collection_custom != blank
+        break
+      endif
+    endfor
+  endif
+
+  assign main_product = product
+  assign number_of_products = section.settings.products_count
+  
+-%}
+
+{%- assign eligible_count = 0 -%}
+{%- for product in related_collection_custom.products -%}
+  {%- liquid
+     assign eligible = false
+
+     if product.tags contains gender
+       assign eligible = true
+     endif
+
+     unless product.available
+       assign eligible = false
+     endunless
+
+     if main_product.handle == product.handle
+       assign eligible = false
+     endif
+  -%}
+  
+  {%- if eligible -%}
+    {%- assign eligible_count = eligible_count | plus: 1 -%}
+    {%- break -%}
+  {%- endif -%}
+  
+{%- endfor -%}
+
+{%- if section.settings.show_product_recommendations -%}
+  <div
+    id="Recommendations-{{ section.id }}"
+    data-section-id="{{ section.id }}"
+    data-section-type="product-recommendations"
+    data-enable="{{ recommend_products }}"
+    data-product-id="{{ product.id }}"
+    data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ number_of_products }}"
+    data-limit="{{ number_of_products }}"
+    data-product-url="{{ product.url | within: collection }}"
+    data-recommendation-count="{{ eligible_count }}">
+    <div
+      data-section-id="{{ product.id }}"
+      data-subsection
+      data-section-type="collection-grid"
+      class="index-section">
+      {%- if eligible_count >= 1 -%}
+      <div class="page-width">
+        <header class="section-header">
+          <h3 class="section-header__title">
+            {{ section.settings.product_recommendations_heading }}
+          </h3>
+        </header>
+      </div>
+      {%- endif -%}
+      <div class="page-width has-slider">
+        <div class="grid-overflow-wrapper">
+          {%- if recommend_products -%}
+            <div class="product-recommendations-placeholder">
+              {% comment %}
+                This content is visually hidden and replaced when recommended products show up
+              {% endcomment %}
+              <div class="grid grid--uniform visually-invisible" aria-hidden="true">
+                {%- render 'product-grid-item', product: product, quick_shop_enable: settings.quick_shop_enable -%}
+              </div>
+            </div>
+          {%- endif -%}
+          {%- if related_collection_custom.products_count > 1 -%}
+            {% assign grid_items = "" %}
+            {%- capture grid_items -%}
+              {%- assign count = 0 -%}
+              {%- for product in related_collection_custom.products -%}
+                {%- liquid
+                   assign eligible = false
+
+                   if product.tags contains gender
+                     assign eligible = true
+                   endif
+
+                   unless product.available
+                     assign eligible = false
+                   endunless
+
+                   if main_product.handle == product.handle
+                     assign eligible = false
+                   endif
+                -%}
+                
+                  {%- if eligible -%}
+                    <div class="slide swiper-slide">
+                      {%- render 'slider-grid-item',
+                        product: product,
+                        collection: collection,
+                        per_row: number_of_products,
+                        quick_shop_enable: settings.quick_shop_enable,
+                        image_overlay: section.settings.use_overlay,
+                        product_grid_image_size: section.settings.product_grid_image_size
+                      -%}
+                    </div>
+                    {%- assign count = count | plus: 1 -%}
+                    {%- if count == number_of_products -%}
+                      {%- break -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                
+              {%- endfor -%}
+            {%- endcapture -%}
+            {%- unless grid_items == "" -%}
+              <div class="product-recommendations">
+                <slider-component class="{% if number_of_products == 4 %}slider--not-trigger{% endif %}">
+                  <div class="position-relative">
+                    <div class="swiper slider">
+                      <div class="swiper-wrapper slider--wrapper">
+                        {{ grid_items }}
+                      </div>
+                    </div>
+                    <div class="pagination-wrapper">
+                      <div class="swiper-pagination"></div>
+                    </div>
+                    <button type="button" class="btn btn--secondary btn--small btn--next--prev btn--prev">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M15.101 18.962L7 12.48 15.101 6v2.561l-4.9 3.92 4.9 3.92z"></path></svg>
+                    </button>
+                    <button type="button" class="btn btn--secondary btn--small btn--next--prev btn--next">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M9 18.962l8.101-6.481L9 6v2.561l4.9 3.92L9 16.4z"></path></svg>
+                    </button>
+                  </div>
+                </slider-component>
+              </div>
+            {%- endunless -%}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+{% schema %}
+{
+  "name": "t:sections.product-recommendations-v2.name",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_product_recommendations",
+      "label": "t:sections.product-recommendations.settings.show_product_recommendations.label",
+      "info": "t:sections.product-recommendations.settings.show_product_recommendations.info",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "product_recommendations_heading",
+      "label": "t:sections.product-recommendations.settings.product_recommendations_heading.label",
+      "default": "You may also like"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "label": "t:sections.product-recommendations.settings.related_count.label",
+      "default": 10,
+      "min": 4,
+      "max": 50,
+      "step": 1
+    },
+    {
+      "type": "select",
+      "id": "product_grid_image_size",
+      "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.label",
+      "default": "natural",
+      "options": [
+        {
+          "value": "natural",
+          "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.natural.label"
+        },
+        {
+          "value": "square",
+          "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.square.label"
+        },
+        {
+          "value": "landscape",
+          "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.landscape.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.portrait.label"
+        },
+        {
+          "value": "portrait-3-4",
+          "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.portrait_3_4.label"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "use_overlay",
+      "label": "t:sections.featured-collection.settings.use_overlay.label"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

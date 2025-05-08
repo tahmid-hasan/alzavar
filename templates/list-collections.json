@@ -1,0 +1,103 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "9bd2334c-9355-415b-81e4-cf31e0d3560e": {
+      "type": "rich-text",
+      "blocks": {
+        "template--18929431085395__9bd2334c-9355-415b-81e4-cf31e0d3560e-1688334898ef05e90a-0": {
+          "type": "heading",
+          "settings": {
+            "title": "Men & Womens collections"
+          }
+        },
+        "template--18929431085395__9bd2334c-9355-415b-81e4-cf31e0d3560e-1688334898ef05e90a-1": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": true,
+            "text": "<p>Immerse in a captivating shopping experience with 130+ designer brands, ranging from renowned names like Saint Laurent to rare finds. Whether searching for a perfect gift or a well-deserved treat, our selection promises to delight.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "template--18929431085395__9bd2334c-9355-415b-81e4-cf31e0d3560e-1688334898ef05e90a-0",
+        "template--18929431085395__9bd2334c-9355-415b-81e4-cf31e0d3560e-1688334898ef05e90a-1"
+      ],
+      "settings": {
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
+      }
+    },
+    "main": {
+      "type": "list-collections-template",
+      "blocks": {
+        "dd2eef5e-1041-41ba-951d-ec246b7e9e48": {
+          "type": "collection",
+          "settings": {
+            "collection": "designer-fashion-men"
+          }
+        },
+        "9472c5d4-c78c-4dbb-974b-41b99dcf5977": {
+          "type": "collection",
+          "settings": {
+            "collection": "designer-fashion-women"
+          }
+        }
+      },
+      "block_order": [
+        "dd2eef5e-1041-41ba-951d-ec246b7e9e48",
+        "9472c5d4-c78c-4dbb-974b-41b99dcf5977"
+      ],
+      "settings": {
+        "title_enable": false,
+        "display_type": "selected",
+        "sort": "alphabetical",
+        "grid": "2"
+      }
+    },
+    "96758caa-caa5-4d35-a258-de9ca6ed6114": {
+      "type": "newsletter",
+      "blocks": {
+        "template--18929431085395__96758caa-caa5-4d35-a258-de9ca6ed6114-168833512154349015-0": {
+          "type": "title",
+          "settings": {
+            "title": "Enjoy 10% off your first purchase"
+          }
+        },
+        "template--18929431085395__96758caa-caa5-4d35-a258-de9ca6ed6114-168833512154349015-1": {
+          "type": "text",
+          "settings": {
+            "text": "<h5>Get the latest campaigns, personalized recommendations, stock notifications, and more delivered directly to your inbox.<\/h5>"
+          }
+        },
+        "template--18929431085395__96758caa-caa5-4d35-a258-de9ca6ed6114-168833512154349015-2": {
+          "type": "form",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "template--18929431085395__96758caa-caa5-4d35-a258-de9ca6ed6114-168833512154349015-0",
+        "template--18929431085395__96758caa-caa5-4d35-a258-de9ca6ed6114-168833512154349015-1",
+        "template--18929431085395__96758caa-caa5-4d35-a258-de9ca6ed6114-168833512154349015-2"
+      ],
+      "settings": {
+        "color_background": "#f1f1f1",
+        "color_text": "#1c1d1d"
+      }
+    }
+  },
+  "order": [
+    "9bd2334c-9355-415b-81e4-cf31e0d3560e",
+    "main",
+    "96758caa-caa5-4d35-a258-de9ca6ed6114"
+  ]
+}

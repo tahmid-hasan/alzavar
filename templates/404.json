@@ -1,0 +1,53 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-404",
+      "settings": {
+      }
+    },
+    "d5998d27-aa6c-4d05-af91-c0ba9e77121f": {
+      "type": "newsletter",
+      "blocks": {
+        "template--19268312596819__d5998d27-aa6c-4d05-af91-c0ba9e77121f-168952947868ccadb6-0": {
+          "type": "title",
+          "settings": {
+            "title": "ENJOY 10% OFF YOUR FIRST PURCHASE"
+          }
+        },
+        "template--19268312596819__d5998d27-aa6c-4d05-af91-c0ba9e77121f-168952947868ccadb6-1": {
+          "type": "text",
+          "settings": {
+            "text": "<h5>GET THE LATEST CAMPAIGNS, PERSONALIZED RECOMMENDATIONS, STOCK NOTIFICATIONS, AND MORE DELIVERED DIRECTLY TO YOUR INBOX.<\/h5>"
+          }
+        },
+        "template--19268312596819__d5998d27-aa6c-4d05-af91-c0ba9e77121f-168952947868ccadb6-2": {
+          "type": "form",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "template--19268312596819__d5998d27-aa6c-4d05-af91-c0ba9e77121f-168952947868ccadb6-0",
+        "template--19268312596819__d5998d27-aa6c-4d05-af91-c0ba9e77121f-168952947868ccadb6-1",
+        "template--19268312596819__d5998d27-aa6c-4d05-af91-c0ba9e77121f-168952947868ccadb6-2"
+      ],
+      "settings": {
+        "color_background": "#f1f1f1",
+        "color_text": "#1c1d1d"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "d5998d27-aa6c-4d05-af91-c0ba9e77121f"
+  ]
+}

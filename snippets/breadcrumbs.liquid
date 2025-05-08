@@ -1,0 +1,218 @@
+{% if settings.show_breadcrumbs %}
+
+  {% unless template.name == 'index' or template.name == 'cart' %}
+    <nav class="breadcrumb {{ align_text }}" role="navigation" aria-label="breadcrumbs">
+      <a href="{{ routes.root_url }}" title="{{ 'general.breadcrumbs.home_link_title' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+  
+      {% if template.name == 'product' %}
+        {%- liquid
+           assign main_collection = collection
+           assign gender = ''
+           if product.tags contains 'men'
+             assign gender = 'men'
+           elsif product.tags contains 'women'
+             assign gender = 'women'
+           endif
+
+           assign founded = false
+
+           for _collection in product.collections
+             assign main_collection = _collection
+             assign breadcrumb_menu = linklists[settings.collection_breadcrumb_reference]
+
+             assign parent_title = blank
+             assign child_title = blank
+             assign grandchild_title = blank
+           
+             assign first_level_title = blank
+             assign first_level_url = blank
+             assign second_level_title = blank
+             assign second_level_url = blank
+
+             
+
+             for link in breadcrumb_menu.links
+               assign parent_title = link.title
+               assign parent_handle = link.url
+           
+               for child_link in link.links
+                 assign child_title = child_link.title
+                 assign child_handle = child_link.url | split: "/" | last
+                 if child_handle == main_collection.handle
+                   assign first_level_title = child_title | strip
+                   break
+                 endif
+           
+                 for grandchild_link in child_link.links
+                   assign grandchild_title = grandchild_link.title
+                   assign grandchild_handle = grandchild_link.url | split: "/" | last
+                   
+                   if grandchild_handle == main_collection.handle
+                     assign first_level_title = child_title | strip
+                     assign first_level_url = child_link.url
+                     assign founded = true
+                     break
+                   endif
+                 endfor
+               endfor
+             endfor
+             if founded
+               break
+             endif
+           endfor
+        -%}
+        {% comment %}
+          VENDOR LINK
+        {% endcomment %}
+        <span class="breadcrumb__divider" aria-hidden="true">/</span>
+        {%- render 'vendor', product: product, gender: gender -%}
+        {% comment %}
+          VENDOR LINK END
+        {% endcomment %}
+
+        {% comment %}
+          PARENT COLLECTION LINK
+        {% endcomment %}
+
+        {% comment %}
+        {% if first_level_title != blank and first_level_url != blank %}
+          <span class="breadcrumb__divider" aria-hidden="true">/</span>
+          <a href="{{ first_level_url }}">{{ first_level_title }}</a>
+        {% else %}
+          <span class="breadcrumb__divider" aria-hidden="true">/</span>
+          <a href="{{ product.collections[0].url }}">{{ product.collections[0].title }}</a>
+        {% endif %}
+        {% endcomment %}
+        {% comment %}
+          PARENT COLLECTION LINK END
+        {% endcomment %}
+
+        {% comment %}
+          PRODUCT CATEGORY
+        {% endcomment %}
+        {%- liquid
+          assign product_type = product.metafields.property.product_type | remove: '[' | remove: ']' | remove: '"'
+          if product_type == blank or product_type == ""
+            assign product_type = product.type
+          endif
+        -%}
+        {% if first_level_title != blank and first_level_url != blank %}
+          <span class="breadcrumb__divider" aria-hidden="true">/</span>
+          <a href="{{ first_level_url }}?filter.p.m.property.product_type={{ product_type | replace: ' ', '+' | replace: '&', '%26' }}">{{ product_type }}</a>
+        {% else %}
+          <span class="breadcrumb__divider" aria-hidden="true">/</span>
+          <a href="{{ product.collections[0].url }}?filter.p.m.property.product_type={{ product_type | replace: ' ', '+' | replace: '&', '%26' }}">{{ product_type }}</a>
+        {% endif %}
+
+        
+        
+  
+      {% elsif template.name == 'collection' and collection.handle %}
+        {%- liquid
+          assign breadcrumb_menu = linklists[settings.collection_breadcrumb_reference]
+          
+          assign parent_title = blank
+          assign child_title = blank
+          assign grandchild_title = blank
+        
+          assign first_level_title = blank
+          assign first_level_url = blank
+          assign second_level_title = blank
+          assign second_level_url = blank
+        
+          for link in breadcrumb_menu.links
+            assign parent_title = link.title
+            assign parent_handle = link.url
+        
+            for child_link in link.links
+              assign child_title = child_link.title
+              assign child_handle = child_link.url | split: "/" | last
+              if child_handle == collection.handle
+                assign first_level_title = child_title | strip
+                break
+              endif
+        
+              for grandchild_link in child_link.links
+                assign grandchild_title = grandchild_link.title
+                assign grandchild_handle = grandchild_link.url | split: "/" | last
+        
+                if grandchild_handle == collection.handle
+                  assign first_level_title = child_title | strip
+                  assign first_level_url = child_link.url
+                  assign second_level_title = grandchild_title | strip
+                  assign second_level_url = grandchild_link.url
+                  break
+                endif
+              endfor
+            endfor
+          endfor
+        -%}
+        
+        {% if settings.show_breadcrumbs_collection_link %}
+          {% if first_level_title != blank and first_level_url != blank %}
+            <span class="breadcrumb__divider" aria-hidden="true">/</span>
+            <a href="{{ first_level_url }}">{{ first_level_title }}</a>
+          {% endif %}
+        {% endif %}
+  
+        <span class="breadcrumb__divider" aria-hidden="true">/</span>
+  
+        {% if current_tags %}
+  
+          {% capture url %}{{ routes.collections_url }}/{{ collection.handle }}{% endcapture %}
+          {{ collection.title | link_to: url }}
+  
+          <span class="breadcrumb__divider" aria-hidden="true">/</span>
+  
+          {% for tag in current_tags %}
+            {% if tag contains "_" %}{%- assign tag_starts_with = tag | slice: 0 -%}{% if tag_starts_with == "_" %}{% if tag_count %}{%- assign tag_count = tag_count | minus: 1 | at_least: 0 -%}{% endif %}{% continue %}{% endif %}{% endif %}
+  
+            {% assign tag_name = tag | strip %}
+            {% assign tag_text = tag_name | capitalize %}
+            <span>{{ tag_text }}</span>
+  
+            {% unless forloop.last %}
+              <span>+</span>
+            {% endunless %}
+  
+          {% endfor %}
+        {% else %}
+          {{ collection.title | link_to: url }}
+        {% endif %}
+        
+  
+      {% elsif template.name == 'blog' %}
+  
+        <span class="breadcrumb__divider" aria-hidden="true">/</span>
+        {% if current_tags %}
+          {{ blog.title | link_to: blog.url }}
+          <span class="breadcrumb__divider" aria-hidden="true">/</span>
+          <span>{{ current_tags | join: " + " }}</span>
+        {% endif %}
+  
+      {% elsif template.name == 'article' %}
+  
+        <span class="breadcrumb__divider" aria-hidden="true">/</span>
+        {{ blog.title | link_to: blog.url }}
+        <span class="breadcrumb__divider" aria-hidden="true">/</span>
+  
+      {% elsif template.name == 'page' %}
+  
+        <span class="breadcrumb__divider" aria-hidden="true">/</span>
+        <span>{{ page.title }}</span>
+  
+      {% elsif template.name == 'search' %}
+  
+        <span class="breadcrumb__divider" aria-hidden="true">/</span>
+        <span>{{ page_title | replace: '*', '' | split: ':' | first }}</span>
+  
+      {% else %}
+  
+        <span class="breadcrumb__divider" aria-hidden="true">/</span>
+        <span>{{ page_title }}</span>
+  
+      {% endif %}
+    </nav>
+  {% endunless %}
+
+{% endif %}

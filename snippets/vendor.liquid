@@ -1,0 +1,21 @@
+{%- liquid
+  assign product_vendor = product.metafields.custom.vendor
+  if product_vendor == blank or product_vendor == ""
+    assign product_vendor = product.vendor
+  endif
+
+  assign vendor_handle = product_vendor | replace: '.', '' | handleize
+  assign vendor_title = product_vendor
+  
+  assign vendor_url = vendor_handle | prepend: 'shop-' | append: '-for-' | append: gender
+-%}
+{%- if collections[vendor_url] != empty -%}
+  <a {% if class %}class="{{ class }}"{% endif %} href="{{ routes.collections_url }}/{{ collections[vendor_url].handle }}">
+    {{ vendor_title }}
+  </a>
+{%- else -%}
+  {% capture vendor_link_text %}{{ product.vendor | link_to_vendor: class: class }}{% endcapture %}
+  {% assign text_to_match = product.vendor | prepend: '>'  %}
+  {% assign text_to_replace_with = vendor_title | prepend: '>' %}
+  {{ vendor_link_text | replace: text_to_match, text_to_replace_with }}
+{%- endif -%}

@@ -1,0 +1,373 @@
+{%- liquid
+   assign text_color = section.settings.text_color
+   assign button_color = section.settings.button_color
+   assign button_text_color = section.settings.button_text_color
+-%}
+<style>
+  .shipping-reminder-popup {
+    justify-content: flex-start;
+  }
+  .shipping-reminder-popup__content-wrapper {
+      text-align: left;
+    }
+  .shipping-reminder-popup .modal__inner {
+    background: none;
+    box-shadow: none;
+    margin-bottom: 30px;
+    transform: translate(10px);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  }
+
+  .shipping-reminder-popup .modal__inner.active {
+    transform: translate(0px);
+    opacity: 1;
+  }
+
+  #shopify-section-{{ section.id }} * {
+    color: {{ text_color }}
+  }
+
+  #shopify-section-{{ section.id }} .btn {
+    background: {{ button_color }};
+    color: {{ button_text_color }};
+  }
+  #shopify-section-{{ section.id }} .btn font {
+    color: {{ button_text_color }};
+  }
+  @media only screen and (max-width: 768px) {
+    .shipping-reminder-popup {
+      height: 100vh;
+      align-items: flex-end;
+    }
+    /* .shipping-reminder-popup .modal__centered {
+      bottom: 30px;
+    } */
+  }
+  @media only screen and (min-width: 1000px) {
+    .shipping-reminder-popup {
+      align-items: flex-end;
+    }
+    .shipping-reminder-popup .modal__inner {
+      margin-left: 80px;
+      margin-bottom: 80px;
+    }
+  }
+</style>
+<shipping-reminder-popup
+  id="ShippingReminderPopup-{{ section.id }}"
+  class="
+    shipping-reminder-popup modal modal--square modal--mobile-friendly
+    {% if section.settings.image != blank %}
+      shipping-reminder-popup--image-true
+    {% else %}
+      shipping-reminder-popup--image-false
+    {% endif %}
+  "
+  data-enabled="{{ section.settings.enable_shipping_reminder_popup }}"
+  data-test-mode="{{ section.settings.enable_test_mode }}"
+  data-section-id="{{ section.id }}"
+  data-allowed-countries="{{ section.settings.allowed_countries }}"
+>
+  {% if section.settings.image != blank %}
+    <div class="shipping-reminder-popup__background-image-wrapper">
+      <div class="shipping-reminder-popup__background-image" data-background-image></div>
+    </div>
+    
+    {% assign image_mobile = section.settings.image_mobile %}
+    
+    {% capture bg_position_x %}calc((100vw * {{ section.settings.bg_position_x }}) / 100){% endcapture %}
+    {% if section.settings.bg_position_x  == 0 %}
+      {% assign bg_position_x = 'initial' %}
+    {% elsif section.settings.bg_position_x == 50 %}
+      {% assign bg_position_x = 'center' %}
+    {% elsif section.settings.bg_position_x == 100 %}
+      {% assign bg_position_x = 'right' %}
+    {% endif %}
+    
+    {% capture bg_position_m_x %}calc((100vw * {{ section.settings.bg_position_m_x }}) / 100){% endcapture %}
+    {% if section.settings.bg_position_m_x  == 0 %}
+      {% assign bg_position_m_x = 'initial' %}
+    {% elsif section.settings.bg_position_m_x == 50 %}
+      {% assign bg_position_m_x = 'center' %}
+    {% elsif section.settings.bg_position_m_x == 100 %}
+      {% assign bg_position_m_x = 'right' %}
+    {% endif %}
+
+    {% capture bg_position_y %}calc((100vh * {{ section.settings.bg_position_y }}) / 100){% endcapture %}
+    {% if section.settings.bg_position_y  == -50 %}
+      {% assign bg_position_y = 'initial' %}
+    {% elsif section.settings.bg_position_y == 0 %}
+      {% assign bg_position_y = 'center' %}
+    {% elsif section.settings.bg_position_y == 50 %}
+      {% assign bg_position_y = 'bottom' %}
+    {% endif %}
+    
+    {% capture bg_position_m_y %}calc((100vh * {{ section.settings.bg_position_m_y }}) / 100){% endcapture %}
+    {% if section.settings.bg_position_m_y  == -50 %}
+      {% assign bg_position_m_y = 'initial' %}
+    {% elsif section.settings.bg_position_m_y == 0 %}
+      {% assign bg_position_m_y = 'center' %}
+    {% elsif section.settings.bg_position_m_y == 50 %}
+      {% assign bg_position_m_y = 'bottom' %}
+    {% endif %}
+    
+    {% if image_mobile == blank %}
+      {% assign image_mobile = section.settings.image %}
+    {% endif %}
+    
+    {% style %}
+      .shipping-reminder-popup__background-image {
+        background-image: url({{ section.settings.image_mobile | image_url: width: '1000' }});
+        background-position-x: {{ bg_position_m_x }};
+        background-position-y: {{ bg_position_m_y }};
+        {% if section.settings.blur_image %}
+          filter: blur({{ section.settings.blur_amount_mobile | append: 'px' }});
+          transform: scale(1.03);
+        {% endif %}
+      }
+
+      @media only screen and (min-width: 769px) {
+        .shipping-reminder-popup__background-image {
+          background-image: url({{ section.settings.image | image_url: width: '2400' }});
+          background-position-x: {{ bg_position_x }};
+          background-position-y: {{ bg_position_y }};
+          {% if section.settings.blur_image %}
+            filter: blur({{ section.settings.blur_amount_desktop | append: 'px' }});
+            transform: scale(1.03);
+          {% endif %}
+        }
+      }
+    {% endstyle %}
+  {% endif %}
+
+  <div class="modal__inner">
+    <div class="modal__centered">
+      <div
+        class="modal__centered-content modal__centered-content--padded"
+        >
+        <div class="shipping-reminder-popup__content-wrapper">
+          <div
+            class="shipping-reminder-popup__content shipping-reminder-popup__content--active"
+            data-shipping-reminder-popup-content
+          >
+            {% if section.settings.heading != blank %}
+              <h2>{{ section.settings.heading }}</h2>
+            {% endif %}
+            {% if section.settings.text != blank %}
+              <div class="rte">
+                <div class="enlarge-text">{{ section.settings.text }}</div>
+              </div>
+            {% endif %}
+            {% if section.settings.decline_button_label != blank and section.settings.approve_button_label != blank %}
+              <div class="shipping-reminder-popup__btns-wrapper">
+            {% endif %}
+              {% if section.settings.approve_button_label != blank %}
+                <button
+                  class="btn"
+                  data-shipping-reminder-popup-exit-button
+                >
+                  {{ section.settings.approve_button_label }}
+                </button>
+              {% endif %}
+            {% if section.settings.decline_button_label != blank and section.settings.approve_button_label != blank %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</shipping-reminder-popup>
+
+{% comment %}
+// Decline button settings
+      {
+        "type": "text",
+        "id": "decline_button_label",
+        "label": "t:sections.age-verification-popup.settings.decline_button_label.label",
+        "default": "No I'm not"
+      },
+      
+      {
+        "type": "header",
+        "content": "t:sections.age-verification-popup.settings.header_declined"
+      },
+      {
+        "type": "paragraph",
+        "content": "t:sections.age-verification-popup.settings.content"
+      },
+      {
+        "type": "text",
+        "id": "decline_heading",
+        "label": "t:sections.age-verification-popup.settings.decline_heading.label",
+        "default": "Come back when you're older"
+      },
+      {
+        "type": "richtext",
+        "id": "decline_text",
+        "label": "t:sections.age-verification-popup.settings.decline_text.label",
+        "default": "<p>Sorry, the content of this store can't be seen by a younger audience. Come back when you're older.</p>"
+      },
+      {
+        "type": "text",
+        "id": "return_button_label",
+        "label": "t:sections.age-verification-popup.settings.return_button_label.label",
+        "default": "Oops, I entered incorrectly"
+      }
+{% endcomment %}
+{% schema %}
+  {
+    "name": "t:sections.shipping-reminder-popup.name",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_shipping_reminder_popup",
+        "label": "t:sections.shipping-reminder-popup.settings.enable_shipping_reminder_popup.label",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_test_mode",
+        "label": "t:sections.shipping-reminder-popup.settings.enable_test_mode.label",
+        "info": "t:sections.shipping-reminder-popup.settings.enable_test_mode.info",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "allowed_countries",
+        "label": "t:sections.shipping-reminder-popup.settings.allowed_countries.label"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.shipping-reminder-popup.settings.header_background_image"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "t:sections.shipping-reminder-popup.settings.image.label",
+        "info": "t:sections.shipping-reminder-popup.settings.image.info"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile",
+        "label": "t:sections.shipping-reminder-popup.settings.image_mobile.label",
+        "info": "t:sections.shipping-reminder-popup.settings.image_mobile.info"
+      },
+      {
+        "type": "header",
+        "content": "Background position (desktop)"
+      },
+      {
+        "type": "range",
+        "id": "bg_position_x",
+        "label": "Position X",
+        "min": -50,
+        "max": 50,
+        "step": 1,
+        "unit": "%",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "bg_position_y",
+        "label": "Position Y",
+        "min": -50,
+        "max": 50,
+        "step": 1,
+        "unit": "%",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Background position (mobile)"
+      },
+      {
+        "type": "range",
+        "id": "bg_position_m_x",
+        "label": "Position X",
+        "min": -50,
+        "max": 50,
+        "step": 1,
+        "unit": "%",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "bg_position_m_y",
+        "label": "Position Y",
+        "min": -50,
+        "max": 50,
+        "step": 1,
+        "unit": "%",
+        "default": 0
+      },
+      {
+        "type": "checkbox",
+        "id": "blur_image",
+        "label": "t:sections.shipping-reminder-popup.settings.blur_image.label",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "blur_amount_desktop",
+        "label": "Blur (desktop)",
+        "min": 0,
+        "max": 10,
+        "step": 0.1,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "blur_amount_mobile",
+        "label": "Blur (mobile)",
+        "min": 0,
+        "max": 10,
+        "step": 0.1,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "button_text_color",
+        "label": "Text color",
+        "default": "#222222"
+      },
+      {
+        "type": "color",
+        "id": "button_color",
+        "label": "Button color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.shipping-reminder-popup.settings.header_shipping_reminder_question"
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "t:sections.shipping-reminder-popup.settings.heading.label",
+        "default": "Confirm your age"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "t:sections.shipping-reminder-popup.settings.text.label",
+        "default": "<p>Are you 18 years old or older?</p>"
+      },
+      {
+        "type": "text",
+        "id": "approve_button_label",
+        "label": "t:sections.shipping-reminder-popup.settings.approve_button_label.label",
+        "default": "Yes I am"
+      }
+    ]
+  }
+{% endschema %}

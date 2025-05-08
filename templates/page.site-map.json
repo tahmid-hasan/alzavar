@@ -1,0 +1,26 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-site-map",
+      "settings": {
+        "title": "",
+        "narrow_column": false,
+        "show_page_content": false,
+        "show_zero_product_collection": true,
+        "align_text": "left"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

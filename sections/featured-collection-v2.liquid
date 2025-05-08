@@ -1,0 +1,174 @@
+{{ 'slider-component.css' | asset_url | stylesheet_tag }}
+
+{%- assign collection = collections[section.settings.home_featured_products] -%}
+{%- assign product_limit = section.settings.number_of_products -%}
+
+<div id="CollectionSection-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="featured-collection">
+  {%- if section.settings.title != blank -%}
+    <div class="page-width">
+      <div class="section-header{% if section.settings.view_all %}{% unless settings.type_headers_align_text %} section-header--with-link{% endunless %}{% endif %}">
+        <h2 class="section-header__title">
+          {{ section.settings.title }}
+        </h2>
+        {%- if section.settings.view_all and section.settings.rows == 1 -%}
+          <a href="{{ collection.url }}" class="btn btn--secondary btn--small section-header__link">{{ 'collections.general.all_of_collection' | t }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="page-width has-slider">
+    <slider-component class="{% if product_limit == 4 %}slider--not-trigger{% endif %}">
+      <div class="position-relative">
+        <div class="swiper slider">
+          <div class="swiper-wrapper slider--wrapper">
+            {%- if section.settings.home_featured_products == blank or collection.empty? or collection.products_count == 0 -%}
+              {%- unless emptyState -%}
+                {%- assign emptyState = true -%}
+              {%- endunless -%}
+              {%- for i in (1..product_limit) -%}
+                <div class="slide swiper-slide">
+                  <div class="slide__item grid-product {{ grid_item_width }}" data-aos="row-of-{{ per_row }}">
+                    <div class="grid-product__content">
+                      <a href="{{ product.url | within: collection }}" class="grid-product__link">
+                        <div class="grid-product__image-mask">
+                          {%- capture current -%}{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
+                          <div class="image-wrap">{{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                        </div>
+                        <div class="grid-product__meta">
+                          <div class="grid-product__title">{{ 'home_page.onboarding.product_title' | t }}</div>
+                          <div class="grid-product__price">$29</div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+              {% assign count = 0 %}
+              {%- for product in collection.products -%}
+                {% if product.available %}
+                  <div class="slide swiper-slide">
+                    {%- render 'slider-grid-item',
+                      product: product,
+                      collection: collection,
+                      per_row: per_row,
+                      quick_shop_enable: settings.quick_shop_enable,
+                      section_id: section.id,
+                      image_overlay: section.settings.use_overlay,
+                      product_grid_image_size: section.settings.product_grid_image_size
+                    -%}
+                  </div>
+                  {% assign count = count | plus: 1 %}
+                {% endif %}
+                {% if count == product_limit %}{% break %}{% endif %}
+              {%- endfor -%}
+            {%- endif -%}
+            
+          </div>
+        </div>
+        <div class="pagination-wrapper">
+          <div class="swiper-pagination"></div>
+        </div>
+        <button type="button" class="btn btn--secondary btn--small btn--next--prev btn--prev">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M15.101 18.962L7 12.48 15.101 6v2.561l-4.9 3.92 4.9 3.92z"></path></svg>
+        </button>
+        <button type="button" class="btn btn--secondary btn--small btn--next--prev btn--next">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M9 18.962l8.101-6.481L9 6v2.561l4.9 3.92L9 16.4z"></path></svg>
+        </button>
+      </div>
+    </slider-component>
+  </div>
+</div>
+{%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
+  
+{%- if section.settings.divider -%}</div>{%- endif -%}
+{% comment %}
+  "name": "t:sections.featured-collection.name"
+  "name": "t:sections.featured-collection.presets.featured_collection.name"
+{% endcomment %}
+{% schema %}
+{
+  "name": "Featured collection v2",
+  "class": "index-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.featured-collection.settings.title.label",
+      "default": "Featured collection"
+    },
+    {
+      "type": "collection",
+      "id": "home_featured_products",
+      "label": "t:sections.featured-collection.settings.home_featured_products.label"
+    },
+    {
+      "type": "range",
+      "id": "number_of_products",
+      "label": "t:sections.featured-collection.settings.number_of_products.label",
+      "default": 10,
+      "min": 4,
+      "max": 50,
+      "step": 1
+    },
+    {
+      "type": "select",
+      "id": "product_grid_image_size",
+      "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.label",
+      "default": "natural",
+      "options": [
+        {
+          "value": "natural",
+          "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.natural.label"
+        },
+        {
+          "value": "square",
+          "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.square.label"
+        },
+        {
+          "value": "landscape",
+          "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.landscape.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.portrait.label"
+        },
+        {
+          "value": "portrait-3-4",
+          "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.portrait_3_4.label"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "use_overlay",
+      "label": "t:sections.featured-collection.settings.use_overlay.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "view_all",
+      "label": "t:sections.featured-collection.settings.view_all.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "divider",
+      "label": "t:sections.featured-collection.settings.divider.label",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured collection v2"
+    }
+  ],
+  "blocks": []
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

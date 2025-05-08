@@ -1,0 +1,36 @@
+{%- liquid
+  assign vendor = product.vendor
+  if product.metafields.custom.vendor
+    assign vendor = product.metafields.custom.vendor
+  endif
+-%}
+<script type="application/json" id="product_json">
+  {
+    "id": {{ product.id | json }},
+    "title": "{{ product.title }}",
+    "handle": "{{ product.handle }}",
+    "description": {{ product.description | json }},
+    "published_at": "{{ product.published_at }}",
+    "created_at": "{{ product.created_at }}",
+    "vendor": "{{ vendor }}",
+    "type": "{{ product.type }}",
+    "tags": {{ product.tags | json }},
+    "price": {{ product.price | json }},
+    "price_min": {{ product.price_min | json }},
+    "price_max": {{ product.price_max | json }},
+    "available": {{ product.available | json }},
+    "price_varies": {{ product.price_varies | json }},
+    "compare_at_price": {{ product.compare_at_price | default: 0 }},
+    "compare_at_price_min": {{ product.compare_at_price_min | default: 0 }},
+    "compare_at_price_max": {{ product.compare_at_price_max | default: 0 }},
+    "compare_at_price_varies": {{ product.compare_at_price_varies | json }},
+    "variants": {{ product.variants | json }},
+    "images": {{ product.images | json }},
+    "featured_image": {{ product.featured_image | json }},
+    "options": {{ product.options | json }},
+    "url": "{{ product.url }}",
+    "media": {{ product.media | json }},
+    "requires_selling_plan": {{ product.requires_selling_plan | json }},
+    "selling_plan_groups": {{ product.selling_plan_groups | json }}
+  }
+</script>

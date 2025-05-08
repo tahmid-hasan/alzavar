@@ -1,0 +1,67 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-search",
+      "settings": {
+        "enable_sidebar": true,
+        "collapsed": true,
+        "filter_style": "drawer",
+        "enable_color_swatches": true,
+        "per_row": 4,
+        "rows_per_page": 20,
+        "mobile_flush_grid": false
+      }
+    },
+    "d0161bf2-cf4a-462d-b370-eae5bb653d77": {
+      "type": "newsletter",
+      "blocks": {
+        "template--19268314005843__d0161bf2-cf4a-462d-b370-eae5bb653d77-title-1": {
+          "type": "title",
+          "settings": {
+            "title": "ENJOY 10% OFF YOUR FIRST PURCHASE"
+          }
+        },
+        "template--19268314005843__d0161bf2-cf4a-462d-b370-eae5bb653d77-text-1": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Get the latest campaigns, personalized recommendations, stock notifications, and more delivered directly to your inbox<\/p>"
+          }
+        },
+        "template--19268314005843__d0161bf2-cf4a-462d-b370-eae5bb653d77-form-1": {
+          "type": "form",
+          "settings": {
+          }
+        },
+        "f7f3c8da-23cd-482b-9c27-67f697e9d70e": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Upon signing up, you agree to receive marketing via email, and acknowledge reading our <a href=\"\/policies\/privacy-policy\" title=\"Privacy Policy\">Privacy Policy<\/a>. You can unsubscribe anytime by clicking the link in the emails<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "template--19268314005843__d0161bf2-cf4a-462d-b370-eae5bb653d77-title-1",
+        "template--19268314005843__d0161bf2-cf4a-462d-b370-eae5bb653d77-text-1",
+        "template--19268314005843__d0161bf2-cf4a-462d-b370-eae5bb653d77-form-1",
+        "f7f3c8da-23cd-482b-9c27-67f697e9d70e"
+      ],
+      "settings": {
+        "color_background": "#ffffff",
+        "color_text": "#1c1d1d"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "d0161bf2-cf4a-462d-b370-eae5bb653d77"
+  ]
+}

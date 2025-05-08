@@ -1,0 +1,146 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page-full-width",
+      "disabled": true,
+      "settings": {
+      }
+    },
+    "294d0669-17c6-4c16-9803-9a36f277029e": {
+      "type": "hero-video",
+      "settings": {
+        "title": "Sell to us",
+        "title_size": 80,
+        "subheading": "RECEIVE A VALUE CHEQUE VALID THROUGHOUT THE STORE",
+        "link_text": "",
+        "link": "",
+        "color_accent": "rgba(0,0,0,0)",
+        "text_align": "vertical-center horizontal-center",
+        "video_url": "https:\/\/cdn.shopify.com\/videos\/c\/o\/v\/e28ffdeb99674da58e3c4622efaa2e9a.mp4",
+        "overlay_opacity": 0,
+        "section_height": "650px",
+        "mobile_height": "auto"
+      }
+    },
+    "4e6873ed-7532-4201-91b5-aaa02180e74f": {
+      "type": "rich-text",
+      "blocks": {
+        "a8a9fa42-f1cd-4416-9868-2ede3235650d": {
+          "type": "heading",
+          "settings": {
+            "title": "FANCY SOMETHING NEW?"
+          }
+        },
+        "template--17185118847262__4e6873ed-7532-4201-91b5-aaa02180e74f-16743614942e12f796-1": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": true,
+            "text": "<p>At Alzavar, we offer our customers the opportunity to sell their designer clothes or other items purchased from us or other stores and receive a value cheque that can be used to buy a new garment or another item you will love. The voucher is valid on our entire range.<\/p><p><\/p><p><\/p><p><\/p>"
+          }
+        },
+        "714c6069-103b-46e0-9e4a-393b6093952a": {
+          "type": "heading",
+          "settings": {
+            "title": "If the product is bought from us"
+          }
+        },
+        "9aeb38b1-5be8-46d9-ab9e-516557dd0619": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": false,
+            "text": "<p><strong>Step 1:<\/strong> Fill in the form at the bottom of the page. Enter your order number, the condition of the item, and whether it comes with original packaging or not.<\/p><p><strong>Step 2:<\/strong> We'll let you know within 24 hours whether the item is of interest or not. If we are interested, we will make an offer.<\/p><p><strong>Step 3:<\/strong> Once we've agreed on a price, we'll send you a prepaid shipping label by email, it will include a QR code that you can show to the courier and they'll take care of the parcel. You can also choose to print out the delivery note and stick it on the parcel.<\/p><p><strong>Step 4: <\/strong>When the parcel arrives, we check the item to ensure it is in the condition described.<\/p><p><strong>Step 5: <\/strong>If everything is as it should be, we will send a cheque for the agreed amount to your email address. The voucher is valid on all products in the store and is valid for 3 months.<\/p><p><strong>NOTE: <\/strong><span style=\"text-decoration:underline\"><em>Garments must be washed\/dry cleaned before sending them to us.<\/em><\/span><\/p>"
+          }
+        },
+        "2835a5ca-e728-4cd2-9180-14a92ab14d43": {
+          "type": "heading",
+          "settings": {
+            "title": "If the item is bought from another store"
+          }
+        },
+        "7a48c0cf-2711-4ac4-b4a1-e5467012c317": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": false,
+            "text": "<p><strong>Step 1:<\/strong> Fill in the form at the bottom of the page with a description of the item and its condition, size, and whether the item comes with the original packaging.<\/p><p><strong>Step 2: <\/strong>We will let you know within 24 hours whether or not we are interested in the item. If we are interested, we will ask you to send us pictures of the item and a receipt. We will also ask you to send us any possible QR codes and\/or serial numbers so that we can verify that the item is genuine.<\/p><p><strong>Steg 3: <\/strong>If everything checks out, we'll make you an offer.<\/p><p><strong>Step 4: <\/strong>Once we've agreed on a price, we'll send you a prepaid shipping label by email, the email will also include a QR code that you can show to the courier and they'll take care of the parcel. You can also choose to print out the delivery note and stick it on the parcel.<\/p><p><strong>Step 5: <\/strong>Once we have received the item we will check that it is genuine and in the described condition.<\/p><p><strong>Step 6:<\/strong> If everything is as it should be, we will send a value cheque for the agreed amount to your e-mail. The voucher is valid on all products in the store and is valid for 3 months.<\/p><p><\/p><p><strong>NOTE: <\/strong><span style=\"text-decoration:underline\"><em>Garments must be washed\/dry cleaned before sending them to us.<\/em><\/span><\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "a8a9fa42-f1cd-4416-9868-2ede3235650d",
+        "template--17185118847262__4e6873ed-7532-4201-91b5-aaa02180e74f-16743614942e12f796-1",
+        "714c6069-103b-46e0-9e4a-393b6093952a",
+        "9aeb38b1-5be8-46d9-ab9e-516557dd0619",
+        "2835a5ca-e728-4cd2-9180-14a92ab14d43",
+        "7a48c0cf-2711-4ac4-b4a1-e5467012c317"
+      ],
+      "settings": {
+        "align_text": "left",
+        "narrow_column": true,
+        "divider": true
+      }
+    },
+    "0a50e781-0b4e-407d-926d-fbf394e8af30": {
+      "type": "contact-form",
+      "settings": {
+        "title": "Form",
+        "text": "",
+        "show_phone": false,
+        "narrow_column": true
+      }
+    },
+    "30079b17-b58a-40c9-80f5-95b1ef4ef04f": {
+      "type": "newsletter",
+      "blocks": {
+        "template--18929431216467__30079b17-b58a-40c9-80f5-95b1ef4ef04f-16888483733b675359-0": {
+          "type": "title",
+          "settings": {
+            "title": "Enjoy 10% off your first purchase"
+          }
+        },
+        "template--18929431216467__30079b17-b58a-40c9-80f5-95b1ef4ef04f-16888483733b675359-1": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Get the latest campaigns, personalized recommendations, stock notifications, and more delivered directly to your inbox<\/p>"
+          }
+        },
+        "template--18929431216467__30079b17-b58a-40c9-80f5-95b1ef4ef04f-16888483733b675359-2": {
+          "type": "form",
+          "settings": {
+          }
+        },
+        "e1e9f821-73e9-4d61-8b6a-499133373306": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Upon signing up, you agree to receive marketing via email, and acknowledge reading our <a href=\"\/policies\/privacy-policy\" title=\"Privacy Policy\">Privacy Policy<\/a>. You can unsubscribe anytime by clicking the link in the emails<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "template--18929431216467__30079b17-b58a-40c9-80f5-95b1ef4ef04f-16888483733b675359-0",
+        "template--18929431216467__30079b17-b58a-40c9-80f5-95b1ef4ef04f-16888483733b675359-1",
+        "template--18929431216467__30079b17-b58a-40c9-80f5-95b1ef4ef04f-16888483733b675359-2",
+        "e1e9f821-73e9-4d61-8b6a-499133373306"
+      ],
+      "settings": {
+        "color_background": "#ffffff",
+        "color_text": "#1c1d1d"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "294d0669-17c6-4c16-9803-9a36f277029e",
+    "4e6873ed-7532-4201-91b5-aaa02180e74f",
+    "0a50e781-0b4e-407d-926d-fbf394e8af30",
+    "30079b17-b58a-40c9-80f5-95b1ef4ef04f"
+  ]
+}

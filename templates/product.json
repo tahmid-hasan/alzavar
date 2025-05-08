@@ -1,0 +1,202 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product-v2",
+      "blocks": {
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "variant_labels": true,
+            "picker_type": "dropdown",
+            "product_dynamic_variants_enable": true,
+            "color_swatches": false
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "surface_pickup_enable": false
+          }
+        },
+        "8ad2d001-4e07-4199-a85d-bd7c31bf3551": {
+          "type": "shopify://apps/swish-formerly-wishlist-king/blocks/wishlist-button-block/194f5011-a43c-4b22-b12e-eaf20dc4506a",
+          "settings": {
+            "button_style": "plain_text",
+            "button_alignment": "center",
+            "button_content_alignment": "center",
+            "button_margin_top": 0,
+            "button_margin_bottom": 0,
+            "button_max_width": 0,
+            "button_padding_horizontal": 15,
+            "button_full_width": true,
+            "button_show_text": true,
+            "button_show_icon": true,
+            "icon_size": 18,
+            "icon_stroke_width": 1.2,
+            "icon_offset_vertical": -1
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "is_tab": true
+          }
+        },
+        "tab_JFJWyF": {
+          "type": "tab",
+          "settings": {
+            "title": "Item info",
+            "content": "<p>Use collapsible tabs for more detailed information that will help customers make a purchasing decision.</p><p>Ex: Shipping and return policies, size guides, and other common questions.</p>",
+            "content_right": "<p>Use collapsible tabs for more detailed information that will help customers make a purchasing decision.</p><p>Ex: Shipping and return policies, size guides, and other common questions.</p>",
+            "page": "",
+            "remove_bottom_margin": false,
+            "top_border": false
+          }
+        },
+        "a320946d-f761-4710-91fc-5114986a1c17": {
+          "type": "tab",
+          "settings": {
+            "title": "Payment options",
+            "content": "<p><strong>Direct Payment</strong></p><ul><li>You can make a direct payment using popular methods such as Visa, Mastercard, American Express, or even cryptocurrency options like Bitcoin and Ethereum. </li></ul><p><strong>Klarna Slice It</strong></p><ul><li>Enjoy the convenience of paying in flexible installments over a period of 6 to 36 months with Klarna.</li></ul>",
+            "content_right": "<p><strong>Pay Later with Klarna</strong></p><ul><li>With Klarna, you can conveniently pay for your order after receiving the parcel, giving you the freedom to settle the payment within a 30-days.</li></ul><p><strong>Klarna Pay Now</strong></p><ul><li>No need to enter any lengthy card numbers, no need to create an account, no need for anyone to store your details. Convenient and secure.</li></ul>",
+            "page": "",
+            "remove_bottom_margin": true,
+            "top_border": true
+          }
+        },
+        "tab": {
+          "type": "tab",
+          "settings": {
+            "title": "Delivery & Returns",
+            "content": "<p><strong>We are here for you</strong></p><ul><li>Only one delivery fee and <strong>no additional costs </strong>such as import duties</li></ul><p></p><ul><li>Our user-friendly return portal makes returns easy, and you can return any item within 14 days <strong>for free</strong></li></ul><p></p><ul><li>In the rare occasion that there's a mix-up with your order or if an item arrives damaged, rest assured—we've got it covered. We'll take care of all the details and ensure you're refunded in full, including the shipping fees</li></ul>",
+            "content_right": "<p><strong>Quick links and answers</strong></p><ul><li>We currently ship exclusively to Sweden and Denmark. But stay tuned, as we'll soon expand to serve globally. If you would like to learn more about this decision, <a href=\"https://alzavar.se/a/faq\" title=\"FAQ\">click here</a></li></ul><p></p><ul><li>Would you like to make a return? <a href=\"https://alzavar.myshopify.com/apps/return_prime\" target=\"_blank\" title=\"Return Center\">Click here</a></li></ul><p></p><ul><li>For quick and convenient answers, our FAQ page is packed with helpful information, including details about our VIP customer program. Want to check it out? <a href=\"https://alzavar.se/a/faq\" target=\"_blank\" title=\"FAQ page\">Click here</a></li></ul><p></p><ul><li>We're here to help you at every step! Contact our friendly support team via phone or email for any questions or assistance. Reach out to us by <a href=\"/pages/contact\" target=\"_blank\" title=\"Contact us\">clicking here</a></li></ul><p></p><ul><li>Are you interested in learning more about our return policy and other policies? We value transparency and want to ensure you have all the necessary information. <a href=\"/policies/terms-of-service\" target=\"_blank\" title=\"Terms of Service\">Click here</a> to read our terms of service</li></ul>",
+            "page": "",
+            "remove_bottom_margin": true,
+            "top_border": false
+          }
+        },
+        "contact": {
+          "type": "contact",
+          "settings": {
+            "custom_block_details": "<h3><strong>Would you like to call?</strong></h3><h4><br/><strong>PHONE SUPPORT</strong></h4><h6><span style=\"text-decoration:underline\">WEEKDAYS</span></h6><h6>15:00 TO 18:00 (GMT +01:00)</h6><h6><span style=\"text-decoration:underline\">WEEKENDS & HOLIDAYS</span></h6><h6>CLOSED</h6><p><strong>Note:</strong> The phone support team is only able to assist in Swedish and English</p><h6>PHONE NUMBER: <a href=\"tel:46(0)8910919\" title=\"tel:46(0)8910919\">+46 (0) 8 91 09 19</a></h6>",
+            "title": "Ask a question",
+            "phone": false
+          }
+        },
+        "tab_9BTPDj": {
+          "type": "tab",
+          "settings": {
+            "title": "Fit Recommendation",
+            "content": "{{ product.metafields.custom.fit_recommendation | metafield_tag }}",
+            "content_right": "",
+            "page": "",
+            "remove_bottom_margin": false,
+            "top_border": false
+          }
+        },
+        "share": {
+          "type": "share",
+          "disabled": true,
+          "settings": {}
+        },
+        "4e55968f-4595-4d89-9bed-6d2ffb659f8e": {
+          "type": "custom_button",
+          "settings": {
+            "button_full": true,
+            "button_label": "info@alzavar.se",
+            "button_url": "mailto:Info@alzavar.se",
+            "button_icon": "mail-icon"
+          }
+        },
+        "d8fb8a7d-5ad3-4a32-81d8-5ec95bf73cbd": {
+          "type": "custom_button",
+          "settings": {
+            "button_full": true,
+            "button_label": "Call us",
+            "button_url": "tel:+46 8 91 09 19",
+            "button_icon": "tel-icon"
+          }
+        }
+      },
+      "block_order": [
+        "price",
+        "variant_picker",
+        "buy_buttons",
+        "8ad2d001-4e07-4199-a85d-bd7c31bf3551",
+        "description",
+        "tab_JFJWyF",
+        "a320946d-f761-4710-91fc-5114986a1c17",
+        "tab",
+        "contact",
+        "tab_9BTPDj",
+        "share",
+        "4e55968f-4595-4d89-9bed-6d2ffb659f8e",
+        "d8fb8a7d-5ad3-4a32-81d8-5ec95bf73cbd"
+      ],
+      "settings": {
+        "sku_enable": false,
+        "image_position": "left",
+        "image_size": "large",
+        "product_zoom_enable": true,
+        "thumbnail_position": "beside",
+        "thumbnail_height": "flexible",
+        "thumbnail_arrows": false,
+        "mobile_layout": "partial",
+        "mobile_contactus_number": "+46 8 91 09 19",
+        "enable_video_looping": true,
+        "product_video_style": "muted"
+      }
+    },
+    "sub": {
+      "type": "product-full-width",
+      "disabled": true,
+      "settings": {
+        "max_width": true
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations-v2",
+      "settings": {
+        "show_product_recommendations": true,
+        "product_recommendations_heading": "Recommendations",
+        "products_count": 8,
+        "product_grid_image_size": "portrait-3-4",
+        "use_overlay": true
+      }
+    },
+    "recently-viewed": {
+      "type": "recently-viewed",
+      "settings": {
+        "recent_count": 6,
+        "product_grid_image_size": "portrait-3-4",
+        "use_overlay": true
+      }
+    },
+    "collection-return": {
+      "type": "collection-return",
+      "disabled": true,
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "sub",
+    "product-recommendations",
+    "recently-viewed",
+    "collection-return"
+  ]
+}

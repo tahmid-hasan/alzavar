@@ -1,0 +1,126 @@
+{%- liquid
+  assign show_selectors = false
+  assign currency_selector = false
+  assign locale_selector = false
+
+  if section.settings.show_currency_selector and shop.enabled_currencies.size > 1
+    assign currency_selector = true
+  endif
+
+  if section.settings.show_locale_selector and shop.enabled_locales.size > 1
+    assign locale_selector = true
+  endif
+
+  if currency_selector or locale_selector
+    assign show_selectors = true
+  endif
+-%}
+
+<div class="toolbar{% if overlay_header%} toolbar--transparent{% endif %} small--hide">
+  <div class="page-width">
+    <div class="toolbar__content">
+      {%- if section.settings.toolbar_menu != blank -%}
+        <div class="toolbar__item toolbar__item--menu">
+          <ul class="inline-list toolbar__menu">
+          {%- for link in toolbar_menu.links -%}
+            <li>
+              <a href="{{ link.url }}">{{ link.title }}</a>
+            </li>
+          {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.toolbar_social -%}
+        <div class="toolbar__item">
+          {% render 'social-icons', additional_classes: 'inline-list toolbar__social' %}
+        </div>
+      {%- endif -%}
+      {% comment %}
+      {%- if show_selectors -%}
+        <div class="toolbar__item">
+          {%- render 'multi-selectors',
+            locale_selector: locale_selector,
+            currency_selector: currency_selector,
+            show_currency_flags: section.settings.show_currency_flags
+            location: 'toolbar'
+          -%}
+        </div>
+      {%- endif -%}
+      {% endcomment %}
+      <div class="visually-hidden">
+        {%- assign formId = 'localization_form-header' -%}
+        {%- form 'localization', id: formId, class: 'multi-selectors' -%}
+          {%- capture language_list -%}
+            <ul class="localization--list">
+              {%- for locale in form.available_locales -%}
+                {%- liquid
+                   assign downcase_locale_iso = locale.iso_code | downcase
+                   assign locale_flag_class = 'currency-flag--' | append: downcase_locale_iso
+                   if downcase_locale_iso == 'en'
+                     assign locale_flag_class = 'currency-flag--gb'
+                   elsif downcase_locale_iso == 'sv'
+                     assign locale_flag_class = 'currency-flag--se'
+                   endif
+                -%}
+                <li class="localization--list__item">
+                  <button class="localization-toggle--btn" type="button" lang="{{ locale.iso_code }}"{% if locale.iso_code == form.current_locale.iso_code %} aria-current="true"{% endif %} data-type="language" data-value="{{ locale.iso_code }}" data-is-submit="true">
+                    {% comment %}
+                    <span class="currency-flag {{ locale_flag_class }}" data-flag="{{ locale.iso_code }}" aria-hidden="true"></span>
+                    {% endcomment %}
+                    <div class="currency-checkbox-container">
+                      <span class="currency-checkbox{% if locale.iso_code == form.current_locale.iso_code %} checked{% endif %}" tabindex="0"></span>
+                    </div>
+                    <span class="country--name">
+                      <span>{{ locale.endonym_name | capitalize }}</span>
+                    </span>
+                  </button>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endcapture -%}
+          {%- capture currency_list -%}
+            <ul class="localization--list">
+              {%- for country in form.available_countries-%}
+                <li class="localization--list__item">
+                  <button class="localization-toggle--btn" type="button" lang="{{ locale.iso_code }}"{% if country.iso_code == localization.country.iso_code %} aria-current="true"{% endif %} data-type="currency" data-value="{{ country.iso_code }}" data-is-submit="true">
+                    {%  comment %}
+                    <span class="currency-flag currency-flag--{{ country.iso_code | downcase }}" data-flag="{{ country.currency.iso_code }}" aria-hidden="true"></span>
+                    {% endcomment %}
+                    <div class="currency-checkbox-container">
+                      <span class="currency-checkbox{% if country.iso_code == localization.country.iso_code %} checked{% endif %}" tabindex="0"></span>
+                    </div>
+                    <span class="country--name">
+                      <span>{{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})</span>
+                    </span>
+                  </button>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endcapture -%}
+        {%- endform -%}
+      </div>
+      <div class="localization--switcher toolbar__item">
+        <button type="button" data-target="language-switcher-desktop" class="lang-switcher--btn" aria-expanded="false" aria-controls="LanguageList">
+          <span class="country--name">
+            <span>{{ localization.language.endonym_name | capitalize }}</span>
+          </span>
+        </button>
+        <span class="verbar"></span>
+        <button type="button" data-target="currency-switcher-desktop" class="lang-switcher--btn" aria-expanded="false" aria-controls="CountryList">
+          <span class="country--name">
+            <span>
+              {{ localization.country.name }} ({{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }})
+            </span>
+          </span>
+        </button>
+        <div class="localization--list__container" data-parent="language-switcher-desktop">
+          {{ language_list }}
+        </div>
+        <div class="localization--list__container" data-parent="currency-switcher-desktop">
+          {{ currency_list }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

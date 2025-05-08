@@ -1,0 +1,152 @@
+{%- liquid
+   if collection.products
+     assign count = collection.products_count
+     assign count_label = 'collections.general.items_with_count'
+   endif
+   
+   if collection.results
+     assign count = collection.results_count
+     assign count_label = 'general.search.result_count'
+   endif
+   
+   assign filters = collection.filters
+   assign sort_by = collection.sort_by
+   assign default_sort_by = collection.default_sort_by
+   assign sort_options = collection.sort_options
+   
+   assign current_filter_size = 0
+
+   assign size_tags = ""
+   assign base_sizes = ""
+   assign active_raw_sizes = ""
+   for tag in collection.all_tags
+     assign downcase_tag = tag | downcase
+     if downcase_tag contains 's:'
+       assign base_size = downcase_tag | split: ':' | last | strip | split: '-' | last | strip
+       assign base_size_str = base_size | append: '~' | prepend: '~'
+       unless base_sizes contains base_size_str
+         assign base_sizes = base_sizes | append: base_size_str
+       endunless
+       assign size_str = tag | split: ':' | last | strip | append: '~' | prepend: '~'
+       unless size_tags contains size_str
+         assign size_tags = size_tags | append: size_str
+       endunless
+     endif
+   endfor
+   
+   assign base_sizes = base_sizes | replace: '~~', '~' | remove_first: '~' | remove_last: '~'
+   assign size_tags = size_tags | replace: '~~', '~' | remove_first: '~' | remove_last: '~'
+   
+   assign sizes_array = size_tags | split: '~'
+
+   for filter in filters
+     for filter_value in filter.active_values
+       if filter_value.param_name != 'filter.v.availability' and filter_value.param_name != 'filter.v.option.size'
+         assign current_filter_size = current_filter_size | plus: 1
+       elsif filter_value.param_name == 'filter.v.option.size'
+         assign downcase_value = filter_value.value | downcase | append: '~' | prepend: '~'
+         for _size in sizes_array
+           assign downcase_size = _size | downcase | split: '-' | first | strip | append: '~' | prepend: '~'
+           
+           if downcase_size contains downcase_value
+             assign str = _size | split: ' - ' | last | append: '~' | prepend: '~'          
+             assign tag_string = _size | append: '~' | prepend: '~'
+             unless active_sizes_tags contains tag_string
+               assign active_sizes_tags = active_sizes_tags | append: tag_string
+             endunless
+         
+             unless active_raw_sizes contains str
+               assign active_raw_sizes = active_raw_sizes | append: str
+             endunless
+           endif
+         endfor
+       endif
+     endfor
+   endfor
+   assign active_raw_sizes_count = active_raw_sizes | remove_first: '~' | remove_last: '~' | replace: '~~', '~' | split: '~' | size
+   assign current_filter_size = current_filter_size | plus: active_raw_sizes_count
+   comment
+   for filter in filters
+     for filter_value in filter.active_values
+       if filter_value.param_name == 'filter.v.availability'
+         if filter_value.value == "1" and filter_value.active
+           assign in_stock_active = true
+         endif
+         if filter_value.value == "0" and filter_value.active
+           assign out_stock_active = true
+         endif
+   
+         if filter_value.value == "1" and filter_value.active
+           assign current_filter_size = current_filter_size | minus: 1
+         endif
+       endif
+     endfor
+     assign current_filter_size = current_filter_size | plus: filter.active_values.size
+   endfor
+   
+   
+   if in_stock_active == false and out_stock_active == false
+     assign current_filter_size = current_filter_size | plus: 1
+   endif
+   endcomment
+-%}
+<div class="sticky-filter--wrapper">
+  <div class="page-width">
+    <div class="collection-filter">
+      <div class="collection-filter__item collection-filter__item--drawer">
+        <button
+          type="button"
+          class="js-drawer-open-collection-filters btn btn--tertiary{% unless current_filter_size == 0 %} btn--tertiary-active{% endunless %}"
+          aria-controls="FilterDrawer">
+            <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-filter" viewBox="0 0 64 64">
+              <path d="M48 42h10M48 42a5 5 0 1 1-5-5 5 5 0 0 1 5 5zM7 42h31M16 22H6M16 22a5 5 0 1 1 5 5 5 5 0 0 1-5-5zM57 22H26"></path>
+            </svg>
+            {{ 'collections.filters.title_tags' | t }}
+            {%- if current_filter_size > 0 -%}
+                ({{ current_filter_size }})
+            {%- endif -%}
+        </button>
+        <button
+          type="button"
+          class="js-drawer-open-collection-filters-mobile btn btn--tertiary{% unless current_filter_size == 0 %} btn--tertiary-active{% endunless %}"
+          aria-controls="FilterDrawerMobile"
+        >
+          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-filter" viewBox="0 0 64 64">
+            <path d="M48 42h10M48 42a5 5 0 1 1-5-5 5 5 0 0 1 5 5zM7 42h31M16 22H6M16 22a5 5 0 1 1 5 5 5 5 0 0 1-5-5zM57 22H26"></path>
+          </svg>
+          {{ 'collections.filters.title_tags' | t }}
+          {%- if current_filter_size > 0 -%}
+              ({{ current_filter_size }})
+          {%- endif -%}
+        </button>
+      </div>
+  
+      <div class="collection-filter__item collection-filter__item--count small--hide" data-test-enabled="{{ enable_collection_count }}">
+        {%- if enable_collection_count -%}
+          {{ count_label | t: count: count }}
+        {%- endif -%}
+      </div>
+  
+      <div class="collection-filter__item collection-filter__item--sort">
+          <div class="collection-filter__sort-container">
+          {%- assign sort_by = sort_by | default: default_sort_by -%}
+          <label for="SortBy" class="hidden-label">{{ 'collections.sorting.title' | t }}</label>
+          <select name="SortBy" id="SortBy" data-default-sortby="{{ default_sort_by }}">
+            {%- for option in sort_options -%}
+              {% if option.value != 'title-ascending' and option.value != 'title-descending' and option.value != 'created-ascending' and option.value != 'created-descending' %}
+                {% assign words = option.name | replace_first: ',', ':' | split: ' ' %}
+                {%- capture titlecase -%}
+                  {%- for word in words -%}
+                    {{ word | capitalize }}
+                  {%- endfor -%}
+                {%- endcapture -%}
+                
+                <option value="{{ option.value }}"{% if option.value == sort_by %} selected="selected"{% endif %}>{{ titlecase }}</option>
+              {%- endif -%}
+            {%- endfor -%}
+          </select>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

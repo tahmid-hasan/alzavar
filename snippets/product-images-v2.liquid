@@ -1,0 +1,39 @@
+{%- liquid
+  assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
+  assign first_3d_model = product.media | where: 'media_type', 'model' | first
+-%}
+
+{%- unless product.empty? -%}
+  <div
+    data-product-images
+    data-zoom="{{ product_zoom_enable }}"
+    data-has-slideshow="{% if product.media.size > 1 %}true{% else %}false{% endif %}">
+    <div class="product__photos product__photos-{{ section_id }}">
+      
+      {%- unless product_tag == "" -%}
+        <p class="product-single__tag">{{ product_tag }}</p>
+      {%- endunless -%}
+      <div class="product__main-photos" data-aos data-product-single-media-group>
+        <div data-product-photos data-zoom="{{ product_zoom_enable }}" class="product-slideshow image-{{ product.media.size }}" id="ProductPhotos-{{ section_id }}">
+          <div class="product-slideshow--wrapper">
+          {%- for media in product.media -%}
+            {%- render 'media',
+              section_id: section_id,
+              media: media,
+              featured_media: featured_media,
+              loopIndex0: forloop.index0,
+              loopIndex: forloop.index,
+              product_zoom_enable: product_zoom_enable,
+              product_zoom_size: product_zoom_size,
+              product_image_size: product_image_size,
+              isModal: isModal,
+              video_looping: video_looping,
+              video_style: video_style
+            -%}
+          {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endunless -%}

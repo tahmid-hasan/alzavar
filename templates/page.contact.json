@@ -1,0 +1,135 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+      }
+    },
+    "fc0165b5-f562-41cf-9a69-a36a6878c4c1": {
+      "type": "rich-text",
+      "blocks": {
+        "template--18803459064147__fc0165b5-f562-41cf-9a69-a36a6878c4c1-16832397835dafa21c-0": {
+          "type": "heading",
+          "settings": {
+            "title": "Customer support"
+          }
+        }
+      },
+      "block_order": [
+        "template--18803459064147__fc0165b5-f562-41cf-9a69-a36a6878c4c1-16832397835dafa21c-0"
+      ],
+      "settings": {
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
+      }
+    },
+    "4af52c66-ba93-46cb-ae37-662bf7bc83a2": {
+      "type": "text-with-icons",
+      "blocks": {
+        "0c071fc4-f417-46f3-8b61-4432a67bfd31": {
+          "type": "text_block",
+          "settings": {
+            "icon": "chat",
+            "title": "FAQ",
+            "text": "<p><a href=\"https:\/\/alzavar.se\/a\/faq\" title=\"FAQ\">To provide you with prompt and convenient assistance, we have curated a list of the most commonly asked questions we receive. <\/a><\/p><h6><a href=\"https:\/\/alzavar.se\/a\/faq\" title=\"FAQ\"><span style=\"text-decoration:underline\">Klick Here<\/span><\/a><\/h6>"
+          }
+        },
+        "template--18803459064147__4af52c66-ba93-46cb-ae37-662bf7bc83a2-16832381808ca39023-1": {
+          "type": "text_block",
+          "settings": {
+            "icon": "phone",
+            "title": "Phone Support",
+            "text": "<h6>Weekdays<\/h6><h6> 15:00 to 18:00 (GMT +01:00)<\/h6><h6>Weekends & Holidays<\/h6><h6>Closed<\/h6><p><strong>Note:<\/strong> The phone support team is only able to assist in Swedish and English<\/p><h6>Phone number: +46 (0) 8 91 09 19<\/h6><p><\/p>"
+          }
+        },
+        "357f166f-c574-491c-8972-d2ec88fa4a03": {
+          "type": "text_block",
+          "settings": {
+            "icon": "envelope",
+            "title": "Email",
+            "text": "<p>If you would like to contact us by email you can fill the form bellow.  We will reply within 24 hours, every day of the year<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "0c071fc4-f417-46f3-8b61-4432a67bfd31",
+        "template--18803459064147__4af52c66-ba93-46cb-ae37-662bf7bc83a2-16832381808ca39023-1",
+        "357f166f-c574-491c-8972-d2ec88fa4a03"
+      ],
+      "settings": {
+        "title": "",
+        "align_text": "center",
+        "desktop_columns_per_row": 3,
+        "icon_color": "#000000",
+        "button_label": "",
+        "button_link": "",
+        "divider": false
+      }
+    },
+    "rich-text": {
+      "type": "rich-text",
+      "settings": {
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
+      }
+    },
+    "879b0ae6-1494-4a7a-9649-85f857a6eada": {
+      "type": "faq",
+      "blocks": {
+        "template--19619061203283__879b0ae6-1494-4a7a-9649-85f857a6eada-question-1": {
+          "type": "question",
+          "settings": {
+            "title": "WOULD YOU LIKE TO MAKE A RETURN?",
+            "text": "<p>To keep it green, we've gone paper-free for our return instructions—a win for you, us, and the Earth.<\/p><p>When you return items, please include all accessories and original packaging in an unused condition; otherwise, you may not receive a refund. Whether you choose collection or drop-off, please return the items from the same country or region where you originally made your purchase.<\/p><p><strong>Here’s how you make a return:<\/strong><\/p><p>1. If you've have an account with us, head over to the Returns section. If you shopped as a guest, no worries—just <a href=\"https:\/\/alzavar.returnscenter.com\/\" title=\"Returns Center\">click here.<\/a><\/p><p>2. Enter the order number and email address you used when placing the order.<\/p><p>3. Choose the item(s) you'd like to return and choose a reason for your return.<\/p><p>4. We'll quickly review your return request. Once approved, we'll send you a paper-free, pre-paid return label via email.<\/p><p>5. To send your package back, you have options! You can either;<\/p><ul><li>Schedule a free pick-up with the courier<\/li><\/ul><p><\/p><ul><li>Print the label and place it outside of the package<\/li><\/ul><p><\/p><ul><li>Visit your nearest courier office. Simply show them the email with the return label, and they'll take care of the rest.<\/li><\/ul>"
+          }
+        },
+        "template--19619061203283__879b0ae6-1494-4a7a-9649-85f857a6eada-question-2": {
+          "type": "question",
+          "settings": {
+            "title": "GENERAL CONTACTS & PARTNERSHIPS",
+            "text": "<p><strong>Customer Service<\/strong><\/p><p>Email: <a href=\"mailto:info@alzavar.se\" target=\"_blank\" title=\"Customer Service\">Info@alzavar.se<\/a><\/p><p>Phone number: <a href=\"tel:+4608910919\" title=\"Phone Support\">+46 (0) 8 91 09 19<\/a><\/p><p>During peak times such as holidays, sales, and special promotions, our Customer Service team may take a bit longer to respond. Deliveries might also take a little bit longer to arrive, but rest assured, we'll send you a confirmation email as soon as your order is on its way. For any more details, do not hesitate to contact us, we are always happy to help. <a href=\"https:\/\/www.alzavar.com\/a\/faq\" title=\"FAQs\">Or you can visit our FAQs.<\/a><\/p><p><strong>Brands & Retail Partners<\/strong><\/p><p>If you are interested in establishing partnership with Alzavar, please direct your inquiry to <a href=\"mailto:foretag@alzavar.se\" target=\"_blank\" title=\"Contact for Brands & Retail Partners\">foretag@alzavar.se.<\/a> Please make sure to include all pertinent details, as well as your website address if available. Thank you for considering this collaborative opportunity.<\/p><p><strong>Press & Other Media<\/strong><\/p><p>If you are a journalist or engaged in other media activities and are in need of images, logos, or other materials, either for editorial purposes or otherwise, or are considering partnership opportunities, please direct your inquiries to <a href=\"mailto:foretag@alzavar.se\" target=\"_blank\" title=\"Contact for Press & Other Media\">foretag@alzavar.se.<\/a> Although we cannot guarantee the fulfillment of every request, we may have the ability to connect you with our partner brands and boutiques for additional resources.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "template--19619061203283__879b0ae6-1494-4a7a-9649-85f857a6eada-question-1",
+        "template--19619061203283__879b0ae6-1494-4a7a-9649-85f857a6eada-question-2"
+      ],
+      "settings": {
+        "title": "",
+        "align_text": "left",
+        "set_max_width": true,
+        "max_width": 560
+      }
+    },
+    "1c2737ff-c69e-460f-8529-da47ea26d81b": {
+      "type": "contact-form",
+      "settings": {
+        "title": "Contact form",
+        "text": "",
+        "show_phone": false,
+        "narrow_column": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "fc0165b5-f562-41cf-9a69-a36a6878c4c1",
+    "4af52c66-ba93-46cb-ae37-662bf7bc83a2",
+    "rich-text",
+    "879b0ae6-1494-4a7a-9649-85f857a6eada",
+    "1c2737ff-c69e-460f-8529-da47ea26d81b"
+  ]
+}

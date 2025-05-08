@@ -1,0 +1,170 @@
+<style>
+  .always-hidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+</style>
+<auto-translator class="always-hidden">
+  <div>
+    {%- form 'localization', id: 'auto__localization-switcher--form' -%}
+      <select id="auto__currency--toggle" name="country_code">
+        {%- for country in localization.available_countries -%}
+          <option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected="selected"{% endif %}>
+            {{ country.name }}
+          </option>
+        {%- endfor -%}
+      </select>
+      <select id="auto__language--toggle" name="language_code">
+        {% for language in localization.available_languages %}
+          <option value="{{ language.iso_code }}" {% if language.iso_code == localization.language.iso_code %}selected="selected"{% endif %}>
+            {{ language.endonym_name }}
+          </option>
+        {%- endfor -%}
+      </select>
+    {%- endform -%}
+  </div>
+</auto-translator>
+<script>
+  class Cookie {
+    static set(name, value, days) {
+      const expires = new Date();
+      expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+      document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/';
+    }
+  
+    static get(name) {
+      const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+      if(cookieValue) {
+        const decodedValue = decodeURIComponent(cookieValue.pop());
+        if (decodedValue === 'true' || decodedValue === 'false') {
+          return decodedValue === 'true';
+        } else if (/^\d+$/.test(decodedValue)) {
+          return parseInt(decodedValue);
+        } else if (/^\d*\.\d+$/.test(decodedValue)) {
+          return parseFloat(decodedValue);
+        } else {
+          return decodedValue;
+        }
+      } else {
+        return null;
+      }
+    }
+  
+    static delete(name) {
+      document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    }
+  }
+  window.Cookie = new Cookie()
+  
+  class AutoTranslator extends HTMLElement {
+    constructor() {
+      super()
+    }
+    
+    connectedCallback() {
+      this.getLocation()
+      this.state = false
+      
+      
+      this.form = this.querySelector('#auto__localization-switcher--form')
+
+      this.currencyInput = this.form.querySelector('select#auto__currency--toggle')
+      this.languageInput = this.form.querySelector('select#auto__language--toggle')
+
+      this.currentCurrency = this.currencyInput.value
+      this.currentLanguage = this.languageInput.value
+    }
+
+    async getLocation() {
+      try {
+        const ipRes = await fetch('https://api.ipify.org/')
+        const ip = await ipRes.text()
+
+        const locationRes = await fetch(`https://ipapi.co/${ip}/json/`)
+        const location = await locationRes.json()
+
+        window.user_location = location
+
+        const event = new CustomEvent('location:initialize', { detail: location })
+        document.dispatchEvent(event)
+
+        this.runAutomation()
+      }
+      catch(error) {
+        console.log(error)
+      }
+    }
+
+    runAutomation() {
+      this.automateLanguageSelect()
+      this.automateCurrencySelect()
+      if(this.state) this.form.submit()
+    }
+
+    automateCurrencySelect() {
+      const currency_choosen = Cookie.get('currency_choosen')
+      if(!currency_choosen) {
+        if(user_location.country == 'DK' && this.currentCurrency != 'DK') {
+          this.setCurrency('DK')
+        }
+        else if(user_location.country != 'DK' && this.currentCurrency == 'DK') {
+          this.setCurrency('SE')
+        }
+      }
+      else {
+        if(this.currentCurrency != currency_choosen) {
+          this.setCurrency(currency_choosen)
+        }
+      }
+    }
+
+    automateLanguageSelect() {
+      const language_choosen = Cookie.get('language_choosen')
+      if(!language_choosen) {
+        if(navigator.language == 'sv' && this.currentLanguage != 'sv') {
+          this.setLanguage('sv')
+        }
+        else if(navigator.language != 'sv' && this.currentLanguage != 'en') {
+          this.setLanguage('en')
+        }
+      }
+      else {
+        if(this.currentLanguage != language_choosen) {
+          this.setLanguage(language_choosen)
+        }
+      }
+    }
+
+    setCurrency(currency) {
+      if(this.currencyInput) {
+        this.currencyInput.value = currency
+        this.currencyInput.querySelector('option[selected]').removeAttribute('selected')
+        this.currencyInput.querySelector(`option[value="${currency}"]`).setAttribute('selected', 'selected')
+
+        const event = new Event('change')
+        this.form.dispatchEvent(event)
+        this.state = true
+      }
+    }
+
+    setLanguage(lang) {
+      if(this.languageInput) {
+        this.languageInput.value = lang
+        this.languageInput.querySelector('option[selected]').removeAttribute('selected')
+        this.languageInput.querySelector(`option[value="${lang}"]`).setAttribute('selected', 'selected')
+
+        const event = new Event('change')
+        this.form.dispatchEvent(event)
+        this.state = true
+      }
+    }
+  }
+
+  customElements.define('auto-translator', AutoTranslator)
+</script>

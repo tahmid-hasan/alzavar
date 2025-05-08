@@ -1,0 +1,372 @@
+{% comment %}
+- filters: Liquid 'collection.filters' or 'search.filters' object
+- enable_color_swatches: boolean
+- collapsed: boolean
+{% endcomment %}
+{%- liquid
+   assign in_stock_active = false
+   assign out_stock_active = false
+   assign all_items_remove_url = ''
+   
+   assign base_sizes = ""
+   assign size_tags = ""
+   for tag in collection.all_tags
+     assign downcase_tag = tag | downcase
+     if downcase_tag contains 's:'
+       assign base_size = downcase_tag | split: ':' | last | strip | split: '-' | last | strip
+       assign base_size_str = base_size | append: '~' | prepend: '~'
+       unless base_sizes contains base_size_str
+         assign base_sizes = base_sizes | append: base_size_str
+       endunless
+       assign size_str = tag | split: ':' | last | strip | append: '~' | prepend: '~'
+       unless size_tags contains size_str
+         assign size_tags = size_tags | append: size_str
+       endunless
+     endif
+   endfor
+
+   assign base_sizes = base_sizes | replace: '~~', '~' | remove_first: '~' | remove_last: '~'
+   assign size_tags = size_tags | replace: '~~', '~' | remove_first: '~' | remove_last: '~'
+
+   assign base_sizes_array = base_sizes | split: '~'
+   assign sizes_array = size_tags | split: '~'
+
+   assign active_raw_sizes = ""
+   assign active_sizes_tags = ""
+   assign active_sizes = ""
+-%}
+<ul class="no-bullets tag-list tag-list--active-tags">
+  {%- for filter in filters -%}
+    {%- assign filter_index = forloop.index -%}
+    {%- for filter_value in filter.active_values -%}
+      {% if filter_value.param_name == 'filter.v.availability' %}
+        {% if filter_value.value == "1" and filter_value.active %}
+          {% assign in_stock_active = true %}
+        {% endif %}
+        {% if filter_value.value == "0" and filter_value.active %}
+          {% assign out_stock_active = true %}
+        {% endif %}
+      {% endif %}
+      {% unless filter_value.param_name == 'filter.v.availability' %}
+        {% unless filter_value.param_name == 'filter.v.option.size' %}
+          <li class="tag tag--remove">
+            <a class="btn btn--small" href="{{ filter_value.url_to_remove }}" data-name="{{ filter_value.param_name }}" data-value="{{ filter_value.value }}">
+              <span>{{ filter_value.label | escape }}</span>
+              <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64">
+                <path d="M19 17.61l27.12 27.13m0-27.12L19 44.74"></path>
+              </svg>
+            </a>
+            
+          </li>
+        {% else %}
+          {%- liquid
+             assign downcase_value = filter_value.value | downcase | append: '~' | prepend: '~'
+             for _size in sizes_array
+               assign downcase_size = _size | downcase | split: '-' | first | strip | append: '~' | prepend: '~'
+               
+               if downcase_size contains downcase_value
+                 assign str = _size | split: ' - ' | last | append: '~' | prepend: '~'          
+                 assign tag_string = _size | append: '~' | prepend: '~'
+                 unless active_sizes_tags contains tag_string
+                   assign active_sizes_tags = active_sizes_tags | append: tag_string
+                 endunless
+             
+                 unless active_raw_sizes contains str
+                   assign active_raw_sizes = active_raw_sizes | append: str
+                 endunless
+               endif
+             endfor
+             assign sizes_str_with_prepostfix = filter_value.value | append: '~' | prepend: '~'
+             assign active_sizes = active_sizes | append: sizes_str_with_prepostfix
+          -%}
+        {% endunless %}
+      {% else %}
+        {% unless filter_value.value == "1" %}
+          {% if filter_value.active %}
+            <li class="tag tag--remove" data-test="{{ filter_value.param_name }}">
+              <a class="btn btn--small" href="{{ filter_value.url_to_remove }}">
+                <span>{{ filter_value.label | escape }}</span>
+                <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64">
+                  <path d="M19 17.61l27.12 27.13m0-27.12L19 44.74"></path>
+                </svg>
+              </a>
+            </li>
+          {% endif %}
+        {% endunless %}
+      {% endunless %}
+      {% assign params = filter_value.param_name | append: '=' %}
+      {% assign replace_value = filter_value.value | replace: ' ', '+' %}
+      {% assign params_with_value = params | append: replace_value %}
+      {% assign result = params_with_value | append: ',' %}
+      {% assign all_items_remove_url = all_items_remove_url | append: result %}
+    {%- endfor -%}
+  {%- endfor -%}
+  {%- liquid
+     assign active_sizes_tags = active_sizes_tags | replace: '~~', '~' | remove_first: '~' | remove_last: '~'
+     assign active_sizes = active_sizes | replace: '~~', '~' | remove_first: '~' | remove_last: '~'
+     assign active_filter_string = all_items_remove_url | remove_last: ','
+
+     assign active_sizes_array = active_sizes_tags | split: '~'
+
+     assign raw_sizes = ""
+  -%}
+  
+  
+  {% for _size in active_sizes_array %}
+    {% assign raw_size = _size | split: ' - ' | last %}
+    {% assign raw_size_str = raw_size | append: '~' | prepend: '~' %}
+    {% assign remove_url = active_filter_string %}
+    {% assign values_to_remove = "" %}
+    {% unless raw_sizes contains raw_size_str %}
+      {% assign raw_size_url_params = 'filter.v.option.size' | append: '=' | append: raw_size %}
+      {% assign values_to_remove = values_to_remove | append: '~' | append: raw_size %}
+      {% assign remove_url = remove_url | replace: raw_size_url_params %}
+      {% for __active_size in active_sizes_array %}
+        {% assign comparable_raw_size = raw_size | prepend: '- ' %}
+        {% if __active_size == raw_size or __active_size contains comparable_raw_size %}
+          {% assign main_size = __active_size | split: ' - ' | first | replace: ' ', '+' %}
+          {% assign values_to_remove = values_to_remove | append: '~' | append: main_size %}
+          {% assign filter_url_string = 'filter.v.option.size' | append: '=' | append: main_size %}
+          {% assign remove_url = remove_url | replace: filter_url_string, '' %}
+        {% endif %}
+      {% endfor %}
+      {% assign raw_sizes = raw_sizes | append: raw_size_str %}
+      {% assign final_url = remove_url | replace: ',,', ',' | split: ',' | join: '&' %}
+      
+      <li class="tag tag--remove" data-test="filter.v.option.size">
+        <a class="btn btn--small" href="/collections/all?{{ final_url }}" data-name="filter.v.option.size" data-value="{{ values_to_remove | remove_first: '~' }}">
+          <span>{{ raw_size | escape }}</span>
+          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64">
+            <path d="M19 17.61l27.12 27.13m0-27.12L19 44.74"></path>
+          </svg>
+        </a>
+      </li>
+    {% endunless %}
+  {% endfor %}
+</ul>
+<form class="filter-form" id="facets-form">
+{%- for filter in filters -%}
+  {%- assign available_filters = filter.values.size -%}
+  {%- capture filter_id -%}filter-{{ filter.label | handleize }}{%- endcapture -%}
+  {%- assign filter_label = filter.label | handleize -%}
+  {%- assign filter_index = forloop.index -%}
+  {%- assign is_availability = false -%}
+  {%- if filter_label == 'availability' or filter_label == 'tc-lagerstatus-tc' -%}
+    {%- assign is_availability = true -%}
+  {%- endif -%}
+  {%- if filter_label == 'gender' -%}
+    {%- assign has_men = false -%}
+    {%- assign has_women = false -%}
+    {%- for filter_value in filter.values -%}
+      {% assign downcase_gender = filter_value.label %}
+      {%- if downcase_gender == 'men' -%}
+        {%- assign has_men = true -%}
+      {%- endif -%}
+      {%- if downcase_gender == 'women' -%}
+        {%- assign has_women = true -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if has_men == false or has_women == false -%}
+      {%- assign available_filters = 1 -%}
+    {%- endif -%}
+  {%- endif -%}
+  
+  
+  {% unless available_filters < 2 %}
+    {% unless is_availability %}
+    <div class="collection-sidebar__group--{{ filter_index }}" data-label="{{ filter_label }}">
+      <div class="collection-sidebar__group">
+        <button
+            type="button"
+            class="collapsible-trigger collapsible-trigger-btn collapsible--auto-height{% unless collapsed %} is-open{% endunless %} tag-list__header"
+            aria-controls="{{ location }}-{{ filter_index }}{% if filter_id %}-{{ filter_id }}{% endif %}"
+            data-collapsible-id="{{ filter_id }}">
+            {{ filter.label | escape }}
+            {%- render 'collapsible-icons' -%}
+        </button>
+        <div
+        id="{{ location }}-{{ filter_index }}-{{ filter_id }}"
+        class="collapsible-content collapsible-content--sidebar{% unless collapsed %} is-open{% endunless %}"
+        data-collapsible-id="{{ filter_id }}"
+        {% unless collapsed %}style="height: auto;"{% endunless %}>
+          {%- if filter_label == 'brand' or filter_label == 'category' -%}
+            {%- liquid
+               assign filter_count = 0
+               for filter_value in filter.values
+                 unless filter_value.count == 0
+                   assign filter_count = filter_count | plus: 1
+                 endunless
+               endfor
+            -%}
+            {%- if filter_count > 4 -%}
+            <div class="filter-search--wrapper">
+              <input autocomplete="off" type="text" class="{{ filter_label }}-search--input" data-parent-id="{{ location }}-{{ filter_index }}-{{ filter_id }}" data-filter-search-input="{{ filter_label }}" placeholder="Search {{ filter.label }}"/>
+              <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-search" viewBox="0 0 64 64"><path d="M47.16 28.58A18.58 18.58 0 1 1 28.58 10a18.58 18.58 0 0 1 18.58 18.58zM54 54L41.94 42"/></svg>
+            </div>
+            {%- endif -%}
+          {%- endif -%}
+          <div class="collapsible-content__inner">
+            {%- case filter.type -%}
+              {%- when 'list' -%}
+                {%- liquid
+                  assign is_color = false
+                  assign swatch_file_extension = 'png'
+                  if enable_color_swatches
+                      assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
+                      assign downcased_label = filter.label | downcase
+                      if downcased_label contains swatch_trigger
+                      assign is_color = true
+                      elsif swatch_trigger == 'color' and downcased_label contains 'colour'
+                      assign is_color = true
+                      endif
+                  endif
+                -%}
+                {% if filter_label == 'size' or filter_label == 'storlek' or filter_label == 'tc-storlek-tc' %}<size-filter>{% endif %}
+                <ul class="no-bullets tag-list {% if filter_label == 'color' or filter_label == 'farg' %}color--filter{% endif %}" data-test="{{ filter_label }}">
+                  {%- assign tag_count = filter.values.size -%}
+                  {%- for filter_value in filter.values -%}
+                    {%- liquid
+                        assign tag_count = tag_count | plus: 1
+                        
+                        assign color_file_name = filter_value.label | handle | append: '.' | append: swatch_file_extension
+                        assign color_image = color_file_name | file_img_url: '50x50' | prepend: 'https:' | split: '?' | first
+                        assign color_swatch_fallback = filter_value.label | split: ' ' | last | handle
+
+                        if color_swatch_fallback == 'bla'
+                          assign color_swatch_fallback = 'blue'
+                        elsif color_swatch_fallback == 'vit'
+                          assign color_swatch_fallback = 'white'
+                        elsif color_swatch_fallback == 'burn'
+                          assign color_swatch_fallback = 'brown'
+                        endif
+                    -%}
+                    {%- unless filter_label == 'gender' -%}
+                      <li class="tag{% if filter_value.active %} tag--active{% endif %}{% if is_color %} tag--swatch{% endif %}{% if filter_value.count == 0%} hide{% endif %}" data-filter-value="{{ filter_value.value }}" {% if filter_label == 'brand' %}data-brand-value="{{ filter_value.value }}" {% endif %}>
+                        <label class="tag__checkbox-wrapper text-label">
+                            <input
+                            autocomplete="off"
+                            type="checkbox"
+                            class="tag__input"
+                            name="{{ filter_value.param_name }}"
+                            value="{{ filter_value.value }}"
+                            {% if filter_value.active %}checked{% endif %}>
+                            {%- if is_color -%}
+                              <div class="color-swatch--container">
+                                <span
+                                    class="color-swatch color-swatch--filter color-swatch--{{ filter_value.label | handle }}"
+                                    title="{{ filter_value.label }}"
+                                    style="background-color: {{ color_swatch_fallback }};{% if images[color_file_name] != blank %}  background-image: url({{ color_image }});{% endif %}"
+                                >
+                                  {{ filter_value.label }}
+                                </span>
+                                <span class="tag__text">{{ filter_value.label | escape }}</span>
+                              </div>
+                            {%- else -%}
+                            <span class="tag__checkbox"></span>
+                            <span>
+                              <span class="tag__text">{{ filter_value.label | escape }}</span>{% comment %} ({{ filter_value.count }}){% endcomment %}
+                            </span>
+                            {%- endif -%}
+                        </label>
+                      </li>
+                    {%- else -%}
+                      {%- if filter_value.label == 'men' or filter_value.label == 'women' -%}
+                        <li data-value="{{ filter_value.label }}" class="tag{% if filter_value.active %} tag--active{% endif %}{% if is_color %} tag--swatch{% endif %}{% if filter_value.count == 0%} hide{% endif %}" data-filter-value="{{ filter_value.value }}" {% if filter_label == 'brand' %}data-brand-value="{{ filter_value.value }}" {% endif %}>
+                          <label class="tag__checkbox-wrapper text-label">
+                              <input
+                              autocomplete="off"
+                              type="checkbox"
+                              class="tag__input"
+                              name="{{ filter_value.param_name }}"
+                              value="{{ filter_value.value }}"
+                              {% if filter_value.active %}checked{% endif %}>
+                              <span class="tag__checkbox"></span>
+                              <span>
+                                  <span class="tag__text">{{ filter_value.label | escape }}</span>{% comment %} ({{ filter_value.count }}){% endcomment %}
+                              </span>
+                          </label>
+                        </li>
+                      {%- endif -%}
+                      
+                    {%- endunless -%}
+                  {%- endfor -%}
+                </ul>
+                  {% if filter_label == 'size' or filter_label == 'storlek' or filter_label == 'tc-storlek-tc' %}</size-filter>{% endif %}
+                {%- if tag_count == 0 -%}
+                  {%- style -%}
+                    .collection-sidebar__group--{{ filter_index }} { display: none; }
+                  {%- endstyle -%}
+                {%- endif -%}
+              {%- when 'price_range'-%}
+                {% comment %} Comma code from Dawn {% endcomment %}
+                {% liquid
+                  assign currencies_using_comma_decimals = 'ANG,ARS,BRL,BYN,BYR,CLF,CLP,COP,CRC,CZK,DKK,EUR,HRK,HUF,IDR,ISK,MZN,NOK,PLN,RON,RUB,TRY,UYU,VES,VND' | split: ','
+                  assign uses_comma_decimals = false
+  
+                  if currencies_using_comma_decimals contains cart.currency.iso_code
+                      assign uses_comma_decimals = true
+                  endif
+  
+                  assign filter_min_value = filter.min_value.value | money_without_currency | replace: ',', ''
+                  assign filter_max_value = filter.max_value.value | money_without_currency | replace: ',', ''
+                  assign filter_range_min = filter.range_min | money_without_currency | replace: ',', ''
+                  assign filter_range_max = filter.range_max | money_without_currency | replace: ',', ''
+  
+                  if uses_comma_decimals
+                      if filter.min_value.value
+                      assign filter_min_value = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                      endif
+  
+                      if filter.max_value.value
+                      assign filter_max_value = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                      endif
+  
+                      assign filter_range_min = filter.range_min | money_without_currency | replace: '.', '' | replace: ',', '.'
+                      assign filter_range_max = filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.'
+                  endif
+                %}
+                <div
+                class="price-range"
+                data-min-value="{{ filter_min_value }}"
+                data-min-name="{{ filter.min_value.param_name }}"
+                data-min="{{ filter_range_min }}"
+                data-max-value="{{ filter_max_value }}"
+                data-max-name="{{ filter.max_value.param_name }}"
+                data-max="{{ filter_range_max }}">
+                  <div class="input-display__wrapper" data-test="{{ 3.5613 | round: 2 }}">
+                    <div class="input-display--min__wrapper">
+                      <input class="price-range__input-display price-range__input-display--min" type="text" value="{{ filter_min_value }}">
+                    </div>
+                    <div class="input-display--max__wrapper">
+                      <input class="price-range__input-display price-range__input-display--max" type="text" value="{{ filter_max_value }}">
+                    </div>
+                  </div>
+                  <div class="price-range__display-wrapper">
+                    <span class="price-range__display-min">{{ filter_min_value }}</span>
+                    <span class="price-range__display-max">{{ filter_max_value }}</span>
+                  </div>
+                  <div class="price-range__slider-wrapper">
+                    <div class="price-range__slider"></div>
+                  </div>
+                  <input
+                    class="price-range__input price-range__input-min"
+                    name="{{ filter.min_value.param_name }}"
+                    value="{{ filter_min_value }}"
+                    readonly>
+                  <input
+                    class="price-range__input price-range__input-max"
+                    name="{{ filter.max_value.param_name }}"
+                    value="{{ filter_max_value }}"
+                    readonly>
+                </div>
+            {%- endcase -%}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% else %}
+      
+    {% endunless %}
+  {% endunless %}
+{%- endfor -%}
+</form>

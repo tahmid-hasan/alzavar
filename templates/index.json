@@ -1,0 +1,318 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "25c096f0-4011-4872-8cf7-f35792df56aa": {
+      "type": "promo-grid",
+      "blocks": {
+        "template--18929431019859__25c096f0-4011-4872-8cf7-f35792df56aa-16848502499222e500-0": {
+          "type": "advanced",
+          "settings": {
+            "subheading": "",
+            "heading": "SUNLIT SOPHISTICATION",
+            "textarea": "Embrace summer’s glow in ethereal lace and delicate shades of sunshine",
+            "cta_text1": "",
+            "cta_link1": "shopify://products/alexander-mcqueen-grey-t-shirt",
+            "cta_text2": "",
+            "cta_link2": "",
+            "image": "shopify://shop_images/Image_2.png",
+            "image_mobile": "shopify://shop_images/Image_2.png",
+            "video_url": "",
+            "width": "50",
+            "height": 800,
+            "adjust_height_by_image": false,
+            "narrow_width_mobile": false,
+            "text_size": 100,
+            "text_align": "vertical-bottom horizontal-center",
+            "focal_point": "center",
+            "color_accent": "rgba(0,0,0,0)",
+            "boxed": false,
+            "framed": false
+          }
+        },
+        "template--18929431019859__25c096f0-4011-4872-8cf7-f35792df56aa-16848502499222e500-1": {
+          "type": "advanced",
+          "settings": {
+            "subheading": "",
+            "heading": "FIELD OF DREAMS",
+            "textarea": "Tailored lines and natural hues, perfect for golden hour gatherings",
+            "cta_text1": "",
+            "cta_link1": "",
+            "cta_text2": "",
+            "cta_link2": "shopify://collections/designer-clothing-men",
+            "image": "shopify://shop_images/Image_3_-_kopia.png",
+            "image_mobile": "shopify://shop_images/Image_3_-_kopia_20cf284f-8b2a-42b5-a24b-85ce1a2fc463.png",
+            "video_url": "",
+            "width": "50",
+            "height": 700,
+            "adjust_height_by_image": false,
+            "narrow_width_mobile": true,
+            "text_size": 100,
+            "text_align": "vertical-bottom horizontal-center",
+            "focal_point": "top",
+            "color_accent": "rgba(0,0,0,0)",
+            "boxed": false,
+            "framed": false
+          }
+        }
+      },
+      "block_order": [
+        "template--18929431019859__25c096f0-4011-4872-8cf7-f35792df56aa-16848502499222e500-0",
+        "template--18929431019859__25c096f0-4011-4872-8cf7-f35792df56aa-16848502499222e500-1"
+      ],
+      "settings": {
+        "full_width": false,
+        "gutter_size": 20,
+        "space_above": false,
+        "space_below": false
+      }
+    },
+    "d4d97cba-0f29-49f8-9edf-c4b0ba2fbc44": {
+      "type": "featured-collection-multiple",
+      "blocks": {
+        "6ec8007e-3c13-4d80-a24b-7c5246a3d2d0": {
+          "type": "collection",
+          "settings": {
+            "title": "Men",
+            "featured_products": "shop-new-in-for-men",
+            "number_of_products": 4
+          }
+        },
+        "76f7d347-398e-47a6-b9e6-0dafda5fba93": {
+          "type": "collection",
+          "settings": {
+            "title": "Women",
+            "featured_products": "shop-designer-knitwear-women",
+            "number_of_products": 4
+          }
+        }
+      },
+      "block_order": [
+        "6ec8007e-3c13-4d80-a24b-7c5246a3d2d0",
+        "76f7d347-398e-47a6-b9e6-0dafda5fba93"
+      ],
+      "settings": {
+        "title": "NEW IN: Selection from the world's top brands",
+        "product_grid_image_size": "portrait-3-4",
+        "use_overlay": true,
+        "divider": false,
+        "shop_all_btn_text": "Shop now"
+      }
+    },
+    "featured_collection_UcXpyD": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Featured collection",
+        "home_featured_products": "shop-new-in-for-men",
+        "per_row": 4,
+        "rows": 1,
+        "mobile_scrollable": true,
+        "view_all": true,
+        "divider": false
+      }
+    },
+    "a3bddc43-69da-4996-8670-eb9402b31dcb": {
+      "type": "promo-grid",
+      "blocks": {
+        "template--18929431019859__a3bddc43-69da-4996-8670-eb9402b31dcb-1684604590d72f4b74-0": {
+          "type": "advanced",
+          "settings": {
+            "subheading": "",
+            "heading": "Eternal Elegance",
+            "textarea": "Where timeless meets motion—discover dresses that dance through the decades",
+            "cta_text1": "",
+            "cta_link1": "shopify://collections/designer-dresses-women",
+            "cta_text2": "",
+            "cta_link2": "",
+            "image": "shopify://shop_images/Image_5_-_kopia.png",
+            "image_mobile": "shopify://shop_images/Image_5_-_kopia.png",
+            "video_url": "",
+            "width": "33",
+            "height": 800,
+            "adjust_height_by_image": false,
+            "narrow_width_mobile": false,
+            "text_size": 100,
+            "text_align": "vertical-bottom horizontal-center",
+            "focal_point": "center",
+            "color_accent": "rgba(0,0,0,0)",
+            "boxed": false,
+            "framed": false
+          }
+        },
+        "template--18929431019859__a3bddc43-69da-4996-8670-eb9402b31dcb-1684604590d72f4b74-1": {
+          "type": "advanced",
+          "settings": {
+            "subheading": "",
+            "heading": "Stride in Style",
+            "textarea": "Comfort that carries you forward. Explore our latest sandals, perfect for every step of your summer journey",
+            "cta_text1": "",
+            "cta_link1": "",
+            "cta_text2": "",
+            "cta_link2": "shopify://collections/handvaskor-totebags",
+            "image": "shopify://shop_images/6aa2807d4d678bf51ced39d8c2f456d4.jpg",
+            "image_mobile": "shopify://shop_images/6aa2807d4d678bf51ced39d8c2f456d4.jpg",
+            "video_url": "",
+            "width": "33",
+            "height": 800,
+            "adjust_height_by_image": false,
+            "narrow_width_mobile": true,
+            "text_size": 100,
+            "text_align": "vertical-center horizontal-center",
+            "focal_point": "center",
+            "color_accent": "rgba(0,0,0,0)",
+            "boxed": false,
+            "framed": false
+          }
+        },
+        "e51c010e-fff8-44b0-aa59-a395816e722d": {
+          "type": "advanced",
+          "settings": {
+            "subheading": "",
+            "heading": "HORIZON HUES",
+            "textarea": "Set your sights on summer with prints inspired by the sea's edge",
+            "cta_text1": "",
+            "cta_link1": "",
+            "cta_text2": "",
+            "cta_link2": "",
+            "image": "shopify://shop_images/image_245_-_kopia.png",
+            "image_mobile": "shopify://shop_images/image_245_-_kopia.png",
+            "video_url": "",
+            "width": "33",
+            "height": 800,
+            "adjust_height_by_image": false,
+            "narrow_width_mobile": false,
+            "text_size": 105,
+            "text_align": "vertical-bottom horizontal-center",
+            "focal_point": "center",
+            "color_accent": "rgba(0,0,0,0)",
+            "boxed": false,
+            "framed": false
+          }
+        }
+      },
+      "block_order": [
+        "template--18929431019859__a3bddc43-69da-4996-8670-eb9402b31dcb-1684604590d72f4b74-0",
+        "template--18929431019859__a3bddc43-69da-4996-8670-eb9402b31dcb-1684604590d72f4b74-1",
+        "e51c010e-fff8-44b0-aa59-a395816e722d"
+      ],
+      "settings": {
+        "full_width": false,
+        "gutter_size": 20,
+        "space_above": false,
+        "space_below": false
+      }
+    },
+    "featured_collection_multiple_VrtjgG": {
+      "type": "featured-collection-multiple",
+      "blocks": {
+        "collection_wPaa74": {
+          "type": "collection",
+          "settings": {
+            "title": "Men",
+            "featured_products": "designer-fashion-men",
+            "number_of_products": 4
+          }
+        },
+        "collection_yxWfAN": {
+          "type": "collection",
+          "settings": {
+            "title": "Women",
+            "featured_products": "",
+            "number_of_products": 4
+          }
+        }
+      },
+      "block_order": [
+        "collection_wPaa74",
+        "collection_yxWfAN"
+      ],
+      "settings": {
+        "title": "Discover some of the worlds most wanted pieces",
+        "product_grid_image_size": "portrait-3-4",
+        "use_overlay": true,
+        "divider": false,
+        "shop_all_btn_text": "Shop now"
+      }
+    },
+    "634e418b-8494-4266-912a-534033d7d8f8": {
+      "type": "promo-grid",
+      "blocks": {
+        "template--18929431019859__634e418b-8494-4266-912a-534033d7d8f8-1684315084b96fe028-0": {
+          "type": "advanced",
+          "settings": {
+            "subheading": "",
+            "heading": "Golden Touch",
+            "textarea": "Discover the allure of subtle elegance with our jewelry edit",
+            "cta_text1": "",
+            "cta_link1": "shopify://collections/designer-shorts-men",
+            "cta_text2": "",
+            "cta_link2": "",
+            "image": "shopify://shop_images/Image_4.png",
+            "image_mobile": "shopify://shop_images/Image_4.png",
+            "video_url": "",
+            "width": "50",
+            "height": 800,
+            "adjust_height_by_image": false,
+            "narrow_width_mobile": false,
+            "text_size": 100,
+            "text_align": "vertical-center horizontal-center",
+            "focal_point": "center",
+            "color_accent": "rgba(0,0,0,0)",
+            "boxed": false,
+            "framed": false
+          }
+        },
+        "template--18929431019859__634e418b-8494-4266-912a-534033d7d8f8-1684315084b96fe028-1": {
+          "type": "advanced",
+          "settings": {
+            "subheading": "",
+            "heading": "On the Bright Side",
+            "textarea": "Conscious styles with a positive impact",
+            "cta_text1": "",
+            "cta_link1": "",
+            "cta_text2": "",
+            "cta_link2": "",
+            "image": "shopify://shop_images/parm_-_kopia.png",
+            "image_mobile": "shopify://shop_images/parm_-_kopia.png",
+            "video_url": "",
+            "width": "50",
+            "height": 700,
+            "adjust_height_by_image": false,
+            "narrow_width_mobile": true,
+            "text_size": 100,
+            "text_align": "vertical-top horizontal-center",
+            "focal_point": "center",
+            "color_accent": "rgba(0,0,0,0)",
+            "boxed": false,
+            "framed": false
+          }
+        }
+      },
+      "block_order": [
+        "template--18929431019859__634e418b-8494-4266-912a-534033d7d8f8-1684315084b96fe028-0",
+        "template--18929431019859__634e418b-8494-4266-912a-534033d7d8f8-1684315084b96fe028-1"
+      ],
+      "settings": {
+        "full_width": false,
+        "gutter_size": 20,
+        "space_above": false,
+        "space_below": true
+      }
+    }
+  },
+  "order": [
+    "25c096f0-4011-4872-8cf7-f35792df56aa",
+    "d4d97cba-0f29-49f8-9edf-c4b0ba2fbc44",
+    "featured_collection_UcXpyD",
+    "a3bddc43-69da-4996-8670-eb9402b31dcb",
+    "featured_collection_multiple_VrtjgG",
+    "634e418b-8494-4266-912a-534033d7d8f8"
+  ]
+}

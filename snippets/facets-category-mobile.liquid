@@ -1,0 +1,211 @@
+<li class="slide-nav__item mobile-nav__item appear-animation appear-delay-{{ animation_row }}"
+  data-list-control="{{ filter.label | escape }}" data-main-category-count="{{ main_category_count }}"
+>
+  <button type="button" class="slide-nav__button js-toggle-submenu" data-target="tier-2-{{ filter_label_handle }}"
+  data-title="{{ filter.label | escape }}"
+  >
+  <span class="slide-nav__link  mobile-nav__link--top-level">
+    <span>{{ filter.label }}</span>
+    <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-chevron-right" viewBox="0 0 284.49 498.98">
+      <path d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98z"></path>
+    </svg>
+    <span class="icon__fallback-text">{{ 'general.drawers.expand_submenu' | t }}</span>
+  </span>
+  </button>
+  <ul class="slide-nav__dropdown filter__list" data-parent="tier-2-{{ filter_label_handle }}" data-level="2" data-title="{{ filter.label | escape }}">
+    <li class="slide-nav__item">
+        <button type="button" class="slide-nav__button js-toggle-submenu" data-back>
+          <span class="slide-nav__link slide-nav__link--back">
+            <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-chevron-left" viewBox="0 0 284.49 498.98">
+              <path d="M249.49 0a35 35 0 0 1 24.75 59.75L84.49 249.49l189.75 189.74a35.002 35.002 0 1 1-49.5 49.5L10.25 274.24a35 35 0 0 1 0-49.5L224.74 10.25A34.89 34.89 0 0 1 249.49 0z"></path>
+            </svg>
+            <span>{{ 'general.drawers.mobile_back_arrow_text' | t }}</span>
+          </span>
+        </button>
+      </li>
+    <li class="slide-nav__item p-drawer" data-link-count="{{ sub_link_count }}" data-list-control="{{ link.title | escape }}" data-category-main>
+      {% liquid
+        assign category_map = linklists['filter-map']
+        assign main_category_count = 0
+        assign sub_category_count = 0
+        for link in category_map.links
+          assign has_level_1 = false
+          if link.links
+            for sub_link in link.links
+              assign has_level_2 = false
+              if sub_link.links
+                for grandsub_link in sub_link.links
+                  for filter_value in filter.values
+                    if filter_value.label contains grandsub_link.title
+                      unless filter_value.count == 0
+                        assign has_level_1 = true
+                        assign has_level_2 = true
+                      endunless
+                    endif
+                  endfor
+                endfor
+              endif
+              if has_level_2
+                assign sub_category_count = sub_category_count | plus: 1
+              endif
+            endfor
+          endif
+          if has_level_1
+            assign main_category_count = main_category_count | plus: 1
+          endif
+          if main_category_count > 1
+            break
+          endif
+        endfor
+
+        if has_level_1 == true
+          if main_category_count > 1
+            assign has_main_accordion = true
+          endif
+        endif
+
+        assign params_name = ''
+      %}
+      {% if has_main_accordion %}
+      <div class="accordion no-bb" id="facets-filter__category--mobile">
+      {% endif %}
+        {% for link in category_map.links %}
+          {% assign label_handle = link.title | handleize %}
+          {% assign has_level_1 = false %}
+          {% if link.links %}
+            {% assign level_2_content = '' %}
+            {% for sub_link in link.links %}
+              {% assign has_level_2 = false %}
+              {% assign active_filter_count = 0 %}
+              {% assign active_filter_checked_count = 0 %}
+              {% if sub_link.links %}
+                {% assign filter_list = '' %}
+                {% for grandsub_link in sub_link.links %}
+                  {%- assign link_title = grandsub_link.title | split: '|' | first | strip -%}
+                  {%- assign has_alternative_type = grandsub_link.title | split: '|' | last | strip -%}
+                  {% for filter_value in filter.values %}
+                    {%- assign params_name = filter_value.param_name -%}
+                    {% if filter_value.label contains link_title %}
+                      {% unless filter_value.count == 0 %}
+                        {%  assign has_level_1 = true %}
+                        {%  assign has_level_2 = true %}
+                        {% assign active_filter_count = active_filter_count | plus: 1 %}
+                        {% if filter_value.active %}
+                          {% assign active_filter_checked_count = active_filter_checked_count | plus: 1 %}
+                        {% endif %}
+                        {%-  capture filter_list -%}
+                          {{ filter_list }}
+                          <li class="tag{% if filter_value.active %} tag--active{% endif %}{% if filter_value.count == 0 %} hide{% endif %}" data-filter-value="{{ filter_value.value }}">
+                            <label class="tag__checkbox-wrapper text-label">
+                              <input
+                              autocomplete="off"
+                              type="checkbox"
+                              class="tag__input"
+                              data-name="{{ filter_value.param_name }}"
+                              data-value="{{ filter_value.value }}"
+                              {% if has_alternative_type %}data-alternative-type="{{ has_alternative_type }}"{% endif %}
+                              {% if filter_value.active %}checked{% endif %}>
+                              
+                              <span class="tag__checkbox"></span>
+                              <span>
+                                <span class="tag__text">{{ filter_value.label | escape }}</span>
+                              </span>
+                            </label>
+                          </li>
+                        {%- endcapture -%}
+                      {% endunless %}
+                    {% endif %}
+                  {% endfor %}
+                {% endfor %}
+                {% if has_level_2 %}
+                  {% capture level_2_content %}
+                    {% assign sub_label_handle = sub_link.title | handleize %}
+                    {{ level_2_content }}
+                    {% if sub_category_count > 1 %}
+                      {% assign has_sub_sub_accordion = true %}
+                      <div class="accordion-item">
+                        <div class="accordion-header" id="facets-filter-heading-{{ location }}-{{ forloop.index }}-{{ sub_label_handle }}">
+                          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#facets-filter-{{ location }}-{{ forloop.index }}-{{ sub_label_handle }}" aria-expanded="true" aria-controls="facets-filter-{{ location }}-{{ forloop.index }}-{{ sub_label_handle }}">
+                            {{ sub_link.title | escape }}
+                          </button>
+                        </div>
+                        <div id="facets-filter-{{ location }}-{{ forloop.index }}-{{ sub_label_handle }}" class="accordion-collapse collapse" aria-labelledby="facets-filter-heading-{{ location }}-{{ forloop.index }}-{{ sub_label_handle }}" data-bs-parent="#facets-filter__{% if main_category_count > 1 %}{{ label_handle }}{% else %}category{% endif %}--mobile">
+                          <div class="accordion-body">
+                            <div class="accordion-content--wrapper">
+                              <div class="accordion-content">
+                                <ul class="no-bullets tag-list filter__list" {{ sub_link.title | handleize }}>
+                                  {% if active_filter_count > 1 %}
+                                    <li class="tag">
+                                      <label class="tag__checkbox-wrapper text-label">
+                                        <input
+                                        autocomplete="off"
+                                        type="checkbox"
+                                        class="tag__input tag__input--all"
+                                        data-name="all_{{ sub_link.title |  replace: ' ', '_' }}"
+                                        data-value=""
+                                        data-params-name="{{ params_name }}"
+                                        {% if active_filter_count == active_filter_checked_count %}checked{% endif %}
+                                      >
+                                        <span class="tag__checkbox"></span>
+                                        <span>
+                                          <span class="tag__text">All {{ sub_link.title | escape | downcase }}</span>
+                                        </span>
+                                      </label>
+                                    </li>
+                                  {% endif %}
+                                  {{ filter_list }}
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    {% else %}
+                      <ul class="no-bullets tag-list" {{ sub_link.title | handleize }}>
+                        {{ filter_list }}
+                      </ul>
+                    {% endif %}
+                  {% endcapture %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+          {% if has_level_1 %}
+            {% if main_category_count > 1 %}
+              <div class="accordion-item" data-category-main>
+                <div class="accordion-header" id="facets-filter-heading-{{ location }}-{{ forloop.index }}-{{ label_handle }}">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#facets-filter-{{ location }}-{{ forloop.index }}-{{ label_handle }}" aria-expanded="true" aria-controls="facets-filter-{{ location }}-{{ forloop.index }}-{{ label_handle }}">
+                    {{ link.title | escape }}
+                  </button>
+                </div>
+                <div id="facets-filter-{{ location }}-{{ forloop.index }}-{{ label_handle }}" class="accordion-collapse collapse" aria-labelledby="facets-filter-heading-{{ location }}-{{ forloop.index }}-{{ label_handle }}" data-bs-parent="#facets-filter__category--mobile">
+                  <div class="accordion-body no-pb">
+                    <div class="accordion-content--wrapper">
+                      <div class="accordion-content">
+                        {% if has_sub_sub_accordion %}<div class="accordion no-bb pl-1" id="facets-filter__{{ label_handle }}--mobile">{% endif %}
+                          {{ level_2_content }}
+                        {% if has_sub_sub_accordion %}</div>{% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% else %}
+              {% if has_sub_sub_accordion %}
+              <div class="accordion no-bb pl-1" id="facets-filter__category--mobile">
+              {% endif %}
+              {{ level_2_content }}
+              {% if has_sub_sub_accordion %}
+              </div>
+              {% endif %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      {% if has_main_accordion %}
+      </div>
+      {% endif %}
+    </li>
+  </ul>
+</li>
+
+

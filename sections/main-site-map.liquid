@@ -1,0 +1,100 @@
+{% style %}.main-site-map-list ul{-webkit-box-flex:0;-webkit-box-orient:horizontal;-webkit-box-direction:normal;display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex:0 1 auto;flex:0 1 auto;-ms-flex-flow:row wrap;flex-flow:row wrap}.main-site-map-list li{width:100%;padding-bottom:12px}.main-site-map-list a.no-line{text-decoration:none;border-bottom:1px solid #fff0;position:relative;display:inline-block}.main-site-map-list a.no-line:after{content:"";position:absolute;bottom:-2px;left:0;width:0%;border-bottom:2px solid currentColor;transition:width .5s}.main-site-map-list a.no-line:hover:after{width:100%}.main-site-map-list .section-header__title{margin:12px 0}@media only screen and (min-width:576px){.main-site-map-list li{width:50%}.main-site-map-list .section-header__title{margin:18px 0}}@media only screen and (min-width:960px){.main-site-map-list li{width:33.33%}.main-site-map-list .section-header__title{margin:24px 0}} {% endstyle %}
+
+{%- liquid
+  assign showzeroproductcollection = section.settings.show_zero_product_collection 
+  assign alignText = 'text-' | append: section.settings.align_text
+-%}
+
+<div class="page-width{% if section.settings.narrow_column %} page-width--narrow{% endif %} page-content">
+  
+  {%- render 'breadcrumbs', align_text: alignText -%}
+  <header class="section-header">
+    <h1 class="section-header__title {{ alignText }}">{{ page.title }}</h1>
+  </header>
+  
+  {%- if section.settings.show_page_content -%}
+    <div class="rte rte--nomargin">
+      {{ page.content }}
+    </div>
+  {%- endif -%}
+  
+    <div class="main-site-map-list">
+
+      <h3 class="section-header__title {{ alignText }}">
+        {%- if section.settings.title != blank -%}
+          {{ section.settings.title }}
+        {%- else -%}
+          {{ 'sections.site_map.title' | t }}
+        {%- endif -%}
+      </h3>
+
+      <ul class="no-bullets">
+      {%- if showzeroproductcollection -%}
+          {%- for collection in collections -%}
+            <li><a href="{{ collection.url }}" class="no-line">{{ collection.title | escape }}</a></li>
+          {%- endfor -%}  
+      {%- else -%}
+          {%- for collection in collections -%}
+            {%- if collection.all_products_count > 0  -%}
+              <li><a href="{{ collection.url }}" class="no-line">{{ collection.title | escape }}</a></li>
+            {%- endif -%}
+          {%- endfor -%}
+      {%- endif -%}
+      </ul>
+    </div>
+  
+</div>
+  
+{% schema %}
+{
+  "name": "t:sections.main-site-map.name",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.main-site-map.settings.title.label",
+      "default": "Rich text",
+      "info": "t:sections.main-site-map.settings.title.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "narrow_column",
+      "label": "t:sections.main-site-map.settings.narrow_column.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_page_content",
+      "label": "t:sections.main-site-map.settings.show_page_content.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_zero_product_collection",
+      "label": "t:sections.main-site-map.settings.show_zero_product_collection.label",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "align_text",
+      "label": "t:sections.main-site-map.settings.align_text.label",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.main-site-map.settings.align_text.options.left.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.main-site-map.settings.align_text.options.center.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.main-site-map.settings.align_text.options.right.label"
+        }
+      ],
+      "default":   "left"
+    }
+  ]
+}
+{% endschema %}

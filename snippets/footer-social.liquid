@@ -1,0 +1,23 @@
+<div class="footer__item footer__social">
+  {%- if block.settings.show_footer_title -%}
+    <p class="h4 footer__title">{{ block.settings.title }}</p>
+    {% comment %}
+    <button type="button" class="h4 footer__title collapsible-trigger collapsible-trigger-btn medium-up--hide" aria-controls="Footer-{{ block.id }}">
+      {{ block.settings.title }}
+      
+      {%- render 'collapsible-icons' -%}
+      
+    </button>
+    {% endcomment %}
+  {%- endif -%}
+  <div
+    {% if block.settings.show_footer_title %}
+      id="Footer-{{ block.id }}" class=""
+    {% endif %}>
+    <div class="">
+      <div class="{% unless block.settings.show_footer_title %} footer_collapsible--disabled{% endunless %}">
+        {% render 'social-icons', additional_classes: 'footer__social' %}
+      </div>
+    </div>
+  </div>
+</div>

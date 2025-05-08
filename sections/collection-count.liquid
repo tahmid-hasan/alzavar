@@ -1,0 +1,151 @@
+{%- assign collection = collection -%}
+{%- if request.page_type == 'search' -%}
+  {%- assign collection = search -%}
+{%- endif -%}
+{%- liquid
+  assign base_sizes = ""
+  assign size_tags = ""
+  for tag in collection.all_tags
+    assign downcase_tag = tag | downcase
+    if downcase_tag contains 's:'
+      assign base_size = downcase_tag | split: ':' | last | strip | split: '-' | last | strip
+      assign base_size_str = base_size | append: '~' | prepend: '~'
+      unless base_sizes contains base_size_str
+        assign base_sizes = base_sizes | append: base_size_str
+      endunless
+      assign size_str = tag | split: ':' | last | strip | append: '~' | prepend: '~'
+      unless size_tags contains size_str
+        assign size_tags = size_tags | append: size_str
+      endunless
+    endif
+  endfor
+
+  assign base_sizes = base_sizes | replace: '~~', '~' | remove_first: '~' | remove_last: '~'
+  assign size_tags = size_tags | replace: '~~', '~' | remove_first: '~' | remove_last: '~'
+
+  assign base_sizes_array = base_sizes | split: '~'
+  assign sizes_array = size_tags | split: '~'
+
+  assign other_filters = ""
+
+  assign has_active_category = false
+  for filter in collection.filters
+    for value in filter.active_values
+      if value.param_name == 'filter.p.m.property.product_type'
+        assign has_active_category = true
+        break
+      endif
+    endfor
+    if has_active_category == true
+      break
+    endif
+  endfor
+  
+  assign max_range = 0
+  for product in collection.products
+    assign max_range = product.price_max
+    break
+  endfor
+-%}
+<code>
+  {
+      "count": {%- unless request.page_type == 'search' -%}{{ collection.products_count }}{%- else -%}{{ collection.results_count }}{%- endunless -%},
+      "has_category_filter": {{ has_active_category }},
+      {%- for filter in collection.filters -%}
+        {%- assign downcase_label = filter.label | downcase -%}
+        
+        {%- if downcase_label == 'price' or downcase_label == 'pris' -%}
+          "price": {
+            "max_value": {
+
+            },
+            "min_value": {
+
+            },
+            "range_max": {{ max_range }}
+          },
+        {%- else -%}
+          {%- assign filter_data = "" -%}
+          {%- for value in filter.values -%}
+            {%- capture filter_data -%}
+              {{- filter_data -}}
+              {
+                "active": {{ value.active | json }},
+                "count": {{ value.count }},
+                "label": {{ value.label | json }},
+                "param_name": {{ value.param_name | json }},
+                "value": {{ value.value | json }},
+                "url_to_add": {{ value.url_to_add | json }},
+                "url_to_remove": {{ value.url_to_remove | json }}
+              },
+            {%- endcapture -%}
+          {%- endfor -%}
+          "{{ downcase_label | remove_last: ' ' }}": [{{ filter_data | remove_last: ',' }}],
+        {%- endif -%}
+      {%- endfor -%}
+    }
+</code>
+{%- assign max_price_product = collection.products | first -%}
+{%- assign min_price_product = collection.products | last -%}
+<script data-product-count type="application/json">
+  {%- capture data -%}
+    {
+      "count": {%- unless request.page_type == 'search' -%}{{ collection.products_count }}{%- else -%}{{ collection.results_count }}{%- endunless -%},
+      "has_category_filter": {{ has_active_category }},
+      {%- for filter in collection.filters -%}
+        {%- assign downcase_label = filter.label | downcase -%}
+        
+        {%- if downcase_label == 'price' or downcase_label == 'pris' -%}
+          "price": {
+            "max_value": {
+            },
+            "min_value": {
+
+            },
+            "range_max": {{ max_range }}
+          },
+        {%- else -%}
+          {%- assign filter_data = "" -%}
+          {%- for value in filter.values -%}
+            {%- capture filter_data -%}
+              {{- filter_data -}}
+              {
+                "active": {{ value.active | json }},
+                "count": {{ value.count }},
+                "label": {{ value.label | json }},
+                "param_name": {{ value.param_name | json }},
+                "value": {{ value.value | json }},
+                "url_to_add": {{ value.url_to_add | json }},
+                "url_to_remove": {{ value.url_to_remove | json }}
+              },
+            {%- endcapture -%}
+          {%- endfor -%}
+          "{{ downcase_label | remove_last: ' ' }}": [{{ filter_data | remove_last: ',' }}],
+        {%- endif -%}
+      {%- endfor -%}
+    }
+  {%- endcapture -%}
+  {{- data | remove_last: ',' -}}
+</script>
+<script>
+  const dataEl = document.querySelector('[data-product-count]')
+  const data = JSON.parse(dataEl.textContent)
+  console.log(data)
+</script>
+<div id="category-filter">
+  {%- for filter in collection.filters -%}
+    {%- assign filter_label = filter.label | handleize -%}
+    {%- capture filter_id -%}filter-{{ filter.label | handleize }}{%- endcapture -%}
+    {%- assign filter_index = forloop.index -%}
+    {%- if filter_label == 'category' or filter_label == 'kategori' -%}
+      <div data-category>
+        <div class="accordion-content" id="SidebarDrawer-{{ filter_index }}-{{ filter_id }}">
+          {%- render 'facets-category', filter: filter, collapsed: false, location: 'SidebarDrawer' -%}
+        </div>
+      </div>
+      <div data-category-mobile>
+        {%- render 'facets-category-mobile', filter: filter, filter_label_handle: filter_label -%}
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+</div>

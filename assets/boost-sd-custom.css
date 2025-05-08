@@ -1,0 +1,25 @@
+/*********************** Custom CSS for Boost AI Search & Discovery  ************************/
+
+@media (min-width: 768px) {
+  .boost-sd__header-main-4 {
+    max-width: min(100%,var(--boostsd-general-page-width-desktop));
+    margin: 0 auto !important;
+  }
+  
+  .boost-sd__header-main-4-wrapper--middle-left .boost-sd__header-main-4-content--relative,
+  .boost-sd__header-description--as-main-4 {
+    padding-left: 0;
+    padding-top: 0;
+  }
+  .boost-sd__toolbar-inner {
+    padding: 0 !important;
+  }
+  .boost-sd__filter-tree-vertical-sticky-body .boost-sd__toolbar-content {
+    width: 100%;
+  }
+  .boost-sd__header-main-4-wrapper .boost-sd__header-main-4-content.boost-sd__header-main-4-content--relative {
+    padding-bottom: 0;
+  }
+}
+
+

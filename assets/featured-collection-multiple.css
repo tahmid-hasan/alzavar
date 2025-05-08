@@ -1,0 +1,111 @@
+.tab__btn-group--wrapper {
+  text-align: center;
+  margin-top: 1rem;
+}
+.tab__btn-group {
+  display: flex;
+  justify-content: center;
+  /* gap: 7px; */
+  width: 254px;
+  margin: 0 auto;
+}
+.tab__btn-group .btn {
+  /* flex: 0 0 calc((100% - 7px) / 2); */
+  font-weight: var(--typeBaseWeight);
+  letter-spacing: normal;
+  min-width: unset;
+  display: flex;
+  line-height: 22px;
+}
+.tab__btn {
+  border-color: var(--colorBorder);
+}
+.tab__btn[data-active-tab="true"] {
+  border-color: #222;
+  box-shadow: rgba(6, 24, 44, 0.6) 0px 0px 0px 0px, rgba(6, 24, 44, 0.3) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+  box-shadow: none;
+  position: relative;
+}
+.tab__btn[data-active-tab="true"] span {
+  position: relative;
+}
+.tab__btn[data-active-tab="true"] span::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  inset-block-end: -8px;
+  border-bottom: 1px solid #222;
+}
+.tab__btn,
+.shop-all__btn--wrapper .btn {
+  font-size: var(--typeBaseSize);
+  border: none;
+}
+
+.tab__btn, .shop-all__btn--wrapper .btn {
+  text-transform: uppercase;
+}
+
+.shop-all__btn--wrapper {
+  text-align: center;
+}
+.shop-all__btn--wrapper a.btn {
+  /* min-width: 205.33px; */
+  min-width: 100%;
+  letter-spacing: normal;
+  line-height: 22px;
+  margin-top: 25px;
+  padding-top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.shop-all__btn--wrapper a.btn span {
+  position: relative;
+}
+
+.shop-all__btn--wrapper a.btn span::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  inset-block-end: -8px;
+  border-bottom: 1px solid #222;
+}
+@media only screen and (min-width: 769px) {
+  .shop-all__btn--wrapper a.btn {
+    min-width: 508px;
+  }
+  .shop-all__btn--wrapper a.btn {
+    /* min-width: 205.33px; */
+    margin-top: 0;
+    padding-top: 0;
+  }
+}
+
+.collection--slider {
+  transform: translateY(10px);
+  opacity: 0;
+  height: 0;
+  transition: all 0.3s ease-in-out;
+  z-index: 1;
+}
+.collection--slider[data-active="true"] {
+  opacity: 1;
+  height: auto;
+  transform: translateY(0px);
+  z-index: 2;
+}
+.shop-all__btn--wrapper {
+  text-align: center;
+}
+.shop-all__btn--wrapper a.btn {
+  /* min-width: 205.33px; */
+  min-width: 100%;
+  font-weight: var(--typeBaseWeight);
+  letter-spacing: normal;
+}
+@media only screen and (min-width: 769px) {
+  .shop-all__btn--wrapper a.btn {
+    min-width: 508px;
+  }
+}

@@ -1,0 +1,445 @@
+{%- liquid
+  assign in_stock_active = false
+  assign out_stock_active = false
+  assign all_items_remove_url = ''
+  
+  assign base_sizes = ""
+  assign size_tags = ""
+  for tag in collection.all_tags
+    assign downcase_tag = tag | downcase
+    if downcase_tag contains 's:'
+      assign base_size = downcase_tag | split: ':' | last | strip | split: '-' | last | strip
+      assign base_size_str = base_size | append: '~' | prepend: '~'
+      unless base_sizes contains base_size_str
+        assign base_sizes = base_sizes | append: base_size_str
+      endunless
+      assign size_str = tag | split: ':' | last | strip | append: '~' | prepend: '~'
+      unless size_tags contains size_str
+        assign size_tags = size_tags | append: size_str
+      endunless
+    endif
+  endfor
+
+  assign base_sizes = base_sizes | replace: '~~', '~' | remove_first: '~' | remove_last: '~'
+  assign size_tags = size_tags | replace: '~~', '~' | remove_first: '~' | remove_last: '~'
+
+  assign base_sizes_array = base_sizes | split: '~'
+  assign sizes_array = size_tags | split: '~'
+
+  assign active_raw_sizes = ""
+  assign active_sizes_tags = ""
+  assign active_sizes = ""
+
+  assign has_active_category = false
+  for filter in filters
+    for value in filter.active_values
+      if value.param_name == 'filter.p.m.property.product_type'
+        assign has_active_category = true
+        break
+      endif
+    endfor
+    if has_active_category == true
+      break
+    endif
+  endfor
+%}
+<div id="FilterDrawerMobile" class="drawer drawer--left">
+  <div class="drawer__contents">
+    <div class="drawer__fixed-header">
+      <div class="drawer__header appear-animation appear-delay-{{ animation_row }}">
+        <div class="h2 drawer__title">
+          <span class="title__placeholder">
+            {{ 'collections.filters.title_tags' | t }}
+          </span>
+        </div>
+        <div class="drawer__close">
+          <button type="button" class="drawer__close-button js-drawer-close">
+            <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64"><path d="M19 17.61l27.12 27.13m0-27.12L19 44.74"></path></svg>
+            <span class="icon__fallback-text">{{ 'general.drawers.close_menu' | t }}</span>
+          </button>
+          <button type="button" class="drawer__reset-button hidden">
+            <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64"><path d="M19 17.61l27.12 27.13m0-27.12L19 44.74"></path></svg>
+            <span class="icon__fallback-text">{{ 'general.drawers.close_menu' | t }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="drawer--item__wrapper">
+      <div class="slide-nav__wrapper" data-level="1">
+        {% capture active_tabs %}
+        <ul class="no-bullets tag-list tag-list--active-tags">
+          {%- for filter in filters -%}
+            {%- assign filter_index = forloop.index -%}
+            {%- for filter_value in filter.active_values -%}
+              {% if filter_value.param_name == 'filter.v.availability' %}
+                {% if filter_value.value == "1" and filter_value.active %}
+                  {% assign in_stock_active = true %}
+                {% endif %}
+                {% if filter_value.value == "0" and filter_value.active %}
+                  {% assign out_stock_active = true %}
+                {% endif %}
+              {% endif %}
+              {%- unless filter_value.param_name == 'filter.v.availability' -%}
+                {%- unless filter_value.param_name == 'filter.v.option.size' -%}
+                  <li class="tag tag--remove" data-here>
+                    <a class="btn btn--small" href="{{ filter_value.url_to_remove }}" data-name="{{ filter_value.param_name }}" data-value="{{ filter_value.value }}">
+                      <span>{{ filter_value.label | escape }}</span>
+                      <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64">
+                        <path d="M19 17.61l27.12 27.13m0-27.12L19 44.74"></path>
+                      </svg>
+                    </a>
+                  </li>
+                {%- endunless -%}
+              {%- endunless -%}
+              {% assign params = filter_value.param_name | append: '=' %}
+              {% assign replace_value = filter_value.value | replace: ' ', '+' %}
+              {% assign params_with_value = params | append: replace_value %}
+              {% assign result = params_with_value | append: ',' %}
+              {% assign all_items_remove_url = all_items_remove_url | append: result %}
+            {%- endfor -%}
+            
+            {%- assign downcase_filter_label = filter.label | downcase -%}
+            {% if downcase_filter_label == 'size' or downcase_filter_label == 'storlek' or downcase_filter_label == 'tc-storlek-tc' %}
+              {%- for size in base_sizes_array -%}
+                {% assign associate_values = "" %}
+                {% assign is_active_size = false %}
+                {%- for value in sizes_array -%}
+                  {%- assign downcase_value = value | downcase | split: '-' | last | strip -%}
+                  {%- assign option_value = value | split: '-' | first | strip | upcase -%}
+                  {%- if downcase_value == size -%}
+                    {% assign filter_value = filter.values | where: 'value', option_value | first %}
+                    {%- if filter_value.active -%}
+                      {% assign is_active_size = true %}
+                    {%- endif -%}
+                    {%- capture associate_values -%}{{- associate_values -}}{{- value | split: '-' | first | strip -}}~{%- endcapture -%}
+                    {% if size contains '/' %}
+                      {%- assign first_value = size | split: '/' | first | strip -%}
+                      {% assign last_value = size | split: '/' | last | strip %}
+                      {%- unless associate_values contains first_value -%}
+                        {%- capture associate_values -%}{{- associate_values -}}{{- first_value -}}~{% endcapture %}
+                      {%- endunless -%}
+                      {%- unless associate_values contains last_value -%}
+                        {%- capture associate_values -%}{{- associate_values -}}{{- last_value -}}~{%- endcapture -%}
+                      {%- endunless -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                {%- if is_active_size -%}
+                  <li class="tag tag--remove" data-here>
+                    <a class="btn btn--small" href="#" data-name="filter.v.option.size" data-value="{{ associate_values |  remove_last: '~' | strip_newlines }}">
+                      <span>{{ size | escape }}</span>
+                      <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64">
+                        <path d="M19 17.61l27.12 27.13m0-27.12L19 44.74"></path>
+                      </svg>
+                    </a>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            {% endif %}
+          {%- endfor -%}
+          {%- liquid
+             assign active_sizes_tags = active_sizes_tags | replace: '~~', '~' | remove_first: '~' | remove_last: '~'
+             assign active_sizes = active_sizes | replace: '~~', '~' | remove_first: '~' | remove_last: '~'
+             assign active_filter_string = all_items_remove_url | remove_last: ','
+        
+             assign active_sizes_array = active_sizes_tags | split: '~'
+        
+             assign raw_sizes = ""
+          -%}
+        </ul>
+        {% endcapture %}
+        <ul class="slide-nav filter__list">
+          <li class="slide-nav__item mobile-nav__item appear-animation appear-delay-{{ animation_row }}">
+            {{ active_tabs }}
+          </li>
+          {%- for filter in filters -%}
+            {%- assign available_filters = filter.values.size -%}
+            {%- capture filter_id -%}filter-{{ filter.label | handleize }}{%- endcapture -%}
+            {%- assign filter_label = filter.label | handleize -%}
+            {%- assign filter_index = forloop.index -%}
+            {%- assign is_availability = false -%}
+            {%- if filter_label == 'availability' or filter_label == 'tc-lagerstatus-tc' or filter_label == 'lagerstatus' -%}
+              {%- assign is_availability = true -%}
+            {%- endif -%}
+            {%- if filter_label == 'gender' -%}
+              {%- assign has_men = false -%}
+              {%- assign has_women = false -%}
+              {%- for filter_value in filter.values -%}
+                {% assign downcase_gender = filter_value.label %}
+                {%- if downcase_gender == 'men' -%}
+                  {%- assign has_men = true -%}
+                {%- endif -%}
+                {%- if downcase_gender == 'women' -%}
+                  {%- assign has_women = true -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if has_men == false or has_women == false -%}
+                {%- assign available_filters = 1 -%}
+              {%- endif -%}
+            {%- endif -%}
+            {% assign filter_label_handle = filter.label |  handleize %}
+            {% unless available_filters < 2 %}
+              {% unless is_availability %}
+                {%- case filter.type -%}
+                  {%- when 'list' -%}
+                  {%- if filter_label == 'color' or filter_label == 'farg' -%}
+                    {%- render 'facets-color-mobile', filter: filter, enable_color_swatches: enable_color_swatches, animation_row: animation_row, filter_label_handle: filter_label_handle -%}
+                  {%- elsif filter_label == 'gender' -%}
+                    {%- render 'facets-gender-mobile', filter: filter, animation_row: animation_row, filter_label_handle: filter_label_handle -%}
+                  {%- elsif filter_label == 'brand' or filter_label == 'märke' or filter_label == 'marke' -%}
+                    {%- render 'facets-brand-mobile', filter: filter, animation_row: animation_row, filter_label_handle: filter_label_handle -%}
+                  {%- elsif filter_label == 'category' or filter_label == 'kategori' -%}
+                    {%- render 'facets-category-mobile', filter: filter, animation_row: animation_row, filter_label_handle: filter_label_handle -%}
+
+                  {% elsif filter_label == 'size' or filter_label == 'storlek' or filter_label == 'tc-storlek-tc' %}
+                    <li class="slide-nav__item mobile-nav__item appear-animation appear-delay-{{ animation_row }} {% unless has_active_category == true %}hidden{% endunless %}" data-list-control="{{ filter.label | escape }}" {% if filter_label == 'size' or filter_label == 'storlek' %}data-size{% endif %}>
+                      <button type="button" class="slide-nav__button js-toggle-submenu" data-target="tier-2-{{ filter_label_handle }}" data-title="{{ filter.label | escape }}">
+                        <span class="slide-nav__link  mobile-nav__link--top-level">
+                          <span>{{ filter.label }}</span>
+                          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-chevron-right" viewBox="0 0 284.49 498.98">
+                            <path d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98z"></path>
+                          </svg>
+                          <span class="icon__fallback-text">{{ 'general.drawers.expand_submenu' | t }}</span>
+                        </span>
+                      </button>
+                      <size-filter class="slide-nav__dropdown" data-parent="tier-2-{{ filter_label_handle }}" data-level="2" data-title="{{ filter.label | escape }}">
+                        <ul class="filter__list slide-nav__item">
+                          <li class="slide-nav__item">
+                            <button type="button" class="slide-nav__button js-toggle-submenu" data-back>
+                              <span class="slide-nav__link slide-nav__link--back">
+                                <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-chevron-left" viewBox="0 0 284.49 498.98">
+                                  <path d="M249.49 0a35 35 0 0 1 24.75 59.75L84.49 249.49l189.75 189.74a35.002 35.002 0 1 1-49.5 49.5L10.25 274.24a35 35 0 0 1 0-49.5L224.74 10.25A34.89 34.89 0 0 1 249.49 0z"></path>
+                                </svg>
+                                <span>{{ 'general.drawers.mobile_back_arrow_text' | t }}</span>
+                              </span>
+                            </button>
+                          </li>
+                          {%- for filter_value in filter.values -%}
+                            <li class="tag{% if filter_value.active %} tag--active{% endif %}{% if filter_value.count == 0%} hide{% endif %}" data-filter-value="{{ filter_value.value }}">
+                              <span class="slide-nav__link">
+                                <label class="tag__checkbox-wrapper text-label">
+                                    <input
+                                      autocomplete="off"
+                                      type="checkbox"
+                                      class="tag__input"
+                                      data-name="{{ filter_value.param_name }}"
+                                      data-value="{{ filter_value.value }}"
+                                      {% if filter_value.active %}checked{% endif %}
+                                    >
+                                    <span class="tag__checkbox"></span>
+                                    <span>
+                                      <span class="tag__text">{{ filter_value.label | escape }}</span>
+                                    </span>
+                                </label>
+                              </span>
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                      </size-filter>
+                    </li>
+                  {%- else -%}
+                    {%- liquid
+                      assign is_color = false
+                      assign swatch_file_extension = 'png'
+                      if enable_color_swatches
+                        assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
+                        assign downcased_label = filter.label | downcase
+                        if downcased_label contains swatch_trigger
+                        assign is_color = true
+                        elsif swatch_trigger == 'color' and downcased_label contains 'colour'
+                        assign is_color = true
+                        endif
+                      endif
+                    -%}
+                  <li class="slide-nav__item mobile-nav__item appear-animation appear-delay-{{ animation_row }} {% if filter_label == 'size' %} hidden{% endif %}" data-list-control="{{ filter.label | escape }}" {% if filter_label == 'size' or filter_label == 'storlek' %}data-size{% endif %}>
+                      <button type="button" class="slide-nav__button js-toggle-submenu" data-target="tier-2-{{ filter_label_handle }}" data-title="{{ filter.label | escape }}">
+                        <span class="slide-nav__link  mobile-nav__link--top-level">
+                          <span>{{ filter.label }}</span>
+                          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-chevron-right" viewBox="0 0 284.49 498.98">
+                            <path d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98z"></path>
+                          </svg>
+                          <span class="icon__fallback-text">{{ 'general.drawers.expand_submenu' | t }}</span>
+                        </span>
+                      </button>
+                      <ul data-for="{{ filter_label }}" class="slide-nav__dropdown filter__list" data-parent="tier-2-{{ filter_label_handle }}" data-level="2" data-title="{{ filter.label | escape }}">
+                        <li class="slide-nav__item">
+                          <button type="button" class="slide-nav__button js-toggle-submenu" data-back>
+                            <span class="slide-nav__link slide-nav__link--back">
+                              <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-chevron-left" viewBox="0 0 284.49 498.98">
+                                <path d="M249.49 0a35 35 0 0 1 24.75 59.75L84.49 249.49l189.75 189.74a35.002 35.002 0 1 1-49.5 49.5L10.25 274.24a35 35 0 0 1 0-49.5L224.74 10.25A34.89 34.89 0 0 1 249.49 0z"></path>
+                              </svg>
+                              <span>{{ 'general.drawers.mobile_back_arrow_text' | t }}</span>
+                            </span>
+                          </button>
+                        </li>
+                        {%- for filter_value in filter.values -%}
+                          {%- liquid
+                            assign tag_count = tag_count | plus: 1
+                            
+                            assign color_file_name = filter_value.label | handle | append: '.' | append: swatch_file_extension
+                            assign color_image = color_file_name | file_img_url: '50x50' | prepend: 'https:' | split: '?' | first
+                            assign color_swatch_fallback = filter_value.label | split: ' ' | last | handle
+
+                            if color_swatch_fallback == 'bla'
+                              assign color_swatch_fallback = 'blue'
+                            elsif color_swatch_fallback == 'vit'
+                              assign color_swatch_fallback = 'white'
+                            elsif color_swatch_fallback == 'burn'
+                              assign color_swatch_fallback = 'brown'
+                            endif
+                          -%}
+                          <li class="slide-nav__item tag{% if filter_value.active %} tag--active{% endif %}{% if is_color %} tag--swatch{% endif %}" data-filter-value="{{ filter_value.value }}">
+                            <span class="slide-nav__link">
+                              <label class="tag__checkbox-wrapper text-label">
+                                <input
+                                  autocomplete="off"
+                                  type="checkbox"
+                                  class="tag__input"
+                                  data-name="{{ filter_value.param_name }}"
+                                  data-value="{{ filter_value.value }}"
+                                  {% if filter_value.active %}checked{% endif %}
+                                  {% unless associate_tag == "" %}
+                                  data-tag="{{ associate_tag | downcase }}"
+                                  {% endunless %}
+                                >
+                                {%- if is_color -%}
+                                  <div class="color-swatch--container">
+                                    <span
+                                        class="color-swatch color-swatch--filter color-swatch--{{ filter_value.label | handle }}"
+                                        title="{{ filter_value.label }}"
+                                        style="background-color: {{ color_swatch_fallback }};{% if images[color_file_name] != blank %}  background-image: url({{ color_image }});{% endif %}"
+                                    >
+                                      {{ filter_value.label }}
+                                    </span>
+                                    <span class="tag__text">{{ filter_value.label | escape }}</span>
+                                  </div>
+                                {%- else -%}
+                                  <span class="tag__checkbox"></span>
+                                  <span>
+                                    <span class="tag__text">{{ filter_value.label | escape }}</span>{% comment %} ({{ filter_value.count }}){% endcomment %}
+                                  </span>
+                                {%- endif -%}
+                              </label>
+                            </span>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    </li>
+                  {%- endif -%}
+                  {%- when 'price_range'-%}
+                  {% liquid
+                    assign currencies_using_comma_decimals = 'ANG,ARS,BRL,BYN,BYR,CLF,CLP,COP,CRC,CZK,DKK,EUR,HRK,HUF,IDR,ISK,MZN,NOK,PLN,RON,RUB,TRY,UYU,VES,VND' | split: ','
+                    assign uses_comma_decimals = false
+    
+                    if currencies_using_comma_decimals contains cart.currency.iso_code
+                        assign uses_comma_decimals = true
+                    endif
+    
+                    assign filter_min_value = filter.min_value.value | money_without_currency | replace: ',', ''
+                    assign filter_max_value = filter.max_value.value | money_without_currency | replace: ',', ''
+                    assign filter_range_min = filter.range_min | money_without_currency | replace: ',', ''
+                    assign filter_range_max = filter.range_max | money_without_currency | replace: ',', ''
+    
+                    if uses_comma_decimals
+                        if filter.min_value.value
+                        assign filter_min_value = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                        endif
+    
+                        if filter.max_value.value
+                        assign filter_max_value = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.'
+                        endif
+    
+                        assign filter_range_min = filter.range_min | money_without_currency | replace: '.', '' | replace: ',', '.'
+                        assign filter_range_max = filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.'
+                    endif
+                  %}
+                  <li class="slide-nav__item mobile-nav__item appear-animation appear-delay-{{ animation_row }}" data-list-control="{{ filter.label | escape }}">
+                    <button type="button" class="slide-nav__button js-toggle-submenu" data-target="tier-2-{{ filter_label_handle }}" data-title="{{ filter.label | escape }}">
+                      <span class="slide-nav__link  mobile-nav__link--top-level">
+                        <span>{{ filter.label }}</span>
+                        <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-chevron-right" viewBox="0 0 284.49 498.98">
+                          <path d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98z"></path>
+                        </svg>
+                        <span class="icon__fallback-text">{{ 'general.drawers.expand_submenu' | t }}</span>
+                      </span>
+                    </button>
+                    <ul data-for="{{ filter.label | downcase }}" class="slide-nav__dropdown" data-parent="tier-2-{{ filter_label_handle }}" data-level="2" data-title="{{ filter.label | escape }}">
+                      <li class="slide-nav__item">
+                        <button type="button" class="slide-nav__button js-toggle-submenu" data-back>
+                          <span class="slide-nav__link slide-nav__link--back">
+                            <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-chevron-left" viewBox="0 0 284.49 498.98">
+                              <path d="M249.49 0a35 35 0 0 1 24.75 59.75L84.49 249.49l189.75 189.74a35.002 35.002 0 1 1-49.5 49.5L10.25 274.24a35 35 0 0 1 0-49.5L224.74 10.25A34.89 34.89 0 0 1 249.49 0z"></path>
+                            </svg>
+                            <span>{{ 'general.drawers.mobile_back_arrow_text' | t }}</span>
+                          </span>
+                        </button>
+                      </li>
+                      
+                      <li class="slide-nav__item tag{% if filter_value.active %} tag--active{% endif %}{% if is_color %} tag--swatch{% endif %}" data-filter-value="{{ filter_value.value }}">
+                        <div class="slide-nav__link">
+                          <div
+                            class="price-range-mobile"
+                            data-min-value="{{ filter_min_value }}"
+                            data-min-name="{{ filter.min_value.param_name }}"
+                            data-min="{{ filter_range_min }}"
+                            data-max-value="{{ filter_max_value }}"
+                            data-max-name="{{ filter.max_value.param_name }}"
+                            data-max="{{ filter_range_max }}"
+                          >
+                            <div class="input-display__wrapper" data-test="{{ 3.5613 | round: 2 }}">
+                              <div class="input-display--min__wrapper">
+                                <input class="price-range__input-display price-range__input-display--min-mobile" type="text" value="{{ filter_min_value }}">
+                              </div>
+                              <div class="input-display--max__wrapper">
+                                <input class="price-range__input-display price-range__input-display--max-mobile" type="text" value="{{ filter_max_value }}">
+                              </div>
+                            </div>
+                            <div class="price-range__display-wrapper">
+                              <span class="price-range__display-min-mobile">{{ filter_min_value }}</span>
+                              <span class="price-range__display-max-mobile">{{ filter_max_value }}</span>
+                            </div>
+                            <div class="price-range__slider-wrapper">
+                              <div class="price-range__slider-mobile"></div>
+                            </div>
+                            <input
+                              class="price-range__input price-range__input-min-mobile"
+                              data-name="{{ filter.min_value.param_name }}"
+                              data-value="{{ filter_min_value }}"
+                              readonly>
+                            <input
+                              class="price-range__input price-range__input-max-mobile"
+                              data-name="{{ filter.max_value.param_name }}"
+                              data-value="{{ filter_max_value }}"
+                              readonly>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                {%- endcase -%}
+              {% endunless %}
+            {% endunless %}
+          {%- endfor -%}
+        </ul>
+        {% comment %} <div class="filter-drawer--bottom">
+          <div class="clear--all">
+            <button><a href="{{ collection.url }}">Clear all</a></button>
+          </div>
+          <button class="btn btn--full show__all_button" type="submit" form="facets-form">{{ 'collections.filters.show_all_text' | t }}</button>
+        </div> {% endcomment %}
+      </div>
+      <div class="filter-drawer--bottom">
+        <div class="clear--all">
+          <button><a href="{{ collection.url }}">{{ 'collections.general.labels.clear_all' | t }}</a></button>
+        </div>
+        <button class="btn btn--full show__all_button" type="submit" form="facets-form">{{ 'collections.filters.show_all_text' | t }}<span data-count></span></button>
+      </div>
+      <div class="list-control" data-control="">
+        <div class="clear--all__group">
+          <button><a href="{{ collection.url }}" data-list-control="clear">{{ 'collections.general.labels.clear_all' | t }}</a></button>
+        </div>
+        <button class="btn btn--full apply__button" type="button">{{ 'collections.general.labels.apply' | t }}</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "34d1b0b5-9cfd-4383-9d6e-631d7518767c": {
+      "type": "rich-text",
+      "blocks": {
+        "template--17944790171934__34d1b0b5-9cfd-4383-9d6e-631d7518767c-1677863025260acb04-0": {
+          "type": "heading",
+          "settings": {
+            "title": "Data protection"
+          }
+        },
+        "template--17944790171934__34d1b0b5-9cfd-4383-9d6e-631d7518767c-1677863025260acb04-1": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": true,
+            "text": "<p>We at Alzavar believe every customer should have control over their own data. Bellow you can update your account data, download information about the data our website stores, access your personal data that our website has saved, and request us to delete your personal data our website has stored.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "template--17944790171934__34d1b0b5-9cfd-4383-9d6e-631d7518767c-1677863025260acb04-0",
+        "template--17944790171934__34d1b0b5-9cfd-4383-9d6e-631d7518767c-1677863025260acb04-1"
+      ],
+      "settings": {
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+      }
+    },
+    "d6bd4b13-4e05-490c-be65-6a437af19a70": {
+      "type": "rich-text",
+      "settings": {
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
+      }
+    }
+  },
+  "order": [
+    "34d1b0b5-9cfd-4383-9d6e-631d7518767c",
+    "main",
+    "d6bd4b13-4e05-490c-be65-6a437af19a70"
+  ]
+}

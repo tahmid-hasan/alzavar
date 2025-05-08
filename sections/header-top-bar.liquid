@@ -1,0 +1,62 @@
+{%- liquid
+   assign toolbar_menu = linklists[section.settings.toolbar_menu]
+-%}
+{%- if section.settings.show_locale_selector or section.settings.show_currency_selector or section.settings.toolbar_social or section.settings.toolbar_menu != blank -%}
+  {%- render 'toolbar',
+    section: section,
+    toolbar_menu: toolbar_menu
+  -%}
+{%- endif -%}
+{% schema %}
+  {
+    "name": "Top bar",
+    "class": "header-group--top-bar",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "toolbar_menu",
+        "label": "t:sections.header.settings.toolbar_menu.label",
+        "info": "t:sections.header.settings.toolbar_menu.info"
+      },
+      {
+        "type": "checkbox",
+        "id": "toolbar_social",
+        "label": "t:sections.header.settings.toolbar_social.label"
+      },
+      {
+        "type": "header",
+        "content": "t:sections.header.settings.header_language_selector",
+        "info": "t:sections.header.settings.header_language_selector"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_locale_selector",
+        "label": "t:sections.header.settings.show_locale_selector.label",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "t:sections.header.settings.header_currency_selector",
+        "info": "t:sections.header.settings.header_currency_selector"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_currency_selector",
+        "label": "t:sections.header.settings.show_currency_selector.label",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_currency_flags",
+        "label": "t:sections.header.settings.show_currency_flags.label",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

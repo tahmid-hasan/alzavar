@@ -1,0 +1,177 @@
+{% unless geolizr_lib_js_url %}{% assign geolizr_lib_js_url = 'geolizr-lib.js' | asset_url %}{% endunless %}
+{% unless geolizr_lib_css_url %}{% assign geolizr_lib_css_url = 'geolizr-lib.css' | asset_url %}{% endunless %}
+{% unless geolizr_async_load %}{% assign geolizr_async_load = 'true' | asset_url %}{% endunless %}
+
+{% if geolizr_async_load == 'false' %}
+    {{ geolizr_lib_js_url | script_tag }}
+    {{ geolizr_lib_css_url | stylesheet_tag }}
+    {% assign geolizr_lib_css_url = '' %}
+{% else %}
+    <script async src="{{ geolizr_lib_js_url }}" type="text/javascript"></script>
+{% endif %}
+<script>
+    if(typeof Geolizr === "undefined") {
+        var Geolizr = {};
+        Geolizr.currencyDynamicCountry = false;
+        Geolizr.version = 20200327;
+        Geolizr.waitforMoneyFormat = true;
+    }
+
+    // save geolizr-lib.js url to the sessionStorage
+    sessionStorage.setItem('geolizr_lib_url', "{{ geolizr_lib_js_url }}");
+    if(typeof Geolizr.events === "undefined") Geolizr.events = {};
+    if(typeof Geolizr.geolizrEvents === "undefined") Geolizr.geolizrEvents = [];
+
+    Geolizr.config = function(config) {
+        Geolizr.currency_widget_enabled = config.currency_widget_enabled === "true" || false;
+        Geolizr.shopCurrency = '{{ shop.currency }}';
+        Geolizr.shopifyFormatMoneySet = false;
+        Geolizr.observeElements = [];
+    };
+
+    {% comment %}<!-- check for json parsing -->{% endcomment %}
+    {% capture json_check %}
+    Geolizr.moneyFormats = {{ shop.metafields.geolizr.supported_currencies_json | json }};
+    {% endcapture %}
+    {% if shop.metafields.geolizr.supported_currencies_json %}
+    {% if json_check contains "error" %}
+    Geolizr.moneyFormats = {{ shop.metafields.geolizr.supported_currencies_json }};
+    {% else %}
+    Geolizr.moneyFormats = {{ shop.metafields.geolizr.supported_currencies_json | json }};
+    {% endif %}
+    {% else if shop.metafields.geolizr.supported_currencies %}
+    Geolizr.moneyFormats = {{ shop.metafields.geolizr.supported_currencies }};
+    {% endif %}
+
+    Geolizr.shopifyCurrencyList = [];
+    Geolizr.shopifyCurrency = {};
+    Geolizr.shopifyCurrencyListIndex = {};
+    let setShopifyCurrencyToGeolizr = function() {
+        let GeolizrEachCurrency = {};
+        {% for currency in shop.enabled_currencies %}
+        GeolizrEachCurrency = {
+            "iso_code": "{{ currency.iso_code }}",
+            "name": "{{ currency.name }}",
+            "symbol": "{{ currency.symbol }}",
+            "shop_currency": {% if shop.currency == currency.iso_code %}true{% else %}false{% endif %}
+        };
+        if(GeolizrEachCurrency.shop_currency) {
+            Geolizr.shopifyCurrency = GeolizrEachCurrency;
+        }
+        Geolizr.shopifyCurrencyList.push(GeolizrEachCurrency);
+        Geolizr.shopifyCurrencyListIndex[GeolizrEachCurrency.iso_code] = Geolizr.shopifyCurrencyList.indexOf(GeolizrEachCurrency);
+        {% endfor %}
+    }
+
+    setShopifyCurrencyToGeolizr();
+    /* Geolizr Provider Setter */
+    Geolizr.presetService = false;
+    Geolizr.activateIpInfo = function(accessKey) { Geolizr.presetService = { name: 'ipInfo', accessKey: accessKey }; };
+    Geolizr.activateLovelyAppProvider = function() { Geolizr.presetService = { name: 'lovelyAppProvider' }; };
+    Geolizr.activateIpApiCo = function(accessKey) { Geolizr.presetService = { name: 'ipApiCo', accessKey: accessKey }; };
+    Geolizr.activateDbIpProvider = function(accessKey) { Geolizr.presetService = { name: 'dbIpProvider', accessKey: accessKey }; };
+    Geolizr.activateIpStackProvider = function(accessKey) { Geolizr.presetService = { name: 'ipStackProvider', accessKey: accessKey }; };
+    Geolizr.activateGeolizrIPApiProvider = function(accessKey) { Geolizr.presetService = { name: 'geolizrIpApiProvider', accessKey: accessKey }; };
+
+    {% if geolizr-jquery-url %}
+    Geolizr.jqueryUri = "{{ geolizr-jquery-url }}";
+    {% endif %}
+
+    /* Service Aliase */
+    Geolizr.activateFreegeoip = Geolizr.activateIpStackProvider;
+    Geolizr.requestLocaleRootUrl = {{ request.locale.root_url | json }};
+    Geolizr.addSystemEventListener = function(name, callback) {
+        if (typeof Geolizr.realInit !== 'undefined') {
+            Geolizr.realInit(function($) {
+                callback({jquery: $});
+            })
+        } else {
+            Geolizr.geolizrEvents.push(new CustomEvent(name));
+            document.addEventListener(name, callback);
+        }
+    };
+
+    Geolizr.addEventListener = function(name, callback, priority) {
+        if(typeof priority == "undefined") priority = 100;
+        if(typeof Geolizr.realAddEventListener === "undefined") {
+            if (!Geolizr.events[name]) Geolizr.events[name] = [];
+            Geolizr.events[name].push({callback: callback, priority: priority});
+        } else {
+            Geolizr.realAddEventListener(name, callback, priority);
+        }
+    };
+
+    Geolizr.getGeoData = function(callback) {
+        if(typeof Geolizr.realGetGeoData === "undefined") {
+            Geolizr.addEventListener('geolizr.init', function() {
+                Geolizr.getGeoData(callback);
+            }, 200)
+        } else {
+            Geolizr.realGetGeoData(callback);
+        }
+    };
+
+    Geolizr.init = function(callback, priority) {
+        if(typeof Geolizr.realInit === "undefined")
+            Geolizr.addEventListener("geolizr.init", callback, priority);
+        else
+            Geolizr.realInit(callback, priority);
+    };
+
+
+    Geolizr.notification_widget_enabled = {{ shop.metafields.geolizr.notification_widget_enabled }};
+    Geolizr.popup_widget_enabled = {{ shop.metafields.geolizr.popup_widget_enabled }};
+    Geolizr.api_widget_enabled = {{ shop.metafields.geolizr.api_widget_enabled }};
+    Geolizr.currency_widget_enabled = {{ shop.metafields.geolizr.currency_widget_enabled }};
+    Geolizr.redirect_widget_enabled = {{ shop.metafields.geolizr.redirect_widget_enabled }};
+
+    Geolizr.enables = {
+        'notification_widget_enabled': Geolizr.notification_widget_enabled,
+        'popup_widget_enabled': Geolizr.popup_widget_enabled,
+        'api_widget_enabled': Geolizr.api_widget_enabled,
+        'currency_widget_enabled': Geolizr.currency_widget_enabled,
+        'redirect_widget_enabled': Geolizr.redirect_widget_enabled
+    };
+
+    if(Geolizr.popup_widget_enabled || Geolizr.notification_widget_enabled || Geolizr.currency_widget_enabled) {
+        {% if geolizr_lib_css_url != "none" %}
+        Geolizr.geolizrCssFile = "{{ geolizr_lib_css_url }}";
+        {% endif %}
+    }
+
+</script>
+<style>
+    .geolizr-currency-switch-wrapper { visibility: hidden; }
+    #geolizr-notification{position:fixed!important;top:0!important;left:0!important;margin:0!important;padding:0!important;width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;z-index:10000000!important}
+    #geolizr-notification>#geolizr-notification-message-wrapper{text-align:center!important;width:100%!important;padding:10px;-webkit-box-shadow:10px 10px 5px 0 rgba(143,143,143,.35);-moz-box-shadow:10px 10px 5px 0 rgba(143,143,143,.35);box-shadow:10px 10px 5px 0 rgba(143,143,143,.35)}
+    #geolizr-dismiss-notification{box-sizing:content-box;padding:5px!important;margin:0!important;position:absolute!important;right:8px!important;text-decoration:none!important;font-family:Arial,serif ! important;top:8px!important;height:15px!important;border-radius:15px;width:15px!important;line-height:16px;font-size:20px;font-weight:700;cursor:pointer;display:inline-block}
+    .geolizr-popup-background{position:fixed;top:0;left:0;right:0;bottom:0;height:100%;width:100%;z-index:10000005!important}
+    .geolizr-popup{position:fixed!important;width:560px!important;height:400px!important;z-index:10000010!important;border:1px solid grey}
+    .geolizr-popup.gp-center{top:50%!important;left:50%!important;margin-top:-200px!important;margin-left:-280px!important}
+    .geolizr-popup.gp-mobile{width:84%!important;height:84%!important;top:0!important;left:0!important;margin:8%}
+    #geolizr-popup-content-iframe{width:100%!important;height:100%!important;border:0}
+    .slideInDown { -webkit-animation-name: slideInDown; animation-name: slideInDown; -webkit-animation-duration: 1s; animation-duration: 1s; -webkit-animation-fill-mode: both; animation-fill-mode: both; }
+    @-webkit-keyframes slideInDown { 0% { -webkit-transform: translateY(-100%); transform: translateY(-100%); visibility: visible;} 100% {-webkit-transform: translateY(0); transform: translateY(0); } }
+    @keyframes slideInDown { 0% {-webkit-transform: translateY(-100%); transform: translateY(-100%);visibility: visible; } 100% { -webkit-transform: translateY(0); transform: translateY(0); } }
+    .geolizr-currency-switch-wrapper.geolizr-absolute-auto{z-index:10000000;position:fixed}
+    .geolizr-currency-switch-wrapper{z-index:10000000!important;height:20px;width:85px;position:relative}
+    .geolizr-currency-switcher{padding:1px 10px;margin:0;width:85px;height:30px;border-radius:4px;box-sizing: border-box;}
+    .geolizr-currency-links{overflow:scroll;overflow-x:hidden;border-radius:4px;padding:5px 10px;margin:0;list-style:none;line-height:1.42857143;background-color:#fff;width:82px;max-height:200px;display:none}
+    .geolizr-currency-switch-wrapper .geolizr-currency-links-up{bottom:30px;position:absolute}
+    .geolizr-currency-switch-wrapper .geolizr-currency-links-down{top:30px;position:absolute}
+    li.geolizr-currency-list-li{float:none!important;margin:0!important;padding:0 0 0 10px}
+    .geolizr-currency-list-link{white-space:nowrap}
+    .geolizr-currency-link i,.geolizr-currency-list-link i{width:16px!important;height:11px}
+    [class^="famfamfam-flag"]{display:inline-block;width:16px;height:11px;line-height:11px}
+    .no-scroll .geolizr-currency-links { overflow: hidden; width: 60px; left: 23px; text-align: left;}
+    .geolizr-currency-switcher-value{width:42px;min-width:42px;max-width:42px;display:inline-block;text-align:left}
+    .geolizr-currency-switcher-arrow-down,.geolizr-currency-switcher-arrow-up{content:"s";position:absolute;right:5px;top:5px;width:14px;height:14px;margin:0}
+    .geolizr-currency-switcher-arrow-down,.geolizr-currency-switcher-arrow-up{ transition: transform .2s ease-in-out;content: ""; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14.0 14.0' height='14.0px' width='14.0px' style='position: absolute;'%3e%3cpath d='M1 4.5 L7.0 10.5 L13.0 4.5' fill='transparent' stroke='%23000' stroke-width='1px'%3e%3c/path%3e%3c/svg%3e"); }
+    .open .geolizr-currency-switcher-arrow-down,.geolizr-currency-switcher-arrow-up{transform:rotate(180deg)}
+    .open .geolizr-currency-switcher-arrow-up{transform:rotate(0deg)}
+    .geolizr-selectable-currency{width:42px;min-width:42px;max-width:42px;display:inline-block;text-align:left}
+    .geolizr-shop-currency{width:42px;min-width:42px;max-width:42px;display:inline-block}
+    .geolizr-currency-link li{padding:0;margin:0}
+    #geolizr-notification-spanner{width:100%!important;line-height:4px!important;height:4px!important;min-height:4px!important;max-height:4px!important}
+    body.geolizr-popup-open { overflow: hidden; }
+</style>

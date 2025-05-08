@@ -1,0 +1,80 @@
+{%- liquid
+  assign is_color = false
+  assign swatch_file_extension = 'png'
+  if enable_color_swatches
+    assign swatch_trigger = 'products.general.color_swatch_trigger' | t | downcase
+    assign downcased_label = filter.label | downcase
+    if downcased_label contains swatch_trigger
+    assign is_color = true
+    elsif swatch_trigger == 'color' and downcased_label contains 'colour'
+    assign is_color = true
+    endif
+  endif
+-%}
+<li class="slide-nav__item mobile-nav__item appear-animation appear-delay-{{ animation_row }}" data-list-control="{{ filter.label | escape }}">
+  <button type="button" class="slide-nav__button js-toggle-submenu" data-target="tier-2-{{ filter_label_handle }}" data-title="{{ filter.label | escape }}">
+    <span class="slide-nav__link  mobile-nav__link--top-level">
+      <span>{{ filter.label }}</span>
+      <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-chevron-right" viewBox="0 0 284.49 498.98">
+        <path d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98z"></path>
+      </svg>
+      <span class="icon__fallback-text">{{ 'general.drawers.expand_submenu' | t }}</span>
+    </span>
+  </button>
+  <ul data-for="{{ downcased_label | handleize }}" class="slide-nav__dropdown" data-parent="tier-2-{{ filter_label_handle }}" data-level="2" data-title="{{ filter.label | escape }}">
+    <li class="slide-nav__item">
+      <button type="button" class="slide-nav__button js-toggle-submenu" data-back>
+        <span class="slide-nav__link slide-nav__link--back">
+          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-chevron-left" viewBox="0 0 284.49 498.98">
+            <path d="M249.49 0a35 35 0 0 1 24.75 59.75L84.49 249.49l189.75 189.74a35.002 35.002 0 1 1-49.5 49.5L10.25 274.24a35 35 0 0 1 0-49.5L224.74 10.25A34.89 34.89 0 0 1 249.49 0z"></path>
+          </svg>
+          <span>{{ 'general.drawers.mobile_back_arrow_text' | t }}</span>
+        </span>
+      </button>
+    </li>
+    {%- for filter_value in filter.values -%}
+      {%- liquid
+        assign tag_count = tag_count | plus: 1
+        
+        assign color_file_name = filter_value.label | handle | append: '.' | append: swatch_file_extension
+        assign color_image = color_file_name | file_img_url: '50x50' | prepend: 'https:' | split: '?' | first
+        assign color_swatch_fallback = filter_value.label | split: ' ' | last | handle
+
+        if color_swatch_fallback == 'bla'
+          assign color_swatch_fallback = 'blue'
+        elsif color_swatch_fallback == 'vit'
+          assign color_swatch_fallback = 'white'
+        elsif color_swatch_fallback == 'burn'
+          assign color_swatch_fallback = 'brown'
+        endif
+      -%}
+      <li class="slide-nav__item tag{% if filter_value.active %} tag--active{% endif %}{% if is_color %} tag--swatch{% endif %} {% if filter_value.count == 0 %}hide{% endif %}" data-filter-value="{{ filter_value.value }}">
+        <span class="slide-nav__link">
+          <label class="tag__checkbox-wrapper text-label">
+            <input
+              autocomplete="off"
+              type="checkbox"
+              class="tag__input"
+              data-name="{{ filter_value.param_name }}"
+              data-value="{{ filter_value.value }}"
+              {% if filter_value.active %}checked{% endif %}
+              {% unless associate_tag == "" %}
+              data-tag="{{ associate_tag | downcase }}"
+              {% endunless %}
+            >
+            <div class="color-swatch--container">
+              <span
+                  class="color-swatch color-swatch--filter color-swatch--{{ filter_value.label | handle }}"
+                  title="{{ filter_value.label }}"
+                  style="background-color: {{ color_swatch_fallback }};{% if images[color_file_name] != blank %}  background-image: url({{ color_image }});{% endif %}"
+              >
+                {{ filter_value.label }}
+              </span>
+              <span class="tag__text">{{ filter_value.label | escape }}</span>
+            </div>
+          </label>
+        </span>
+      </li>
+    {%- endfor -%}
+  </ul>
+</li>

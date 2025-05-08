@@ -1,0 +1,28 @@
+{%- liquid
+  assign amount_in_cents = amount
+  assign remainder = amount_in_cents | modulo: 100
+  assign remainder_from_hundred = 100 | minus: remainder
+
+  if remainder > 50
+    assign rounded_amount = amount_in_cents | plus: remainder_from_hundred
+  else
+    assign rounded_amount = amount_in_cents | minus: remainder_from_hundred
+  endif
+
+  assign format = context
+  if context == blank or context == '' or context == nil
+    assign format = 'raw'
+  endif
+-%}
+{%- case format -%}
+  {%- when 'raw' -%}
+    {{ rounded_amount }}
+  {%- when 'money' -%}
+    {%- if localization.country.currency.iso_code == 'EUR' -%}
+      {{ rounded_amount | money_without_trailing_zeros | split: ',' | first |  replace: '.', ' ' }}
+    {%- elsif localization.country.currency.iso_code == 'SEK' -%}
+      {{ rounded_amount | money }}
+    {%- else -%}
+      {{ rounded_amount | money_without_trailing_zeros | replace: '.', ' ' | replace: ',', ' ' }}
+    {%- endif -%}
+{%- endcase -%}

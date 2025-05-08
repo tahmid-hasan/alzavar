@@ -1,0 +1,265 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "4db45d07-97ae-4d7f-b8cb-ea9dd4143203": {
+          "type": "sidebar",
+          "settings": {
+            "title": "Quick links",
+            "sidebar_bg": "#f5f5f5"
+          }
+        },
+        "faq-0": {
+          "type": "rich-text",
+          "settings": {
+            "title": "Returns",
+            "text": "",
+            "align_text": "left"
+          }
+        },
+        "faq-1": {
+          "type": "question",
+          "settings": {
+            "title": "How do I make a return?",
+            "text": "<p>At Alzavar, we strive to simplify the return process for you. To initiate a return, simply follow the link provided below to access our return page. <\/p><p>Once there, kindly provide us with your order number and name or email address. You can easily follow the provided instructions to initiate your return process. If you are unable to locate your order number, please do not hesitate to contact us for assistance, would you like to contact us? <a href=\"\/pages\/contact\" title=\"Contact us\">Click here<\/a>. <\/p><p>Once you have initiated the return process and followed the steps, we will within 48 hours send you a pre-paid shipping label from either Postnord or DHL, depending on your location, along with a QR code to be scanned at the nearest DHL or Postnord facility. They will then print out a shipping label for you and take care of the rest. Alternatively, if you prefer to print a return slip and attach it to the package yourself, that option is also available.<\/p><p><\/p><p><span style=\"text-decoration:underline\">Would you like to make a return?<\/span> <a href=\"https:\/\/alzavar.se\/a\/returns\" target=\"_blank\" title=\"https:\/\/alzavar.se\/a\/returns\">Click here<\/a><br\/><\/p><p><span style=\"text-decoration:underline\">Would you like to read our complete return policy?<\/span> <a href=\"\/policies\/terms-of-service\" title=\"Terms of Service\">Click here<\/a><\/p>"
+          }
+        },
+        "37ca58f7-98ca-46be-9977-e7dec4b54b50": {
+          "type": "question",
+          "settings": {
+            "title": "When can I return an item?",
+            "text": "<p>We want you to be completely satisfied with your purchase, which is why we offer a hassle-free return policy. If for any reason you need to make a return, you have 14 days from the date you received the parcel to do so.<\/p><p><span style=\"text-decoration:underline\">Would you like to make a return? <\/span><a href=\"https:\/\/alzavar.se\/a\/returns\" target=\"_blank\" title=\"https:\/\/alzavar.se\/a\/returns\">Click here <\/a><\/p><p><span style=\"text-decoration:underline\">Would you like to read our complete return policy?<\/span> <a href=\"\/policies\/terms-of-service\" title=\"Terms of Service\">Click here<\/a><\/p>"
+          }
+        },
+        "faq-2": {
+          "type": "question",
+          "settings": {
+            "title": "What is required to make a return?",
+            "text": "<p>To ensure a smooth return process, kindly inform us of your intent to return within 14 days of receiving your order. For us to accept the return, the products must be in their original, unused, undamaged, unwashed, and unaltered state, complete with all original parts such as authenticity labels, warranty cards, and packaging materials like dust bags, hangers, and suit covers. We recommend protecting the original packaging by using a shipping box and refraining from applying any labels or tape directly on it. For a comprehensive understanding of our return policy and our other policies, you may refer to it by <a href=\"\/policies\/terms-of-service\" title=\"Terms of Service\">clicking here<\/a><\/p><p><\/p><p><span style=\"text-decoration:underline\">Would you like to make a return?<\/span> <a href=\"https:\/\/alzavar.se\/a\/returns\" target=\"_blank\" title=\"https:\/\/alzavar.se\/a\/returns\">Click here<\/a><\/p>"
+          }
+        },
+        "4f4dbc06-8389-4ef8-8595-f11fd54a70bb": {
+          "type": "question",
+          "settings": {
+            "title": "What does it cost to return a product?",
+            "text": "<p>Please note that a fee of 99,00 SEK will be charged to initiate the return process, which will be deducted from your refund.<\/p><p>There is no additional charge if you'd like to return multiple products, the fee is still 99,00 SEK.<\/p><p><\/p><p><span style=\"text-decoration:underline\">Would you like to make a return? <\/span><a href=\"https:\/\/alzavar.se\/a\/returns\" title=\"https:\/\/alzavar.se\/a\/returns\">Click here<\/a><\/p><p><span style=\"text-decoration:underline\">Would you like to read our complete return policy?<\/span> <a href=\"\/policies\/terms-of-service\" title=\"Terms of Service\">Click here<\/a><\/p>"
+          }
+        },
+        "faq-4": {
+          "type": "question",
+          "settings": {
+            "title": "What should I do if I receive the wrong product or a defective item?",
+            "text": "<p>First and foremost, we at Alzavar would like to extend our sincere apologies for the inconvenience caused by the defective or incorrect item. At Alzavar, we strive to provide our customers with top-quality products and services, and we regret falling short of your expectations in this instance.<\/p><p><\/p><p>If you happen to receive a defective or incorrect product, we've got you covered. You may return the product to us free of charge within 14 days of receiving your parcel, just click the link below and follow the instructions.<\/p><p><\/p><p><span style=\"text-decoration:underline\">Would you like to make a return? <\/span><a href=\"https:\/\/alzavar.myshopify.com\/apps\/return_prime\" target=\"_blank\" title=\"https:\/\/alzavar.se\/a\/returns\">Click here<\/a><\/p>"
+          }
+        },
+        "fa5d7927-4170-40ab-9598-923c4306a2ef": {
+          "type": "question",
+          "settings": {
+            "title": "Can I return items I bought from the pre-owned section?",
+            "text": "<p>Certainly! Our policies, including return policies, remain the same for new items as well as pre-owned items.<\/p><p>Would you like to read our return policy? <a href=\"\/policies\/terms-of-service\" title=\"Terms of Service\">Click here<\/a><\/p>"
+          }
+        },
+        "b0eeaff9-35f2-4bad-8d67-0c988100fb3d": {
+          "type": "rich-text",
+          "settings": {
+            "title": "Deliveries",
+            "text": "",
+            "align_text": "left"
+          }
+        },
+        "c14bf52f-eff2-4ce5-a0da-4fe7f2c38315": {
+          "type": "question",
+          "settings": {
+            "title": "How long does a delivery take?",
+            "text": "<p><strong>Standard delivery: <\/strong>6 to 10 business days<\/p><p><strong>Express delivery: <\/strong>2 to 7 business days<\/p><p>Delivery times vary depending on your location. <\/p>"
+          }
+        },
+        "4bbb1eed-7cf5-49aa-a072-df500c130a74": {
+          "type": "question",
+          "settings": {
+            "title": "How much does a delivery cost?",
+            "text": "<p>At Alzavar, we're pleased to offer complimentary shipping on all our items. In addition, we also provide the option of express delivery for a nominal fee of 99,00 SEK.<\/p>"
+          }
+        },
+        "a6a33847-7181-4edf-9a80-af4a43652703": {
+          "type": "question",
+          "settings": {
+            "title": "Where is my package?",
+            "text": "<p>We understand that unforeseen delays can be frustrating and inconvenient, and we would like to extend our sincere apologies for any inconvenience caused. Although rare, delays may occur with either the courier, ourselves, or our subcontractors.<\/p><p><\/p><p>In the event of any unforeseen delay caused by the courier, please do not hesitate to contact us or the courier directly, and we'll be more than happy to assist you in locating your parcel. Would you like to contact us? <a href=\"\/pages\/contact\" title=\"Contact us\">Click here.<\/a><\/p><p><\/p><p>If your item hasn't been sent within the expected timeframe, please don't hesitate to reach out to us via email, phone support (+46 8 91 09 19), or chat, and we'll make every effort to resolve the issue promptly and to your satisfaction. To contact, please <a href=\"\/pages\/contact\" target=\"_blank\" title=\"Contact us\">click here.<\/a><\/p>"
+          }
+        },
+        "410ee8d9-613e-4a37-a367-fc65a1d1aea8": {
+          "type": "rich-text",
+          "settings": {
+            "title": "Payments & Refunds",
+            "text": "",
+            "align_text": "left"
+          }
+        },
+        "945193d9-99c1-421d-92a4-3897176f7a31": {
+          "type": "question",
+          "settings": {
+            "title": "How long will it take to get my refund?",
+            "text": "<p>Once we have received your returned parcel and the return has been accepted, please allow 5 to 10 business days for the refund to be processed. Please note that the exact timing of the refund may vary depending on your bank.<\/p>"
+          }
+        },
+        "814e83fc-a371-4e2a-b775-230a61d34080": {
+          "type": "question",
+          "settings": {
+            "title": "What payment options do you offer?",
+            "text": "<h6><span style=\"text-decoration:underline\"><strong>Direct payment<\/strong><\/span><\/h6><p>Visa, Mastercard, Google Pay, Apple Pay, and bank transfer with Klarna<\/p><h6><span style=\"text-decoration:underline\"><strong>Invoice with Klarna<\/strong><\/span><\/h6><p>Pay after you receive the parcel within 30 days with Klarna. For more information, <a href=\"https:\/\/www.klarna.com\/se\/villkor\/\">click here<\/a>.<\/p><h6><span style=\"text-decoration:underline\"><strong>Installment payments with Klarna<\/strong><\/span><\/h6><p>6 to 36 months installment via Klarna. Set-up fees and other fees may apply. If you would like to read more, <a href=\"https:\/\/www.klarna.com\/se\/villkor\/\">click here<\/a>.<\/p><p><\/p><p><span style=\"text-decoration:underline\"><strong>Please note that payment methods may vary depending on which country you order from.<\/strong><\/span><\/p>"
+          }
+        },
+        "39fd7ab8-b573-46ba-9466-6ffcae838a0e": {
+          "type": "rich-text",
+          "settings": {
+            "title": "General questions about Alzavar",
+            "text": "",
+            "align_text": "left"
+          }
+        },
+        "adee61ac-eb59-4f66-938f-bf273de29263": {
+          "type": "question",
+          "settings": {
+            "title": "Are Alzavar's products genuine?",
+            "text": "<p>Yes, at Alzavar, we pride ourselves on our direct relationships with top brands and their official distributors. In addition, we collaborate with trusted subcontractors based in Milan, Italy, and Stockholm, Sweden, who collectively boast three decades of experience in the industry.<\/p>"
+          }
+        },
+        "e17d1d19-f7ef-4ae8-aaaa-a5509a7268d8": {
+          "type": "question",
+          "settings": {
+            "title": "From where does Alzavar ship its products?",
+            "text": "<p>Our products are shipped directly from our warehouse, as well as our trusted subcontractors located in Milan, Italy, and Stockholm, Sweden, who collectively boast over three decades of experience in the industry.<\/p>"
+          }
+        },
+        "55527762-12eb-41a5-befd-576585c6e33e": {
+          "type": "question",
+          "settings": {
+            "title": "Can I sell my used designer clothing to Alzavar?",
+            "text": "<p>At Alzavar, we take pride in offering our customers the opportunity to sell their used designer clothing to us. Whether you purchased the clothing from us or another store, we offer this service and provide the option to receive a gift card for the clothing's value, which can be used throughout the entire store.<\/p><p><\/p><p><span style=\"text-decoration:underline\">Are you interested in selling to us?<\/span> <a href=\"\/pages\/sell-to-us\" title=\"Sell to us\">Click here<\/a><\/p>"
+          }
+        },
+        "9f99ff54-c74d-4293-ab42-baa106c6b08e": {
+          "type": "question",
+          "settings": {
+            "title": "From where can I buy products from Alzavar?",
+            "text": "<p>Our products are available for purchase in Sweden, Germany, Denmark, and Finland.<\/p>"
+          }
+        },
+        "a2520e86-14c0-4785-ac91-172a1c6cebcb": {
+          "type": "question",
+          "settings": {
+            "title": "How come purchasing products in Norway is not currently possible?",
+            "text": "<p>At Alzavar, we are committed to providing exceptional service to our customers. However, as Norway is not part of the European Union, we cannot guarantee that your order will be delivered on time due to customs regulations. Additionally, shipping to Norway would incur additional costs for you as the customer, which would prevent us from offering competitive pricing. So we have made the difficult decision not to sell to Norway at this time. Our commitment to providing exceptional customer service cannot be fully met due to customs regulations, and we do not wish to compromise on the quality of our services for financial gain. We hope you understand, thank you.<\/p>"
+          }
+        },
+        "ff8a953a-a8b2-42f5-9329-55c7e8f05a38": {
+          "type": "question",
+          "settings": {
+            "title": "How is it that only English and Swedish are the only available languages?",
+            "text": "<p>We are currently in the process of making the website available in all languages for our markets, Our focus is on implementing Finnish, Danish, and German languages. As our top priority is customer satisfaction, we are working closely with a team of skilled translators to ensure that all text and descriptions are clear and accurate in every language. We are working hard to make the translations available soon. We hope you understand, thank you.<\/p>"
+          }
+        },
+        "a3d7cab4-ba41-4a33-89fb-b16c4141d9e7": {
+          "type": "rich-text",
+          "settings": {
+            "title": "Gift cards",
+            "text": "",
+            "align_text": "left"
+          }
+        },
+        "d9622dc1-ed75-43b0-9fd7-aacbfe15dd43": {
+          "type": "question",
+          "settings": {
+            "title": "Can I buy an item that is less than the value of the gift card?",
+            "text": "<p>Absolutely! Any remaining balance on your gift card will remain available for your future purchases.<\/p>"
+          }
+        },
+        "9045eda4-6c91-48e2-a2a0-050c515a66c3": {
+          "type": "question",
+          "settings": {
+            "title": "Can I make a return when I have paid with a gift card?",
+            "text": "<p>As per our standard policy, you're welcome to initiate a return within 14 days from the date of receipt of your package.<\/p><p><span style=\"text-decoration:underline\">Would you like to read our complete return policy?<\/span> <a href=\"\/policies\/terms-of-service\" title=\"Terms of Service\">Click here<\/a><\/p>"
+          }
+        },
+        "520d53e4-72cb-4dca-a626-7df15c1b66f3": {
+          "type": "question",
+          "settings": {
+            "title": "Can I make a return and get money instead?",
+            "text": "<p>If you have used a gift card to make a purchase, any refunded amount will be credited back to you with a new gift card. Please note that the return fee will be deducted from the refunded amount. <\/p><p>If your purchase exceeded the value of the gift card and you paid the remaining balance with another payment method, the corresponding amount will be refunded to you in your original currency and\/or payment method.<\/p>"
+          }
+        },
+        "69ff7d8d-2756-458f-87d3-c4331493f374": {
+          "type": "question",
+          "settings": {
+            "title": "Can I buy pre-owned items with gift cards?",
+            "text": "<p>Certainly! Our gift cards are valid on all our items in the store. <\/p>"
+          }
+        },
+        "962df2c5-93f8-40a5-ac4a-a8dfa8f1196d": {
+          "type": "question",
+          "settings": {
+            "title": "How long are the gift cards valid?",
+            "text": "<p>Gift cards are valid for 3 months from the date of issue.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "4db45d07-97ae-4d7f-b8cb-ea9dd4143203",
+        "faq-0",
+        "faq-1",
+        "37ca58f7-98ca-46be-9977-e7dec4b54b50",
+        "faq-2",
+        "4f4dbc06-8389-4ef8-8595-f11fd54a70bb",
+        "faq-4",
+        "fa5d7927-4170-40ab-9598-923c4306a2ef",
+        "b0eeaff9-35f2-4bad-8d67-0c988100fb3d",
+        "c14bf52f-eff2-4ce5-a0da-4fe7f2c38315",
+        "4bbb1eed-7cf5-49aa-a072-df500c130a74",
+        "a6a33847-7181-4edf-9a80-af4a43652703",
+        "410ee8d9-613e-4a37-a367-fc65a1d1aea8",
+        "945193d9-99c1-421d-92a4-3897176f7a31",
+        "814e83fc-a371-4e2a-b775-230a61d34080",
+        "39fd7ab8-b573-46ba-9466-6ffcae838a0e",
+        "adee61ac-eb59-4f66-938f-bf273de29263",
+        "e17d1d19-f7ef-4ae8-aaaa-a5509a7268d8",
+        "55527762-12eb-41a5-befd-576585c6e33e",
+        "9f99ff54-c74d-4293-ab42-baa106c6b08e",
+        "a2520e86-14c0-4785-ac91-172a1c6cebcb",
+        "ff8a953a-a8b2-42f5-9329-55c7e8f05a38",
+        "a3d7cab4-ba41-4a33-89fb-b16c4141d9e7",
+        "d9622dc1-ed75-43b0-9fd7-aacbfe15dd43",
+        "9045eda4-6c91-48e2-a2a0-050c515a66c3",
+        "520d53e4-72cb-4dca-a626-7df15c1b66f3",
+        "69ff7d8d-2756-458f-87d3-c4331493f374",
+        "962df2c5-93f8-40a5-ac4a-a8dfa8f1196d"
+      ],
+      "settings": {
+        "title": "FAQs",
+        "align_text": "left",
+        "set_max_width": false,
+        "max_width": 800
+      }
+    }
+  },
+  "order": [
+    "main",
+    "faq"
+  ]
+}

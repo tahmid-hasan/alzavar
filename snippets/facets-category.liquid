@@ -1,0 +1,245 @@
+{% assign category_map = linklists['filter-map'] %}
+{% capture json_output %}
+  {
+    "category_map": [
+      {% for link in category_map.links %}
+      {
+        "title": "{{ link.title | escape }}",
+        "handle": "{{ link.title | handleize }}",
+        "links": [
+          {% for sub_link in link.links %}
+          {
+            "title": "{{ sub_link.title | escape }}",
+            "handle": "{{ sub_link.title | handleize }}",
+            "links": [
+              {% for sub_sub_link in sub_link.links %}
+              {
+                "title": "{{ sub_sub_link.title | escape }}",
+                "handle": "{{ sub_sub_link.title | handleize }}"
+              }{% unless forloop.last %},{% endunless %}
+              {% endfor %}
+            ]
+          }{% unless forloop.last %},{% endunless %}
+          {% endfor %}
+        ]
+      }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]
+  }
+{% endcapture %}
+{% liquid
+  assign main_category_count = 0
+  assign sub_category_count = 0
+  for link in category_map.links
+    assign has_level_1 = false
+    if link.links
+      for sub_link in link.links
+        assign has_level_2 = false
+        if sub_link.links
+          for grandsub_link in sub_link.links
+            for filter_value in filter.values
+              if filter_value.label contains grandsub_link.title
+                unless filter_value.count == 0
+                  assign has_level_1 = true
+                  assign has_level_2 = true
+                endunless
+              endif
+            endfor
+          endfor
+        endif
+        if has_level_2
+          assign sub_category_count = sub_category_count | plus: 1
+        endif
+      endfor
+    endif
+    if has_level_1
+      assign main_category_count = main_category_count | plus: 1
+    endif
+    if main_category_count > 1
+      break
+    endif
+  endfor
+
+  if has_level_1 == true
+    if main_category_count > 1
+      assign has_main_accordion = true
+    endif
+  endif
+
+  assign params_name = ''
+%}
+{% if has_main_accordion %}
+<div class="accordion pl-1" id="facets-filter__category" data-has-main-category>
+{% endif %}
+  {% for link in category_map.links %}
+    {% assign label_handle = link.title | handleize %}
+    {% assign has_level_1 = false %}
+    {% if link.links %}
+      {% assign level_2_content = '' %}
+      {% for sub_link in link.links %}
+        {%  assign has_level_2 = false %}
+        {% assign active_filter_count = 0 %}
+        {% assign active_filter_checked_count = 0 %}
+        {% if sub_link.links %}
+          {% assign filter_list = '' %}
+          {% for grandsub_link in sub_link.links %}
+            {%- assign link_title = grandsub_link.title | split: '|' | first | strip -%}
+            {%- assign has_alternative_type = grandsub_link.title | split: '|' | last | strip -%}
+            {% for filter_value in filter.values %}
+              {%- assign params_name = filter_value.param_name -%}
+              {% if filter_value.label contains link_title %}
+                {% unless filter_value.count == 0 %}
+                  {%  assign has_level_1 = true %}
+                  {%  assign has_level_2 = true %}
+                  {% assign active_filter_count = active_filter_count | plus: 1 %}
+                  {% if filter_value.active %}
+                    {% assign active_filter_checked_count = active_filter_checked_count | plus: 1 %}
+                  {% endif %}
+                  {%-  capture filter_list -%}
+                    {{ filter_list }}
+                    <li class="tag{% if filter_value.active %} tag--active{% endif %}{% if filter_value.count == 0 %} hide{% endif %}" data-filter-value="{{ filter_value.value }}">
+                      <label class="tag__checkbox-wrapper text-label">
+                        <input
+                        autocomplete="off"
+                        type="checkbox"
+                        class="tag__input"
+                        name="{{ filter_value.param_name }}"
+                        value="{{ filter_value.value }}"
+                        {% if has_alternative_type %}data-alternative-type="{{ has_alternative_type }}"{% endif %}
+                        {% if filter_value.active %}checked{% endif %}>
+                        
+                        <span class="tag__checkbox"></span>
+                        <span>
+                          <span class="tag__text">{{ filter_value.label | escape }}</span>{% comment %} ({{ filter_value.count }}){% endcomment %}
+                        </span>
+                      </label>
+                    </li>
+                  {%- endcapture -%}
+                {% endunless %}
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+          {% if has_level_2 %}
+            {% capture level_2_content %}
+              {% assign sub_label_handle = sub_link.title | handleize %}
+              {{ level_2_content }}
+              {% if sub_category_count > 1 %}
+                {% assign has_sub_sub_accordion = true %}
+                <div class="accordion-item">
+                  <div class="accordion-header" id="facets-filter-heading-{{ location }}-{{ forloop.index }}-{{ sub_label_handle }}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#facets-filter-{{ location }}-{{ forloop.index }}-{{ sub_label_handle }}" aria-expanded="false" aria-controls="facets-filter-{{ location }}-{{ forloop.index }}-{{ sub_label_handle }}">
+                      {{ sub_link.title | escape }}
+                    </button>
+                  </div>
+                  <div id="facets-filter-{{ location }}-{{ forloop.index }}-{{ sub_label_handle }}" class="accordion-collapse collapse" aria-labelledby="facets-filter-heading-{{ location }}-{{ forloop.index }}-{{ sub_label_handle }}" data-bs-parent="#facets-filter__{% if main_category_count > 1 %}{{ label_handle }}{% else %}category{% endif %}">
+                    <div class="accordion-body">
+                      <div class="accordion-content--wrapper">
+                        <div class="accordion-content">
+                          <ul class="no-bullets tag-list filter__list" {{ sub_link.title | handleize }}>
+                            {% if active_filter_count > 1 %}
+                              <li class="tag">
+                                <label class="tag__checkbox-wrapper text-label">
+                                  <input
+                                  autocomplete="off"
+                                  type="checkbox"
+                                  class="tag__input tag__input--all"
+                                  data-name="all_{{ sub_link.title |  replace: ' ', '_' }}"
+                                  data-value=""
+                                  data-params-name="{{ params_name }}"
+                                  {% if active_filter_count == active_filter_checked_count %}checked{% endif %}
+                                >
+                                  <span class="tag__checkbox"></span>
+                                  <span>
+                                    <span class="tag__text">All {{ sub_link.title | escape | downcase }}</span>
+                                  </span>
+                                </label>
+                              </li>
+                            {% endif %}
+                            {{ filter_list }}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% else %}
+                <ul class="no-bullets tag-list" {{ sub_link.title | handleize }}>
+                  {{ filter_list }}
+                </ul>
+              {% endif %}
+            {% endcapture %}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+    {% if has_level_1 %}
+      {% if main_category_count > 1 %}
+        <div class="accordion-item" data-category-main>
+          <div class="accordion-header" id="facets-filter-heading-{{ location }}-{{ forloop.index }}-{{ label_handle }}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#facets-filter-{{ location }}-{{ forloop.index }}-{{ label_handle }}" aria-expanded="true" aria-controls="facets-filter-{{ location }}-{{ forloop.index }}-{{ label_handle }}">
+              {{ link.title | escape }}
+            </button>
+          </div>
+          <div id="facets-filter-{{ location }}-{{ forloop.index }}-{{ label_handle }}" class="accordion-collapse collapse" aria-labelledby="facets-filter-heading-{{ location }}-{{ forloop.index }}-{{ label_handle }}" data-bs-parent="#facets-filter__category">
+            <div class="accordion-body no-pb">
+              <div class="accordion-content--wrapper">
+                <div class="accordion-content">
+                  {% if has_sub_sub_accordion %}<div class="accordion pl-1" id="facets-filter__{{ label_handle }}">{% endif %}
+                    {{ level_2_content }}
+                  {% if has_sub_sub_accordion %}</div>{% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% else %}
+        {% if has_sub_sub_accordion %}
+        <div class="accordion pl-1" id="facets-filter__category" data-has-sub-category>
+        {% endif %}
+        {{ level_2_content }}
+        {% if has_sub_sub_accordion %}
+        </div>
+        {% endif %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% if has_main_accordion %}
+</div>
+{% endif %}
+
+{% comment %} <ul class="no-bullets tag-list {% if filter_label == 'color' or filter_label == 'farg' %}color--filter{% endif %}" data-test="{{ filter_label }}">
+  {%- assign tag_count = filter.values.size -%}
+  {%- for filter_value in filter.values -%}
+    {%- liquid
+       assign tag_count = tag_count | plus: 1
+    -%}
+    <li class="tag{% if filter_value.active %} tag--active{% endif %}{% if filter_value.count == 0%} hide{% endif %}" data-filter-value="{{ filter_value.value }}" {% if filter_label == 'brand' %}data-brand-value="{{ filter_value.value }}" {% endif %}>
+      <label class="tag__checkbox-wrapper text-label">
+          <input
+          autocomplete="off"
+          type="checkbox"
+          class="tag__input"
+          name="{{ filter_value.param_name }}"
+          value="{{ filter_value.value }}"
+          {% if filter_value.active %}checked{% endif %}>
+          {%- if is_color -%}
+            <div class="color-swatch--container">
+              <span
+                  class="color-swatch color-swatch--filter color-swatch--{{ filter_value.label | handle }}"
+                  title="{{ filter_value.label }}"
+                  style="background-color: {{ color_swatch_fallback }};{% if images[color_file_name] != blank %}  background-image: url({{ color_image }});{% endif %}"
+              >
+                {{ filter_value.label }}
+              </span>
+              <span class="tag__text">{{ filter_value.label | escape }}</span>
+            </div>
+          {%- else -%}
+          <span class="tag__checkbox"></span>
+          <span>
+            <span class="tag__text">{{ filter_value.label | escape }}</span>
+          </span>
+          {%- endif -%}
+      </label>
+    </li>
+  {%- endfor -%}
+</ul> {% endcomment %}

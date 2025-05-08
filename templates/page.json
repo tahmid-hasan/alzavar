@@ -1,0 +1,70 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "9d29db23-f06c-4428-9335-da3e48c6c675": {
+      "type": "background-image-text",
+      "settings": {
+        "subtitle": "Do you want to join Our Marketplace?",
+        "title": "Expand Your Reach and Increase Sales",
+        "text": "<p>Are you a boutique or company selling luxury and designer clothing? Don't miss out on the opportunity to showcase your products to a wider audience by partnering with us and our thriving online marketplace.<\/p>",
+        "button_label": "",
+        "button_link": "",
+        "image": "shopify:\/\/shop_images\/up.png",
+        "focal_point": "center",
+        "layout": "left",
+        "height": 750,
+        "framed": false,
+        "parallax": true,
+        "parallax_direction": "top"
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+      }
+    },
+    "13cd7653-0d70-45c3-8fd2-1a05ef0bcffb": {
+      "type": "rich-text",
+      "blocks": {
+        "template--17944790303006__13cd7653-0d70-45c3-8fd2-1a05ef0bcffb-1678032882da3dd5df-1": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": true,
+            "text": "<p>At Alzavar, we're constantly seeking new suppliers and boutiques who share our passion for designer clothing and customer satisfaction. Are you interested in partnering with us and showcasing your products on our rapidly expanding platform? <\/p><p>We'd love to learn more about your company and explore how we can collaborate to help you grow. Please take a moment to fill out the form below with your details, and we'll be in touch shortly to discuss the next step.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "template--17944790303006__13cd7653-0d70-45c3-8fd2-1a05ef0bcffb-1678032882da3dd5df-1"
+      ],
+      "settings": {
+        "align_text": "center",
+        "narrow_column": true,
+        "divider": false
+      }
+    },
+    "2f5d2df0-a1c9-408c-87a7-ed4183be42b4": {
+      "type": "contact-form",
+      "settings": {
+        "title": "Contact form",
+        "text": "",
+        "show_phone": false,
+        "narrow_column": true
+      }
+    }
+  },
+  "order": [
+    "9d29db23-f06c-4428-9335-da3e48c6c675",
+    "main",
+    "13cd7653-0d70-45c3-8fd2-1a05ef0bcffb",
+    "2f5d2df0-a1c9-408c-87a7-ed4183be42b4"
+  ]
+}

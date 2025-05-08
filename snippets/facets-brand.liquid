@@ -1,0 +1,84 @@
+<ul data-for="{{ filter.label | handleize }}" class="no-bullets tag-list">
+  {%- assign tag_count = filter.values.size -%}
+  {%- assign printed_group_name = '' -%}
+  {%- assign filter_count = 0 -%}
+  {%- assign list_string = "" -%}
+  {%- assign alpha_item = "" -%}
+  {%- for filter_value in filter.values -%}
+    {%- liquid
+      assign tag_count = tag_count | plus: 1
+      assign group_name = filter_value.value | first | upcase
+    -%}
+    {%- unless printed_group_name contains group_name -%}
+      {%- assign printed_group_name = printed_group_name | append: '~~' | append: group_name -%}
+      {% unless filter_count == 0 %}
+        {{ alpha_item }}
+      {% else %}
+        {{ alpha_item | replace: 'brands__alpha-group', 'brands__alpha-group hide' }}
+      {% endunless %}
+      {{ list_string }}
+
+      {% capture alpha_item %}
+        <li class="brands__alpha-group" data-value="{{ group_name | escape }}">
+          {{ group_name | escape }}
+        </li>
+      {% endcapture %}
+
+      {%- if forloop.last -%}
+        {{ alpha_item }}
+      {%- endif -%}
+
+      {%- assign filter_count = 0 -%}
+      {%- assign list_string = "" -%}
+
+      {% capture list_string %}
+        {{ list_string }}
+        <li class="tag{% if filter_value.active %} tag--active{% endif %}{% if filter_value.count == 0%} hide{% endif %}" data-filter-value="{{ filter_value.value }}" data-brand-value="{{ filter_value.value }}" data-alpha-group="{{ group_name }}">
+          <label class="tag__checkbox-wrapper text-label">
+              <input
+              autocomplete="off"
+              type="checkbox"
+              class="tag__input"
+              name="{{ filter_value.param_name }}"
+              value="{{ filter_value.value }}"
+              {% if filter_value.active %}checked{% endif %}>
+              
+              <span class="tag__checkbox"></span>
+              <span>
+                <span class="tag__text">{{ filter_value.label | escape }}</span>
+              </span>
+          </label>
+        </li>
+      {% endcapture %}
+      {%- if forloop.last -%}
+        {{ list_string }}
+      {%- endif -%}
+      {% unless filter_value.count == 0 %}
+        {%- assign filter_count = filter_count | plus: 1 -%}
+      {% endunless %}
+    {%- else -%}
+      {% capture list_string %}
+        {{ list_string }}
+        <li class="tag{% if filter_value.active %} tag--active{% endif %}{% if filter_value.count == 0%} hide{% endif %}" data-filter-value="{{ filter_value.value }}" data-brand-value="{{ filter_value.value }}" data-alpha-group="{{ group_name }}">
+          <label class="tag__checkbox-wrapper text-label">
+              <input
+              autocomplete="off"
+              type="checkbox"
+              class="tag__input"
+              name="{{ filter_value.param_name }}"
+              value="{{ filter_value.value }}"
+              {% if filter_value.active %}checked{% endif %}>
+              
+              <span class="tag__checkbox"></span>
+              <span>
+                <span class="tag__text">{{ filter_value.label | escape }}</span>
+              </span>
+          </label>
+        </li>
+      {% endcapture %}
+      {% unless filter_value.count == 0 %}
+        {%- assign filter_count = filter_count | plus: 1 -%}
+      {% endunless %}
+    {%- endunless -%}
+  {%- endfor -%}
+</ul>

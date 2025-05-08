@@ -1,0 +1,79 @@
+{%- form 'product', product, id: form_id, class: 'product-single__form' -%}
+
+  {%- liquid
+    assign enable_dynamic_buttons = false
+    if show_dynamic_checkout and template != 'product.preorder'
+      assign enable_dynamic_buttons = true
+    endif
+  -%}
+
+  {%- if enable_dynamic_buttons -%}
+    <div class="payment-buttons">
+  {%- endif -%}
+
+    {%- liquid
+      assign default_text = 'products.product.add_to_cart' | t
+      assign button_text = 'products.product.add_to_cart' | t
+      if template contains 'preorder'
+        assign default_text = 'products.product.preorder' | t
+        assign button_text = 'products.product.preorder' | t
+      endif
+      unless current_variant.available
+        assign button_text = 'products.product.sold_out' | t
+      endunless
+    -%}
+
+    <button
+      {% if product.empty? %}type="button"{% else %}type="submit"{% endif %}
+      name="add"
+      data-add-to-cart
+      class="btn btn--full add-to-cart{% if enable_dynamic_buttons and product.selling_plan_groups == empty %} btn--primary{% endif %}"
+      {% unless current_variant.available %} disabled="disabled"{% endunless %}>
+      <span data-add-to-cart-text data-default-text="{{ default_text }}">
+        {{ button_text }}
+      </span>
+      <span class="success--icon">
+        <svg class="initial" viewBox="0 0 24 24">
+          <path d="M4.1 12.7L9 17.6 20.3 6.3" fill="none"></path>
+        </svg>
+      </span>
+    </button>
+    {% if product.available and product.variants.size == 1 %}
+      <div class="payment-button shopify-payment-button">
+        {% render 'custom-buy-button' %}
+      </div>
+    {% endif %}
+    {%- if enable_dynamic_buttons -%}
+      {{ form | payment_button }}
+    {%- endif -%}
+  {%- if enable_dynamic_buttons -%}
+    </div>
+  {%- endif -%}
+
+  <div class="shopify-payment-terms product__policies">{{ form | payment_terms }}</div>
+
+  <select name="id" data-product-select class="product-single__variants no-js">
+    {%- for variant in product.variants -%}
+      {%- if variant.available -%}
+        <option {% comment %}{% if variant == product.selected_or_first_available_variant %}
+          selected="selected"{% endif %}{% endcomment %}
+          value="{{ variant.id }}">
+          {{ variant.title }} - {{ variant.price | money_with_currency }}
+        </option>
+      {%- else -%}
+        <option disabled="disabled">
+          {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+        </option>
+      {%- endif -%}
+    {%- endfor -%}
+  </select>
+
+  {% if product.available == true %}
+    {% assign hidden_class = 'hidden' %}
+  {% endif %}
+  <!-- Notify me! Back in stock button wrapper -->
+  <div class="notify-me--btn-wrapper hidden"></div>
+  <div class="{{ hidden_class }} custom--notify-me--btn-wrapper md-hidden notify--me-after-cart">
+    <a class="btn btn--full">Notify me when available</a>
+  </div>
+{%- endform -%}

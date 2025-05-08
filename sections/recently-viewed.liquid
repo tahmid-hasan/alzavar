@@ -1,0 +1,102 @@
+{{ 'slider-component.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign grid_item_width = 'small--one-half medium-up--one-fifth'
+  assign row_of = 5
+
+  case section.settings.recent_count
+    when 2
+      assign grid_item_width = 'medium-up--one-half'
+      assign row_of = 2
+    when 3
+      assign grid_item_width = 'small--one-half medium-up--one-third'
+      assign row_of = 3
+    when 4
+      assign grid_item_width = 'small--one-half medium-up--one-quarter'
+      assign row_of = 4
+    when 6
+      assign grid_item_width = 'small--one-half medium-up--one-sixth'
+      assign row_of = 6
+    when 8
+      assign grid_item_width = 'small--one-half medium-up--one-quarter'
+      assign row_of = 4
+  endcase
+-%}
+
+<div
+  data-subsection
+  data-section-id="{{ section.id }}"
+  data-section-type="recently-viewed"
+  data-product-handle="{{ product.handle }}"
+  data-recent-count="{{ section.settings.recent_count }}"
+  data-grid-item-class="{{ grid_item_width }}"
+  data-row-of="{{ row_of }}"
+  data-use-image-overlay="{{ section.settings.use_overlay }}"
+  data-image-size="{{ section.settings.product_grid_image_size }}">
+  <div class="index-section">
+    <div class="page-width">
+      <header class="section-header">
+        <h3 class="section-header__title">{{ 'products.general.recent_products' | t }}</h3>
+      </header>
+    </div>
+
+    <div class="page-width has-slider">
+      <div class="grid-overflow-wrapper">
+        <div id="RecentlyViewed-{{ section.id }}" data-aos="overflow__animation"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.recently-viewed.name",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:sections.recently-viewed.settings.content"
+    },
+    {
+      "type": "range",
+      "id": "recent_count",
+      "label": "t:sections.recently-viewed.settings.recent_count.label",
+      "default": 4,
+      "min": 4,
+      "max": 10,
+      "step": 1
+    },
+    {
+      "type": "select",
+      "id": "product_grid_image_size",
+      "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.label",
+      "default": "natural",
+      "options": [
+        {
+          "value": "natural",
+          "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.natural.label"
+        },
+        {
+          "value": "square",
+          "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.square.label"
+        },
+        {
+          "value": "landscape",
+          "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.landscape.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.portrait.label"
+        },
+        {
+          "value": "portrait-3-4",
+          "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.portrait_3_4.label"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "use_overlay",
+      "label": "t:sections.featured-collection.settings.use_overlay.label"
+    }
+  ]
+}
+{% endschema %}

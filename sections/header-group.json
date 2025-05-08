@@ -1,0 +1,67 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "Header",
+  "sections": {
+    "announcement": {
+      "type": "announcement-bar",
+      "settings": {
+        "announcement_compact": false,
+        "show_announcement_on_homepage": false
+      }
+    },
+    "top-bar": {
+      "type": "header-top-bar",
+      "settings": {
+        "toolbar_menu": "top-menu",
+        "toolbar_social": false,
+        "show_locale_selector": false,
+        "show_currency_selector": false,
+        "show_currency_flags": false
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "c9be19e0-7eba-4565-8888-69b0e2856cde": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify:\/\/shop_images\/Namnlos__6_-removebg-preview.png",
+            "desktop_logo_width": 140,
+            "mobile_logo_width": 120,
+            "drawer_logo_width": 120
+          }
+        }
+      },
+      "block_order": [
+        "c9be19e0-7eba-4565-8888-69b0e2856cde"
+      ],
+      "settings": {
+        "main_menu_link_list": "main-menu",
+        "mega_menu_images": true,
+        "main_menu_alignment": "center-left",
+        "header_style": "sticky",
+        "sticky_index": false,
+        "sticky_collection": false,
+        "toolbar_menu": "top-menu",
+        "toolbar_social": false,
+        "show_locale_selector": false,
+        "show_currency_selector": false,
+        "show_currency_flags": false
+      }
+    }
+  },
+  "order": [
+    "announcement",
+    "top-bar",
+    "header"
+  ]
+}

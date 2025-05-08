@@ -1,0 +1,92 @@
+{% comment %}
+- collection: Liquid 'collection' or 'search' object
+- enable_sidebar: boolean
+- filter_style: 'sidebar' or 'drawer'
+- enable_color_swatches: boolean
+- collapsed: boolean
+{% endcomment %}
+
+{%- assign animation_row = 1 -%}
+
+{%- if enable_sidebar -%}
+<div id="CollectionSidebar" data-style="{{ filter_style }}">
+  {% capture filters_json %}
+    [
+      {% for filter in collection.filters %}
+        {
+          "label": "{{ filter.label | escape }}",
+          "type": "{{ filter.type | escape }}",
+          "active_values": [
+            {% for value in filter.active_values %}
+              {
+                "label": "{{ value.label | escape }}",
+                "value": "{{ value.value | escape }}",
+                "active": {{ value.active }},
+                "count": {{ value.count }},
+                "param_name": "{{ value.param_name | escape }}",
+                "url_to_add": "{{ value.url_to_add | escape }}",
+                "url_to_remove": "{{ value.url_to_remove | escape }}"
+              }{% unless forloop.last %},{% endunless %}
+            {% endfor %}
+          ],
+          "values": [
+            {% for value in filter.values %}
+              {
+                "label": "{{ value.label | escape }}",
+                "value": "{{ value.value | escape }}",
+                "active": {{ value.active }},
+                "count": {{ value.count }},
+                "param_name": "{{ value.param_name | escape }}",
+                "url_to_add": "{{ value.url_to_add | escape }}",
+                "url_to_remove": "{{ value.url_to_remove | escape }}"
+              }{% unless forloop.last %},{% endunless %}
+            {% endfor %}
+          ]
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]
+  {% endcapture %}
+  
+  <script id="filter_data" type="application/json">
+    {{ filters_json | strip_newlines }}
+  </script>
+  
+
+  {%- if filter_style == 'sidebar' -%}
+  <div class="collection-sidebar small--hide">
+      {%- render 'collection-grid-filters-form-v2', location: 'CollectionSidebar', filters: collection.filters, collapsed: collapsed, enable_color_swatches: enable_color_swatches -%}
+  </div>
+  {%- endif -%}
+  {%- render 'collection-grid-filters-mobile', filters: collection.filters, enable_color_swatches: enable_color_swatches -%}
+  <div id="FilterDrawer" class="drawer drawer--left">
+    <div class="drawer__contents">
+      <div class="drawer__fixed-header">
+        <div class="drawer__header appear-animation appear-delay-{{ animation_row }}">
+          <div class="h2 drawer__title">
+            {{ 'collections.filters.title_tags' | t }}
+          </div>
+          <div class="drawer__close">
+            <button type="button" class="drawer__close-button js-drawer-close">
+              <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64"><path d="M19 17.61l27.12 27.13m0-27.12L19 44.74"></path></svg>
+              <span class="icon__fallback-text">{{ 'general.drawers.close_menu' | t }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {%- assign animation_row = animation_row | plus: 1 -%}
+      <div class="drawer__scrollable appear-animation appear-delay-{{ animation_row }}">
+        <div class="form--wrapper">
+          {%- render 'collection-grid-filters-form-v2', location: 'SidebarDrawer', filters: collection.filters, collapsed: collapsed, enable_color_swatches: enable_color_swatches -%}
+        </div>
+        <div class="filter-drawer--bottom">
+          <div class="clear--all">
+            <button><a href="{{ collection.url }}">{{ 'collections.general.labels.clear_all' | t }}</a></button>
+          </div>
+          <button class="btn btn--full show__all_button" type="submit" form="facets-form">{{ 'collections.filters.show_all_text' | t }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- endif -%}

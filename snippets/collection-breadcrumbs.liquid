@@ -1,0 +1,100 @@
+{% unless template.name == 'index' or template.name == 'cart' %}
+  <nav class="breadcrumb" role="navigation" aria-label="breadcrumbs">
+    <a href="{{ routes.root_url }}" title="{{ 'general.breadcrumbs.home_link_title' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+
+    {% if template.name == 'product' %}
+
+      {% if collection %}
+        
+        <span class="breadcrumb__divider" aria-hidden="true">/</span>
+        <a href="{{ routes.collections_url }}">{{ 'general.search.collections' | t | replace: ':', ''}}</a>
+
+        <span class="breadcrumb__divider" aria-hidden="true">/</span>
+        {% if collection.handle %}
+          {% capture url %}{{ routes.collections_url }}/{{ collection.handle }}{% endcapture %}
+          {{ collection.title | link_to: url }}
+        {% endif %}
+      {% endif %}
+      <span class="breadcrumb__divider" aria-hidden="true">/</span>
+
+    {% elsif template.name == 'collection' and collection.handle %}
+      {%- liquid
+        assign breadcrumb_menu = linklists[settings.collection_breadcrumb_reference]
+        
+        assign parent_title = blank
+        assign child_title = blank
+        assign grandchild_title = blank
+      
+        assign first_level_title = blank
+        assign first_level_url = blank
+        assign second_level_title = blank
+        assign second_level_url = blank
+      
+        for link in breadcrumb_menu.links
+          assign parent_title = link.title
+          assign parent_handle = link.url
+      
+          for child_link in link.links
+            assign child_title = child_link.title
+            assign child_handle = child_link.url | split: "/" | last
+            if child_handle == collection.handle
+              assign first_level_title = child_title | strip
+              assign first_level_url = child_link.url
+              break
+            endif
+      
+            for grandchild_link in child_link.links
+              assign grandchild_title = grandchild_link.title
+              assign grandchild_handle = grandchild_link.url | split: "/" | last
+      
+              if grandchild_handle == collection.handle
+                assign first_level_title = child_title | strip
+                assign first_level_url = child_link.url
+                assign second_level_title = grandchild_title | strip
+                assign second_level_url = grandchild_link.url
+                break
+              endif
+            endfor
+          endfor
+        endfor
+      -%}
+      
+      {% if first_level_title and first_level_url %}
+        <span class="breadcrumb__divider" aria-hidden="true">/</span>
+        <a href="{{ first_level_url }}">{{ first_level_title }}</a>
+      {% endif %}
+
+      <span class="breadcrumb__divider" aria-hidden="true">/</span>
+      
+
+      {% if current_tags %}
+
+        {% capture url %}{{ routes.collections_url }}/{{ collection.handle }}{% endcapture %}
+        {{ collection.title | link_to: url }}
+
+        <span class="breadcrumb__divider" aria-hidden="true">/</span>
+
+        {% for tag in current_tags %}
+          {% if tag contains "_" %}{%- assign tag_starts_with = tag | slice: 0 -%}{% if tag_starts_with == "_" %}{% if tag_count %}{%- assign tag_count = tag_count | minus: 1 | at_least: 0 -%}{% endif %}{% continue %}{% endif %}{% endif %}
+
+          {% assign tag_name = tag | strip %}
+          {% assign tag_text = tag_name | capitalize %}
+          <span>{{ tag_text }}</span>
+
+          {% unless forloop.last %}
+            <span>+</span>
+          {% endunless %}
+
+        {% endfor %}
+      {% else %}
+        {{ collection.title | link_to: url }}
+      {% endif %}
+
+    {% else %}
+
+      <span class="breadcrumb__divider" aria-hidden="true">/</span>
+      <span>{{ page_title }}</span>
+
+    {% endif %}
+  </nav>
+{% endunless %}

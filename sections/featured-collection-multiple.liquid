@@ -1,0 +1,268 @@
+{{ 'slider-component.css' | asset_url | stylesheet_tag }}
+{{ 'featured-collection-multiple.css' | asset_url | stylesheet_tag }}
+
+<style>
+  [data-section-type="featured-collection-tab"] .collections--wrapper {
+    --slide-image-width: calc(((100% - 96px) / 4.54));
+    --slide-image-height: calc((4 / 3) * var(--slide-image-width));
+    --details-height: 126px;
+    --grid-margin-bottom: 30px;
+    --button-box-height: 62px;
+    --content-height: calc(var(--slide-image-height) + var(--details-height) + var(--grid-margin-bottom) + var(--button-box-height));
+    position: relative;
+    /* padding-bottom: var(--content-height); */
+    padding-bottom: var(--content-height);
+    
+  }
+
+  [data-section-type="featured-collection-tab"] .collection--slider.tab-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .tab__btn-group--wrapper {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  /* .collection--slider {
+    transform: translateY(10px);
+    opacity: 0;
+    height: 0;
+    transition: all 0.3s ease-in-out;
+  } */
+  /* .collection--slider[data-active="true"] {
+    opacity: 1;
+    height: auto;
+    transform: translateY(0px);
+  } */
+  @media only screen and (max-width: 768px) {
+    .shop-all__btn--wrapper .section-header__link {
+      margin-top: 30px;
+    }
+    [data-section-type="featured-collection-tab"] .collections--wrapper {
+      --slide-image-width: calc(((100% - 17px) / 1.43));
+      --slide-image-height: calc((4 / 3) * var(--slide-image-width));
+      --details-height: 126px;
+      --grid-margin-bottom: 24px;
+      --slider-dot-height: 18px;
+      --button-box-height: 30px;
+      --content-height: calc(var(--slide-image-height) + var(--details-height) + var(--grid-margin-bottom) + var(--slider-dot-height) + var(--button-box-height));
+      position: relative;
+      /* padding-bottom: var(--content-height); */
+      padding-bottom: var(--content-height);
+      
+    }
+  }
+</style>
+
+{% assign image_overlay = section.settings.use_overlay %}
+
+<div id="CollectionSection-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="featured-collection-tab">
+  <featured-collection-tab>
+    <div class="page-width">
+      <div class="section-header{% if section.settings.view_all %}{% unless settings.type_headers_align_text %} section-header--with-link{% endunless %}{% endif %}">
+        {%- if section.settings.title != blank -%}
+          <h2 class="section-header__title">
+            {{ section.settings.title }}
+          </h2>
+        {%- endif -%}
+        <div class="tab__btn-group--wrapper">
+          <div class="tab__btn-group">
+            {%- for block in section.blocks -%}
+              {%- liquid
+                 assign active_tab = false
+                 if forloop.first == true
+                   assign active_tab = true
+                 endif
+              -%}
+              {%- unless block.settings.title == blank -%}
+                <button class="btn btn--secondary btn--small tab__btn" data-tab-id="tab-id-{{ block.id }}" data-active-tab="{{ active_tab }}">
+                  <span>{{ block.settings.title }}</span>
+                </button>
+              {%- endunless -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-width has-slider">
+      <height-observer data-container=".collections--wrapper" data-observable-child=".collection--slider">
+        <div class="collections--wrapper">
+          {%- for block in section.blocks -%}
+            {%- assign collection = collections[block.settings.featured_products] -%}
+            {%- assign product_limit = block.settings.number_of_products -%}
+            
+            <div class="collection--slider tab-content" data-tab-for="tab-id-{{ block.id }}" data-active="{% if forloop.first %}true{% else %}false{% endif %}">
+              <div class="content__wrap" data-observable-container>
+                <slider-component class="{% if product_limit == 4 %}slider--not-trigger{% endif %}" data-slider-type="tab-slider">
+                  <div class="position-relative">
+                    <div class="swiper slider">
+                      <div class="swiper-wrapper slider--wrapper">
+                        {%- if block.settings.featured_products == blank or collection.empty? or collection.products_count == 0 -%}
+                          {%- unless emptyState -%}
+                            {%- assign emptyState = true -%}
+                          {%- endunless -%}
+                          {%- for i in (1..product_limit) -%}
+                            <div class="slide swiper-slide">
+                              <div class="slide__item grid-product {{ grid_item_width }}" data-aos="row-of-{{ per_row }}">
+                                <div class="grid-product__content">
+                                  <a href="{{ product.url | within: collection }}" class="grid-product__link">
+                                    <div class="grid-product__image-mask">
+                                      {%- capture current -%}{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
+                                      <div class="image-wrap">{{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                                    </div>
+                                    <div class="grid-product__meta">
+                                      <div class="grid-product__title">{{ 'home_page.onboarding.product_title' | t }}</div>
+                                      <div class="grid-product__price">$29</div>
+                                    </div>
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                          {%- endfor -%}
+                        {%- else -%}
+                          {% assign count = 0 %}
+                          {%- for product in collection.products -%}
+                            {% if product.available %}
+                              <div class="slide swiper-slide">
+                                {%- render 'slider-grid-item',
+                                  product: product,
+                                  collection: collection,
+                                  per_row: per_row,
+                                  quick_shop_enable: settings.quick_shop_enable,
+                                  image_overlay: image_overlay,
+                                  product_grid_image_size: section.settings.product_grid_image_size
+                                -%}
+                              </div>
+                              {% assign count = count | plus: 1 %}
+                            {% endif %}
+                            {% if count == product_limit %}{% break %}{% endif %}
+                          {%- endfor -%}
+                        {%- endif -%}
+                      </div>
+                    </div>
+                    <div class="pagination-wrapper">
+                      <div class="swiper-pagination"></div>
+                    </div>
+                    <button type="button" class="btn btn--secondary btn--small btn--next--prev btn--prev">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M15.101 18.962L7 12.48 15.101 6v2.561l-4.9 3.92 4.9 3.92z"></path></svg>
+                    </button>
+                    <button type="button" class="btn btn--secondary btn--small btn--next--prev btn--next">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M9 18.962l8.101-6.481L9 6v2.561l4.9 3.92L9 16.4z"></path></svg>
+                    </button>
+                  </div>
+                </slider-component>
+                <div class="shop-all__btn--wrapper">
+                  <a href="{{ collection.url }}" class="btn btn--secondary btn--small section-header__link">
+                    <span>{{ section.settings.shop_all_btn_text }}</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </height-observer>
+    </div>
+  </featured-collection-tab>
+</div>
+{% schema %}
+  {
+    "name": "Featured collection tab",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "t:sections.featured-collection.settings.title.label",
+        "default": "Featured collection"
+      },
+      {
+        "type": "select",
+        "id": "product_grid_image_size",
+        "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.label",
+        "default": "natural",
+        "options": [
+          {
+            "value": "natural",
+            "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.natural.label"
+          },
+          {
+            "value": "square",
+            "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.square.label"
+          },
+          {
+            "value": "landscape",
+            "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.landscape.label"
+          },
+          {
+            "value": "portrait",
+            "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.portrait.label"
+          },
+          {
+            "value": "portrait-3-4",
+            "label": "t:settings_schema.product_tiles.settings.product_grid_image_size.options.portrait_3_4.label"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "use_overlay",
+        "label": "t:sections.featured-collection.settings.use_overlay.label"
+      },
+      {
+        "type": "checkbox",
+        "id": "divider",
+        "label": "t:sections.featured-collection.settings.divider.label",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "shop_all_btn_text",
+        "label": "Shop all button text",
+        "default": "Shop now"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured collection tab"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Button title"
+          },
+          {
+            "type": "collection",
+            "id": "featured_products",
+            "label": "t:sections.featured-collection.settings.home_featured_products.label"
+          },
+          {
+            "type": "range",
+            "id": "number_of_products",
+            "label": "t:sections.featured-collection.settings.number_of_products.label",
+            "default": 10,
+            "min": 4,
+            "max": 50,
+            "step": 1
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

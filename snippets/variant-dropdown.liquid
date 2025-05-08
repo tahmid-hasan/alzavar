@@ -1,0 +1,247 @@
+{%- liquid
+   assign option_name = option.name | handleize
+   assign hidden_class = ''
+   if option_name == 'color'
+     assign hidden_class = 'hidden'
+   endif
+   if option.values.size == 1
+     assign hidden_class = 'hidden'
+   endif
+
+   assign height = 0
+   assign height_for_6 = 0
+   assign font_size = 14.72
+   
+   assign default_text = 'products.product.add_to_cart' | t
+   assign button_text = 'products.product.add_to_cart' | t
+   if template contains 'preorder'
+     assign default_text = 'products.product.preorder' | t
+     assign button_text = 'products.product.preorder' | t
+   endif
+   unless current_variant.available
+     assign button_text = 'products.product.sold_out' | t
+   endunless
+
+   assign lowest_price = product.first_available_variant.price
+   
+   for variant in product.variants
+     if variant.available
+       if variant.price < lowest_price
+         assign lowest_price = variant.price
+       endif
+
+       unless forloop.index > 6
+         assign height = height | plus: 45.44
+         assign height_for_6 = height_for_6 | plus: 45.44
+       else
+         assign height = height | plus: 45.44
+       endunless
+     else
+       unless forloop.index > 6
+         assign height = height | plus: 56
+         assign height_for_6 = height_for_6 | plus: 56
+       else
+         assign height = height | plus: 56
+       endunless
+     endif
+   endfor
+
+   assign price_in_cents = lowest_price
+   assign remainder = price_in_cents | modulo: 100
+   assign remainder_from_hundred = 100 | minus: remainder
+   if remainder > 50
+    assign rounded_price = price_in_cents | plus: remainder_from_hundred
+   else
+    assign rounded_price = price_in_cents | minus: remainder_from_hundred
+   endif
+  
+   assign rounded_lowest_price = rounded_price
+
+   assign is_selected = false
+   if option.values.size == 1
+     assign is_selected = true
+   endif
+
+   if option.values.size > 6
+     assign height = height_for_6
+   endif
+-%}
+
+{% assign has_available_option = false %}
+{% assign has_unavailable_option = false %}
+{% assign single_size_name = "" %}
+{% capture option_list_content %}
+  <ul class="option--list {% if option.values.size > 6  %} overflow-y-auto{% endif %}" data-selected="{% unless option_name == 'color' %}{{ is_selected }}{% else %}true{% endunless %}">
+    {%- for value in option.values -%}
+      {%- liquid
+        assign initial_variant = product.variants | where: 'option1', value | first
+        if option.position == 2
+          assign initial_variant = product.variants | where: 'option2', value | first
+        endif
+        if option.position == 3
+          assign initial_variant = product.variants | where: 'option3', value | first
+        endif
+
+        if initial_variant.available == true
+          assign has_available_option = true
+        endif
+
+        if initial_variant.available == false
+          assign has_unavailable_option = true
+        endif
+
+        assign display_value = initial_variant.metafields.product_option.size
+
+        assign price_in_cents = initial_variant.price
+        assign remainder = price_in_cents | modulo: 100
+        assign remainder_from_hundred = 100 | minus: remainder
+        
+        if remainder > 50
+          assign rounded_price = price_in_cents | plus: remainder_from_hundred
+        else
+          assign rounded_price = price_in_cents | minus: remainder_from_hundred
+        endif
+        
+        assign final_price = rounded_price
+      -%}
+      {%- if display_value -%}
+        <li class="option--item{% if initial_variant.available == false %} out-of-stock hidden{% endif %}" data-display-value="{{ display_value }}" data-value="{{ value | escape }}">
+          <span class="stock--identifier">
+            {% if initial_variant.inventory_quantity == 1 %}{{ 'cart.general.inventory_message' | t }}{% endif %}
+            {% if initial_variant.available == false %}Out of Stock (notify me){% endif %}
+          </span>
+          <span class="option__value">
+
+            {%- unless option_from_tag == "" -%}
+              {{ display_value }}
+            {%- else -%}
+              {{ value | escape }}
+            {%- endunless -%}
+          </span>
+          <span class="price--identifier {% unless rounded_lowest_price != final_price %}v-hidden{% endunless %}" data-lowers-price="{{ rounded_lowest_price }}" data-price="{{ final_price }}">
+            {% if product.price_varies %}
+              {{ final_price | money_without_trailing_zeros }}
+            {% endif %}
+          </span>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+{% endcapture %}
+
+
+{%- if option.values.size == 1 -%}
+  {%- if option_name == 'size' or option_name == 'storlek'-%}
+    <div class="variant-message" data-type="dropdown" data-size="{{ option.values.size }}">
+      {{ 'products.general.size_label_single' | t: option: option_name }}: {{ product.selected_or_first_available_variant.metafields.product_option.size | escape }}
+    </div>
+  {%- endif -%}
+{%- endif -%}
+<div class="variant-wrapper variant-wrapper--dropdown js {{ hidden_class }}" data-type="dropdown" data-size="{{ option.values.size }}">
+  {% comment %}
+  <label class="variant__label{% if option.name == 'Default' or option.name == 'Title' %} hidden-label{% endif %}{% unless variant_labels %} hidden-label{% endunless %}"
+    for="SingleOptionSelector-{{ section_id }}-{{ product.id }}-option-{{ forloop.index0 }}">
+    {{ option.name }}
+  </label>
+  {% endcomment %}
+  {% style %}
+    .variant-selector-sm [data-handle="{{ option.name | handleize }}"] .option-selector--wrapper .option-list--wrapper {
+      max-height: 388px;
+      /* height: calc({{ height | append: 'px' }} + 146px); */
+      transform: translateY(100%);
+      height: auto;
+    }
+    .variant-selector-sm [data-handle="{{ option.name | handleize }}"] .option-selector--wrapper.open .option-list--wrapper {
+      transform: translateY(0)
+    }
+    .variant-selector-sm .notify-me--message {
+      padding: 16px 10px;
+      margin-block-end: 5px;
+      font-size: var(--typeBaseSize);
+      text-decoration: underline;
+      text-underline-offset: 1px;
+      border-top: 1px solid #e6e6e6;
+      text-align: left;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .variant-selector-sm .option-selector--wrapper .option-selector--trigger:disabled {
+      cursor: not-allowed;
+    }
+    .variant-selector-sm .option__value {
+      font-weight: var(--typeBaseWeight);
+    }
+  {% endstyle %}
+  <div class="variant-input-wrap" data-index="option{{ forloop.index }}" data-handle="{{ option.name | handleize }}">
+    <div class="option-selector--container">
+      <div class="option-selector--wrapper">
+        <button {% unless has_available_option %}disabled{% endunless %} id="option-selector--{{ option_name }}-{{ option.position }}" class="option-selector--trigger">
+          <span class="option-selector--text" data-display-text="{{ 'products.general.option_label_selected' | t: option: option.name }}">{{ 'products.general.option_label' | t: option: option.name }}</span>
+          <span class="icon--wrapper">
+          {% if has_available_option %}
+          <svg width="499px" height="285px" viewBox="0 0 499 285" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <path d="M-2.66453526e-14,35 C-0.00506788343,20.8412166 8.52093753,8.07408275 21.6011171,2.65374389 C34.6812967,-2.76659497 49.7387394,0.227715938 59.75,10.24 L249.49,199.99 L439.23,10.24 C448.072323,1.39767621 460.960291,-2.05564449 473.039129,1.18087043 C485.117968,4.41738535 494.552615,13.8520323 497.78913,25.9308709 C501.025644,38.0097095 497.572324,50.8976767 488.73,59.74 L274.24,274.24 C267.676124,280.804546 258.773196,284.492525 249.49,284.492525 C240.206804,284.492525 231.303876,280.804546 224.74,274.24 L10.25,59.74 C3.67855857,53.1850295 -0.0101375586,44.2817766 -2.66453526e-14,35 Z" fill="{{ settings.color_body_text }}" fill-rule="nonzero"></path>
+          </svg>
+          {% endif %}
+          </span>
+        </button>
+        <div class="option-list--wrapper" data-list-index="{{ forloop.index0 }}">
+          <div class="option-list-small--header">{{ 'products.general.option_label' | t: option: option.name }}</div>
+          {{ option_list_content }}
+          {% if has_unavailable_option %}
+            <div class="notify-me--message">{{ 'products.product.notify_me' | t }}</div>
+          {% endif %}
+          <div class="small-atc--wrapper">
+            
+            <button
+              form="{{ form_id }}"
+              type="button"
+              data-add-to-cart-secondary
+              class="btn btn--full add-to-cart{% if enable_dynamic_buttons and product.selling_plan_groups == empty %} btn--secondary{% endif %}"
+              {% unless current_variant.available %} disabled="disabled"{% endunless %}>
+              <span data-add-to-cart-secondary-text data-default-text="{{ default_text }}">
+                {{ button_text }}
+              </span>
+              <span class="success--icon">
+                <svg class="initial" viewBox="0 0 24 24">
+                  <path d="M4.1 12.7L9 17.6 20.3 6.3" fill="none"></path>
+                </svg>
+              </span>
+            </button>
+            {% render 'custom-buy-button' %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <select
+      class="hidden SingleOptionSelector"
+      form="{{ form_id }}"
+      data-variant-input
+      id="SingleOptionSelector-{{ section_id }}-{{ product.id }}-option-{{ forloop.index0 }}"
+      data-index="option{{ forloop.index }}">
+      {% if option_name contains "size" %}
+      <option {% unless option.values.size == 1 %}selected{% endunless %} value="initial">Select Size</option>
+      {% endif %}
+      {%- for value in option.values -%}
+        {%- liquid
+          assign variant_label_state = true
+          if product.options.size == 1
+            unless product.variants[forloop.index0].available
+              assign variant_label_state = false
+            endunless
+          endif
+        -%}
+        <option
+          value="{{ value | escape }}"
+          
+          {% unless variant_label_state %} disabled="disabled"{% endunless %}
+          name="{{ option.name }}"
+          class="variant-input"
+          data-index="option{{ forloop.index }}"
+          {% if option.values.size == 0 %}selected{% endif %}>
+          {{ value }}
+        </option>
+      {%- endfor -%}
+    </select>
+  </div>
+</div>

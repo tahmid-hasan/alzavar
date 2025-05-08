@@ -1,0 +1,63 @@
+{%- assign header_font = settings.type_header_font_family -%}
+{%- assign base_font = settings.type_base_font_family -%}
+{%- assign base_font_bold = base_font | font_modify: 'weight', '600' -%}
+{%- assign base_font_italic = base_font | font_modify: 'style', 'italic' -%}
+{%- assign base_font_bold_italic = base_font_bold | font_modify: 'style', 'italic' -%}
+{%- style -%}
+  {{ header_font | font_face: font_display: 'swap' }}
+  {{ base_font | font_face: font_display: 'swap' }}
+
+  {{ base_font_bold | font_face: font_display: 'swap' }}
+  {{ base_font_italic | font_face: font_display: 'swap' }}
+  {{ base_font_bold_italic | font_face: font_display: 'swap' }}
+
+  {% if settings.font_family_custom != blank %}
+    {% assign custom_fonts = settings.font_family_custom | newline_to_br | split: '<br />' %}
+    {% assign custom_font_family = "" %}
+    {%- for font_string in custom_fonts -%}
+      {%- if font_string contains 'Family' -%}
+        {%- assign custom_font_family = font_string | split: "|" | last | strip -%}
+      {%- else -%}
+        {%- assign font_data = font_string | split: "|" -%}
+        {%- assign font_file = "" -%}
+        {%- assign font_format = "" -%}
+        {%- assign font_weight = "" -%}
+        {%- assign font_style = "" -%}
+        {%- for data in font_data -%}
+          {%- if forloop.first -%}
+            {%- assign font_file = data | strip -%}
+            {%- if font_file != blank or font_file != "" -%}
+              {%- assign font_format = font_file | split: '.' | last | strip -%}
+              {%- if font_format == 'otf' -%}
+                {%- assign font_format = 'opentype' -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endif -%}
+          {%- if forloop.index == 2 -%}
+            {%- assign font_weight = data | strip -%}
+          {%- endif -%}
+          {%- if forloop.index == 3 -%}
+            {%- assign font_style = data | strip | replace: ' ', '' -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if font_file != "" and custom_font_family != "" -%}
+          @font-face {
+            font-family: "{{ custom_font_family }}";
+            src: url('{{ font_file | file_url }}') format('{{ font_format }}');
+            {%- if font_weight != "" -%}
+              font-weight: {{ font_weight | times: 1 }};
+            {%- else -%}
+              font-weight: normal;
+            {%- endif -%}
+            {%- if font_style != "" -%}
+              font-style: {{ font_style }};
+            {%- else -%}
+              font-style: normal;
+            {%- endif -%}
+            font-display: swap;
+          }
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {% endif %}
+{%- endstyle -%}

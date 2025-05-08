@@ -1,0 +1,113 @@
+<li class="slide-nav__item mobile-nav__item appear-animation appear-delay-{{ animation_row }}"
+  data-list-control="{{ filter.label | escape }}"
+>
+  <button type="button" class="slide-nav__button js-toggle-submenu" data-target="tier-2-{{ filter_label_handle }}" data-title="{{ filter.label | escape }}">
+    <span class="slide-nav__link  mobile-nav__link--top-level">
+      <span>{{ filter.label }}</span>
+      <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-chevron-right" viewBox="0 0 284.49 498.98">
+        <path d="M35 498.98a35 35 0 0 1-24.75-59.75l189.74-189.74L10.25 59.75a35.002 35.002 0 0 1 49.5-49.5l214.49 214.49a35 35 0 0 1 0 49.5L59.75 488.73A34.89 34.89 0 0 1 35 498.98z"></path>
+      </svg>
+      <span class="icon__fallback-text">{{ 'general.drawers.expand_submenu' | t }}</span>
+    </span>
+  </button>
+  <ul data-for="{{ filter.label | handleize }}" class="slide-nav__dropdown filter__list" data-parent="tier-2-{{ filter_label_handle }}" data-level="2" data-title="{{ filter.label | escape }}">
+    <li class="slide-nav__item">
+      <button type="button" class="slide-nav__button js-toggle-submenu" data-back>
+        <span class="slide-nav__link slide-nav__link--back">
+          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-chevron-left" viewBox="0 0 284.49 498.98">
+            <path d="M249.49 0a35 35 0 0 1 24.75 59.75L84.49 249.49l189.75 189.74a35.002 35.002 0 1 1-49.5 49.5L10.25 274.24a35 35 0 0 1 0-49.5L224.74 10.25A34.89 34.89 0 0 1 249.49 0z"></path>
+          </svg>
+          <span>{{ 'general.drawers.mobile_back_arrow_text' | t }}</span>
+        </span>
+      </button>
+    </li>
+    {%- assign printed_group_name = '' -%}
+    {%- assign filter_count = 0 -%}
+    {%- assign list_string = "" -%}
+    {%- assign alpha_item = "" -%}
+    {%- for filter_value in filter.values -%}
+      {%- liquid
+        assign tag_count = tag_count | plus: 1
+        assign group_name = filter_value.value | first | upcase
+      -%}
+      {%- unless printed_group_name contains group_name -%}
+        {%- assign printed_group_name = printed_group_name | append: '~~' | append: group_name -%}
+        {% unless filter_count == 0 %}
+          {{ alpha_item }}
+        {% else %}
+          {{ alpha_item | replace: 'brands__alpha-group', 'brands__alpha-group hide' }}
+        {% endunless %}
+        {{ list_string }}
+        {% capture alpha_item %}
+          <li class="brands__alpha-group" data-value="{{ group_name | escape }}">
+            <span class="slide-nav__link">
+              {{ group_name | escape }}
+            </span>
+          </li>
+        {% endcapture %}
+
+        {%- if forloop.last -%}
+          {{ alpha_item }}
+        {%- endif -%}
+  
+        {%- assign filter_count = 0 -%}
+        {%- assign list_string = "" -%}
+
+        {% capture list_string %}
+          {{ list_string }}
+          <li class="tag{% if filter_value.active %} tag--active{% endif %}{% if filter_value.count == 0%} hide{% endif %}" data-filter-value="{{ filter_value.value }}" data-brand-value="{{ filter_value.value }}">
+            <span class="slide-nav__link">
+              <label class="tag__checkbox-wrapper text-label">
+                  <input
+                  autocomplete="off"
+                  type="checkbox"
+                  class="tag__input"
+                  data-name="{{ filter_value.param_name }}"
+                  data-value="{{ filter_value.value }}"
+                  {% if filter_value.active %}checked{% endif %}>
+                  
+                  <span class="tag__checkbox"></span>
+                  <span>
+                    <span class="tag__text">{{ filter_value.label | escape }}</span>
+                  </span>
+              </label>
+            </span>
+          </li>
+        {% endcapture %}
+
+        {%- if forloop.last -%}
+          {{ list_string }}
+        {%- endif -%}
+        
+        {% unless filter_value.count == 0 %}
+          {%- assign filter_count = filter_count | plus: 1 -%}
+        {% endunless %}
+      {%- else -%}
+        {% capture list_string %}
+          {{ list_string }}
+          <li class="tag{% if filter_value.active %} tag--active{% endif %}{% if filter_value.count == 0%} hide{% endif %}" data-filter-value="{{ filter_value.value }}" data-brand-value="{{ filter_value.value }}">
+            <span class="slide-nav__link">
+              <label class="tag__checkbox-wrapper text-label">
+                  <input
+                  autocomplete="off"
+                  type="checkbox"
+                  class="tag__input"
+                  data-name="{{ filter_value.param_name }}"
+                  data-value="{{ filter_value.value }}"
+                  {% if filter_value.active %}checked{% endif %}>
+                  
+                  <span class="tag__checkbox"></span>
+                  <span>
+                    <span class="tag__text">{{ filter_value.label | escape }}</span>
+                  </span>
+              </label>
+            </span>
+          </li>
+        {% endcapture %}
+        {% unless filter_value.count == 0 %}
+          {%- assign filter_count = filter_count | plus: 1 -%}
+        {% endunless %}
+      {%- endunless -%}
+    {%- endfor -%}
+  </ul>
+</li>

@@ -1,0 +1,299 @@
+{{ 'faq-extended.css' | asset_url | stylesheet_tag }}
+{%- assign object = section -%}
+{%- liquid
+   assign text_align = 'inherit'
+   if object.settings.align_text 
+     assign text_align = object.settings.align_text | prepend: 'text-'
+   endif
+
+   assign sidebar_block = object.blocks | where: 'type', 'sidebar' | first
+-%}
+{%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
+
+{% style %}
+  {% if sidebar_block != blank %}
+    #shopify-section-{{ section.id }} .faq__quick-links {
+      background: {{ sidebar_block.settings.sidebar_bg }};
+      border-radius: 3px;
+    }
+  {% endif %}
+  {% if section.settings.set_max_width %}
+    #shopify-section-{{ section.id }} .faq-content__wrapper {
+      max-width: {{ section.settings.max_width | append: 'px' }};
+      margin: 0 auto;
+    }
+  {% endif %}
+{% endstyle %}
+
+<div class="page-width page-width--narrow">
+
+  {% comment %}
+  {%- if section.settings.title != blank -%}
+    <header class="section-header">
+      <h2 class="section-header__title {{ text_align }}">
+        {{ section.settings.title | escape }}
+      </h2>
+    </header>
+  {%- endif -%}
+  {% endcomment %}
+
+  {%- if section.blocks.size > 0 -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'question' %}
+                {
+                  "@type": "Question",
+                  "name": {{ block.settings.title | json }},
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": {{ block.settings.text | json }}
+                  }
+                }{% unless forloop.last %},{% endunless %}
+            {% endcase %}
+          {% endfor %}
+        ]
+      }
+    </script>
+    {% if sidebar_block != blank %}
+      {%- capture sidebar_content_desktop -%}
+        <aside class="faq__quick-links--wrapper desktop">
+          <scroll-to-list>
+            <ul class="faq__quick-links">
+              <li class="faq__quick-links--item sidebar--title">{{ sidebar_block.settings.title }}</li>
+              {%- for block in section.blocks -%}
+                {% case block.type %}
+                  {% when 'rich-text'%}
+                  {% unless block.settings.title == blank %}
+                    <li class="faq__quick-links--item"><a href="#{{ block.id }}">{{ block.settings.title }}</a></li>
+                  {% endunless %}
+                {% endcase %}
+              {%- endfor -%}
+            </ul>
+          </scroll-to-list>
+        </aside>
+      {%- endcapture -%}
+      {%- capture sidebar_content_mobile -%}
+        <aside class="faq__quick-links--wrapper mobile">
+          <scroll-to-list>
+            <ul class="faq__quick-links">
+              <li class="faq__quick-links--item sidebar--title">{{ sidebar_block.settings.title }}</li>
+              {%- for block in section.blocks -%}
+                {% case block.type %}
+                  {% when 'rich-text'%}
+                  {% unless block.settings.title == blank %}
+                    <li class="faq__quick-links--item"><a href="#{{ block.id }}">{{ block.settings.title }}</a></li>
+                  {% endunless %}
+                {% endcase %}
+              {%- endfor -%}
+            </ul>
+          </scroll-to-list>
+        </aside>
+      {%- endcapture -%}
+    {% endif %}
+
+    <div class="faq-content__wrapper {% if sidebar_block != blank %}has-sidebar{% endif %}">
+      {{ sidebar_content_desktop }}
+      <div class="faq__content--wrapper">
+        <h2 class="section-header__title {{ text_align }}">
+          {{ section.settings.title | escape }}
+        </h2>
+        {%- for block in section.blocks -%}
+          <div class="faq__content" {{ block.shopify_attributes }}>
+            {% case block.type %}
+              {% when 'sidebar'%}
+                {{ sidebar_content_mobile }}
+              {% when 'rich-text'%}
+                <div id="{{ block.id }}" class="index-section index-section--faq faq__rich-text {% if forloop.index == 1 %}no-margin-top{% endif %}">
+                  <div class="text-{{ block.settings.align_text }}">
+                    {%- if block.settings.title != blank -%}
+                      <p class="h2">
+                        {{ block.settings.title | escape }}
+                      </p>
+                    {%- endif -%}
+                    {%- if block.settings.text != blank -%}
+                      <div class="rte">
+                        {%- if block.settings.enlarge_text %}<div class="enlarge-text">{% endif -%}
+                          {{ block.settings.text }}
+                        {%- if block.settings.enlarge_text %}</div>{% endif -%}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+    
+              {% when 'question'%}
+                <div class="{{ text_align }} faq__question">
+                  <button type="button" class="collapsible-trigger collapsible-trigger--inline collapsible--auto-height {% unless page.handle == 'contact-us' %}text-left{% else %}text-center{% endunless %}" aria-controls="FAQ-content-{{ block.id }}">
+                    {%- render 'collapsible-icons-alt', no_circle: true -%}
+                    <span>{{ block.settings.title }}</span>
+                  </button>
+                  <div id="FAQ-content-{{ block.id }}" class="collapsible-content collapsible-content--all">
+                    <div class="collapsible-content__inner collapsible-content__inner--faq rte">
+                      {{ block.settings.text }}
+                    </div>
+                  </div>
+                </div>
+            {% endcase %}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if section.blocks.size == 0 -%}
+    <div class="placeholder-noblocks">
+      {{ 'home_page.onboarding.no_content' | t }}
+    </div>
+  {%- endif -%}
+</div>
+
+{%- if section.settings.divider -%}</div>{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.faq.name",
+  "class": "index-section faq-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.faq.settings.title.label",
+      "default": "FAQs"
+    },
+    {
+      "type": "select",
+      "id": "align_text",
+      "label": "t:sections.faq.blocks.rich_text.settings.align_text.label",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.faq.blocks.rich_text.settings.align_text.options.left.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.faq.blocks.rich_text.settings.align_text.options.center.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.faq.blocks.rich_text.settings.align_text.options.right.label"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Width settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "set_max_width",
+      "label": "Set max width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 400,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 600
+    }
+  ],
+  "blocks": [
+    {
+      "type": "sidebar",
+      "name": "Sidebar",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.faq.blocks.rich_text.settings.title.label",
+          "default": "Quick links"
+        },
+        {
+          "type": "color_background",
+          "id": "sidebar_bg",
+          "label": "Sidebar background",
+          "default": "#00000000"
+        }
+      ]
+    },
+    {
+      "type": "rich-text",
+      "name": "t:sections.faq.blocks.rich_text.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.faq.blocks.rich_text.settings.title.label",
+          "default": "Rich text"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "t:sections.faq.blocks.rich_text.settings.text.label",
+          "default": "<p>Use this section for any descriptive text you need to fill out your pages or to add introductory headings between other blocks.</p>"
+        },
+        {
+          "type": "select",
+          "id": "align_text",
+          "label": "t:sections.faq.blocks.rich_text.settings.align_text.label",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "t:sections.faq.blocks.rich_text.settings.align_text.options.left.label"
+            },
+            {
+              "value": "center",
+              "label": "t:sections.faq.blocks.rich_text.settings.align_text.options.center.label"
+            },
+            {
+              "value": "right",
+              "label": "t:sections.faq.blocks.rich_text.settings.align_text.options.right.label"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "name": "t:sections.faq.blocks.question.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.faq.blocks.question.settings.title.label",
+          "default": "Frequently asked question"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "t:sections.faq.blocks.question.settings.text.label",
+          "default": "<p>Use this text to answer questions in as much detail as possible for your customers.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.faq.presets.faq.name",
+      "blocks": [
+        {
+          "type": "question"
+        },
+        {
+          "type": "question"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
