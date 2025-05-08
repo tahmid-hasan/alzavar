@@ -9677,13 +9677,20 @@ lazySizesConfig.expFactor = 4;
         this.swiper = new Swiper(this.selectors.mainSlider, {
           slideClass: 'product-main-slide',
           wrapperClass: 'product-slideshow--wrapper',
+
+
+          // Slide behavior
+          centeredSlides: true,
+          centeredSlidesBounds: true,
+          touchAngle: 45,
+          followFinger: true,
+          speed: 150,
+          threshold: 1,
+          
           slidesPerView: 1,
           watchOverflow: true,
           resistanceRatio: 1,
           edgeSwipeThreshold: 50,
-          freeMode: true,
-          freeModeSticky: true,
-          touchAngle: 90,
           breakpoints: {
             769: {
               slidesPerView: 'auto',
@@ -9703,6 +9710,34 @@ lazySizesConfig.expFactor = 4;
             },
             unlock: slider => {
               this.checkIfSlidesFit()
+            },
+            touchStart: function (e) {
+              e.preventDefault();
+              document.body.classList.add('no-scroll');
+            },
+            touchMove: function (e) {              
+              if (Math.abs(e.touches.currentY - e.touches.startY) > Math.abs(e.touches.currentX - e.touches.startX)) {
+                e.preventDefault();
+              }
+            },
+            touchEnd: function () {
+              setTimeout(() => {
+                document.body.classList.remove('no-scroll');
+              }, 300);
+            },
+            momentumBounce: function () {
+              document.body.classList.add('no-scroll');
+              setTimeout(() => {
+                document.body.classList.remove('no-scroll');
+              }, 200);
+            },
+            slideChangeTransitionStart: function () {
+              document.body.classList.add('no-scroll');
+            },
+            slideChangeTransitionEnd: function () {
+              setTimeout(() => {
+                document.body.classList.remove('no-scroll');
+              }, 300);
             },
           }
         })
@@ -12013,57 +12048,15 @@ class SliderComponent extends HTMLElement {
     }
 
     this.slider = new Swiper(this.sliderContainer, {
-      // Core settings
-      direction: 'horizontal',
-      allowTouchMove: true,
-    
-      // Touch settings
-      touchMoveStopPropagation: false,
-      touchStartPreventDefault: false,
-      passiveListeners: true,
-      touchRatio: 2,
-      touchAngle: 20,
-      simulateTouch: true,
-      shortSwipes: true,
-      longSwipes: true,
-      longSwipesRatio: 0.5,
-      longSwipesMs: 300,
-      grabCursor: true,
-      threshold: 1,
-      followFinger: true,
-    
-      // Resistance settings to prevent overscrolling
-      resistance: true,
-      resistanceRatio: 0.3,
-    
-      // Speed settings for native feel
-      speed: 450,
-    
-      // Mouse wheel support
-      mousewheel: {
-        forceToAxis: true,
-        sensitivity: 1,
-        releaseOnEdges: true
-      },
-    
       // Slide behavior
       slidesPerView: 1.43,
       spaceBetween: 10,
       centeredSlides: true,
       centeredSlidesBounds: true,
-    
-      // Free mode settings
-      freeMode: {
-        enabled: true,
-        momentum: true,
-        momentumRatio: 1,
-        momentumVelocityRatio: 1,
-        momentumBounce: true,
-        momentumBounceRatio: 1,
-        sticky: false
-      },
-    
-      // Navigation & Pagination
+      touchAngle: 45,
+      followFinger: true,
+      speed: 150,
+      threshold: 1,
       navigation: {
         nextEl: this.btnNext,
         prevEl: this.btnPrev
@@ -12071,34 +12064,42 @@ class SliderComponent extends HTMLElement {
       pagination: {
         el: this.pagination
       },
-    
-      // Responsive settings
       breakpoints: {
         769: {
           slidesPerView: slidesPerViewDesktop,
           spaceBetween: spaceBetweenDesktop
         }
       },
-    
-      // Event handlers
       on: {
         touchStart: function (e) {
           e.preventDefault();
           document.body.classList.add('no-scroll');
         },
         touchMove: function (e) {
+          
+          
           if (Math.abs(e.touches.currentY - e.touches.startY) > Math.abs(e.touches.currentX - e.touches.startX)) {
             e.preventDefault();
           }
         },
         touchEnd: function () {
-          document.body.classList.remove('no-scroll');
+          setTimeout(() => {
+            document.body.classList.remove('no-scroll');
+          }, 300);
         },
         momentumBounce: function () {
           document.body.classList.add('no-scroll');
           setTimeout(() => {
             document.body.classList.remove('no-scroll');
-          }, 500);
+          }, 200);
+        },
+        slideChangeTransitionStart: function () {
+          document.body.classList.add('no-scroll');
+        },
+        slideChangeTransitionEnd: function () {
+          setTimeout(() => {
+            document.body.classList.remove('no-scroll');
+          }, 300);
         },
         afterInit: slider => {
           const event = new CustomEvent('slider:inited', {
@@ -12107,8 +12108,8 @@ class SliderComponent extends HTMLElement {
               height: slider.height,
               isTab: this.isTabSlider
             }
-          });
-          document.dispatchEvent(event);
+          })
+          document.dispatchEvent(event)
         },
         resize: slider => {
           const event = new CustomEvent('slider:inited', {
@@ -12117,8 +12118,8 @@ class SliderComponent extends HTMLElement {
               height: slider.height,
               isTab: this.isTabSlider
             }
-          });
-          document.dispatchEvent(event);
+          })
+          document.dispatchEvent(event)
         }
       }
     });

@@ -13,15 +13,15 @@
       "get_directions": "Få vägbeskrivningar",
       "address_error": "Det gick inte att hitta den adressen",
       "address_no_results": "Inga resultat för den adressen",
-      "address_query_limit_html": "<div>Du har överskridit användningsgränsen för Google API. Överväg att uppgradera till en <a href=\"https:\/\/developers.google.com\/maps\/premium\/usage-limits\">Premium Plan<\/a>.<\/div>",
-      "auth_error_html": "<div>Det gick inte att autentisera ditt Google Maps-konto. Skapa och aktivera behörigheterna <a href=\"https:\/\/developers.google.com\/maps\/documentation\/javascript\/get-api-key\">JavaScript API<\/a> och <a href=\"https:\/\/developers.google.com\/maps\/documentation\/geocoding\/get-api-key\">Geocoding API<\/a> för din app.<\/div>"
+      "address_query_limit_html": "<div>Du har överskridit användningsgränsen för Google API. Överväg att uppgradera till en <a href=\"https://developers.google.com/maps/premium/usage-limits\">Premium Plan</a>.</div>",
+      "auth_error_html": "<div>Det gick inte att autentisera ditt Google Maps-konto. Skapa och aktivera behörigheterna <a href=\"https://developers.google.com/maps/documentation/javascript/get-api-key\">JavaScript API</a> och <a href=\"https://developers.google.com/maps/documentation/geocoding/get-api-key\">Geocoding API</a> för din app.</div>"
     },
     "slideshow": {
       "play_slideshow": "Spela bildspel",
       "pause_slideshow": "Pausa bildspelet"
     },
     "site_map": {
-      "title": "Kategorier efter varumärke"
+      "title": "Kategorier efter märke"
     },
     "footer": {
       "payment_acknowledgement_text": "Vi accepterar"
@@ -30,7 +30,7 @@
   "general": {
     "404": {
       "title": "404 Sidan hittades inte",
-      "subtext_html": "<p>Sidan du letade efter finns inte. <\/p><p><a href='{{ url }}'>Fortsätt shoppa<\/a><\/p>"
+      "subtext_html": "<p>Sidan du letade efter finns inte. </p><p><a href='{{ url }}'>Fortsätt shoppa</a></p>"
     },
     "accessibility": {
       "skip_to_content": "Hoppa till innehållet",
@@ -53,7 +53,7 @@
       "login_form_submit": "Stiga på",
       "signup_form_email_label": "E-post",
       "password_link": "Lösenord",
-      "admin_link_html": "Butiksägare? <a href=\"\/admin\" class=\"text-link\">Logga in här<\/a>",
+      "admin_link_html": "Butiksägare? <a href=\"/admin\" class=\"text-link\">Logga in här</a>",
       "signup_form_success": "Vi skickar ett mejl precis innan vi öppnar!"
     },
     "breadcrumbs": {
@@ -125,19 +125,19 @@
       "update": "Uppdatera varukorgen",
       "checkout": "Till betalning",
       "empty": "Din varukorg är för närvarande tom.",
-      "continue_browsing_html": "<a href='{{ url }}'>Fortsätt handla<\/a>",
+      "continue_browsing_html": "<a href='{{ url }}'>Fortsätt handla</a>",
       "close_cart": "Stäng varukorg",
       "summary": "Sammanfattning",
       "delivery": "Leverans",
       "free_text": "Fri",
-      "terms_html": "Jag godkänner <a href=\"&lt;span%20class=\" notranslate>{{ url }} ' target='_blank'&gt;villkoren<\/a>",
+      "terms_html": "Jag godkänner <a href=\"&lt;span%20class=\" notranslate>{{ url }} ' target='_blank'&gt;villkoren</a>",
       "terms_confirm": "Du måste godkänna försäljningsvillkoren för att kunna checka ut",
       "vat_and_duty_message": "Moms och importavgifter ingår",
       "discount_message": "Rabattkoder kan läggas till i kassan",
       "reduce_quantity": "Minska artikelkvantiteten med en",
       "increase_quantity": "Öka artikelkvantiteten med en",
       "terms": "Jag godkänner villkoren",
-      "inventory_message": "Sista 1 kvar",
+      "inventory_message": "Bara 1 kvar",
       "duties": "Tullavgifter",
       "vat_text": "Moms ingår",
       "wishlist_text": "Flytta till önske-listan",
@@ -163,7 +163,7 @@
       },
       "labels": {
         "clear_all": "Rensa alla",
-        "apply": "Tillämpas",
+        "apply": "Tillämpas"
       }
     },
     "sorting": {
@@ -241,7 +241,7 @@
       "order_number": "Ordernummer",
       "payment_status": "Betalningsstatus",
       "fulfillment_status": "Uppfyllningsstatus",
-      "total": "Summa",
+      "total": "Summa"
     },
     "order": {
       "discount": "Rabatt",
@@ -337,7 +337,7 @@
         "one": "Bara {{ count }} kvar i lager",
         "other": "Bara {{ count }} kvar i lager"
       },
-      "tag_new_arrival": "Ny ankomst",
+      "tag_new_arrival": "Ny säsong",
       "tag_new_season": "Ny säsong",
       "notify_me": "Hittar du inte din storlek? Klicka här",
       "sold_out": "Slutsåld",
@@ -361,12 +361,12 @@
       "check_other_stores": "Kontrollera tillgängligheten i andra butiker",
       "pick_up_available": "Tillgänglig för upphämtning",
       "pick_up_currently_unavailable": "Upphämtning är inte tillgänglig för närvarande",
-      "pick_up_available_at_html": "<div>Hämtning tillgänglig på <strong>{{ location_name }}<\/strong><\/div>",
-      "pick_up_unavailable_at_html": "<div>Upphämtning är för närvarande inte tillgänglig på <strong>{{ location_name }}<\/strong><\/div>"
+      "pick_up_available_at_html": "<div>Hämtning tillgänglig på <strong>{{ location_name }}</strong></div>",
+      "pick_up_unavailable_at_html": "<div>Upphämtning är för närvarande inte tillgänglig på <strong>{{ location_name }}</strong></div>"
     }
   },
   "date_formats": {
-    "month_day_year": "<tc>%d %b, %Y<\/tc>"
+    "month_day_year": "<tc>%d %b, %Y</tc>"
   },
   "shopify": {
     "checkout": {
@@ -418,7 +418,7 @@
         },
         "percent_off_shipping": "%{percent} % rabatt på frakt",
         "amount_off_shipping": "%{amount} rabatt på frakt",
-        "higher_value_discount_applied": "<strong style=\"text-transform:uppercase\">%{code}<\/strong> kunde inte användas med dina befintliga rabatter. Du har redan en bättre kombination.",
+        "higher_value_discount_applied": "<strong style=\"text-transform:uppercase\">%{code}</strong> kunde inte användas med dina befintliga rabatter. Du har redan en bättre kombination.",
         "order_total_label": "ordersumma",
         "title": "Ordersammanfattning",
         "order_name_label": "Beställ %{name}",
@@ -442,11 +442,11 @@
         "gift_card_has_been_applied": "Presentkort har använts",
         "gift_card_has_been_removed": "Presentkortet har tagits bort",
         "discount_already_applied": "En rabatt har tillämpats på denna beställning. Du kan inte lägga till ytterligare en rabatt.",
-        "cart_does_not_meet_discount_requirements_notice": "<strong style=\"text-transform:uppercase\">%{code}<\/strong> rabattkoden är inte giltig för varorna i din varukorg",
-        "discount_requires_customer_notice": "Ange din fraktinformation för att använda <strong style=\"text-transform:uppercase\">%{code}<\/strong> rabattkoden",
-        "customer_does_not_meet_discount_requirements_notice": "<strong style=\"text-transform:uppercase\">%{code}<\/strong> rabattkod är inte tillgänglig för dig just nu",
-        "shipping_information_does_not_meet_discount_requirements_notice": "<strong style=\"text-transform:uppercase\">%{code}<\/strong> rabattkod är inte tillgänglig för din leveransadress",
-        "customer_already_used_once_per_customer_discount_notice": "<strong style=\"text-transform:uppercase\">%{code}<\/strong> rabattkoden har redan använts",
+        "cart_does_not_meet_discount_requirements_notice": "<strong style=\"text-transform:uppercase\">%{code}</strong> rabattkoden är inte giltig för varorna i din varukorg",
+        "discount_requires_customer_notice": "Ange din fraktinformation för att använda <strong style=\"text-transform:uppercase\">%{code}</strong> rabattkoden",
+        "customer_does_not_meet_discount_requirements_notice": "<strong style=\"text-transform:uppercase\">%{code}</strong> rabattkod är inte tillgänglig för dig just nu",
+        "shipping_information_does_not_meet_discount_requirements_notice": "<strong style=\"text-transform:uppercase\">%{code}</strong> rabattkod är inte tillgänglig för din leveransadress",
+        "customer_already_used_once_per_customer_discount_notice": "<strong style=\"text-transform:uppercase\">%{code}</strong> rabattkoden har redan använts",
         "subtotal_label": "Delsumma",
         "shipping_label": "Frakt",
         "tip_label": "Dricks",
@@ -533,16 +533,16 @@
         "card_security_notice": "Alla transaktioner är säkra och krypterade.",
         "name_on_card_label": "namn på kort",
         "name_on_card_placeholder": "namn på kort",
-        "card_expiry_label": "Förfallodatum (MM\/ÅÅ)",
-        "card_expiry_placeholder": "Förfallodatum (MM\/ÅÅ)",
+        "card_expiry_label": "Förfallodatum (MM/ÅÅ)",
+        "card_expiry_placeholder": "Förfallodatum (MM/ÅÅ)",
         "card_verification_value_label": "Säkerhetskod",
         "card_verification_value_placeholder": "Säkerhetskod",
         "card_expiry_date_explanation": "Kortets utgångsdatum i formatet: månad, månad, år, år",
         "card_verification_value_explanation": "3-siffrig säkerhetskod som vanligtvis finns på baksidan av ditt kort. American Express-kort har en fyrsiffrig kod på framsidan.",
         "card_verification_value_explanation_amex": "4-siffrig säkerhetskod på framsidan av ditt kort",
         "card_verification_value_explanation_other": "3-siffrig säkerhetskod på baksidan av ditt kort",
-        "card_start_label": "Releasedatum (MM\/ÅÅ)",
-        "card_start_placeholder": "Releasedatum (MM\/ÅÅ)",
+        "card_start_label": "Releasedatum (MM/ÅÅ)",
+        "card_start_placeholder": "Releasedatum (MM/ÅÅ)",
         "card_issue_number_label": "Ärendenummer",
         "card_issue_number_placeholder": "Ärendenummer",
         "card_change_label": "Förändra",
@@ -563,7 +563,7 @@
         "credit_card_start_year": "Startår",
         "change_currency_section_description": "Välj ett valutaalternativ",
         "no_real_orders_dev_store": "Den här butiken kan inte acceptera riktiga beställningar eller riktiga betalningar.",
-        "subscription_agreement_label_html": "<div>Jag förstår att jag godkänner en prenumeration. Det kommer att förnyas till det pris och den frekvens som anges tills det slutar eller är <a class=\"link--small\" data-modal=\"true\" data-title-text=\"%{subscription_policy}\" href=\"%{policy_href}\">avbruten<\/a>.<\/div>",
+        "subscription_agreement_label_html": "<div>Jag förstår att jag godkänner en prenumeration. Det kommer att förnyas till det pris och den frekvens som anges tills det slutar eller är <a class=\"link--small\" data-modal=\"true\" data-title-text=\"%{subscription_policy}\" href=\"%{policy_href}\">avbruten</a>.</div>",
         "waiting_on_payment_methods": "Hämtar tillgängliga betalningsmetoder...",
         "apple_pay_payment_error": "Din betalning kunde inte slutföras. Försök igen eller använd en annan betalningsmetod.",
         "subscription_card_update_agreement_label": "Om du ändrar betalningsmetod uppdateras din prenumeration och framtida återkommande betalningar.",
@@ -589,15 +589,15 @@
         },
         "klarna_label": "Klarna",
         "multibanco_label": "Multibanco",
-        "purchase_options_card_update_agreement_label_html": "<div>Genom att uppdatera din betalningsmetod kan du auktorisera betalningar för återkommande eller uppskjutna köp enligt butikens <a class=\"link--small\" data-modal=\"true\" data-title-text=\"%{cancellation_policy}\" href=\"%{policy_href}\">annulleringspolicy<\/a>.<\/div>",
+        "purchase_options_card_update_agreement_label_html": "<div>Genom att uppdatera din betalningsmetod kan du auktorisera betalningar för återkommande eller uppskjutna köp enligt butikens <a class=\"link--small\" data-modal=\"true\" data-title-text=\"%{cancellation_policy}\" href=\"%{policy_href}\">annulleringspolicy</a>.</div>",
         "purchase_options_agreement_label": "Jag är införstådd med att en eller flera artiklar i min varukorg är ett fördröjt eller återkommande inköp. Genom att fortsätta godkänner jag %{cancellation_policy_label}. Jag godkänner också att ni debiterar min betalningsmetod vid det datum, med de priser och den frekvens som angivits på denna sida, tills min order är distribuerad eller tills jag avbryter, om detta tillåts.",
-        "purchase_options_agreement_label_html": "<div>Jag är införstådd med att en eller flera artiklar i min varukorg är ett fördröjt eller återkommande inköp. Genom att fortsätta godkänner jag <a class=\"link--small\" data-modal=\"true\" data-title-text=\"%{subscription_policy}\" href=\"%{policy_href}\">avbeställningspolicyn<\/a>. Jag godkänner också att ni debiterar min betalningsmetod vid det datum, med de priser och den frekvens som angivits på denna sida, tills min order är distribuerad eller tills jag avbryter, om detta tillåts.<\/div>",
+        "purchase_options_agreement_label_html": "<div>Jag är införstådd med att en eller flera artiklar i min varukorg är ett fördröjt eller återkommande inköp. Genom att fortsätta godkänner jag <a class=\"link--small\" data-modal=\"true\" data-title-text=\"%{subscription_policy}\" href=\"%{policy_href}\">avbeställningspolicyn</a>. Jag godkänner också att ni debiterar min betalningsmetod vid det datum, med de priser och den frekvens som angivits på denna sida, tills min order är distribuerad eller tills jag avbryter, om detta tillåts.</div>",
         "google": {
-          "connect": "Klicka för att ansluta med ditt Google Pay\/konto",
+          "connect": "Klicka för att ansluta med ditt Google Pay/konto",
           "error_authorizing": "Fel vid godkännande av betalning"
         },
         "account_connected": "Kontot har anslutits.",
-        "mor_disclaimer_html": "<div>Genom att klicka nedan och slutföra din order godkänner du att köpa dina artiklar från Global-e som ansvarig handlare för transaktionen, samt samtycker till Global-e:s <a class=\"link--small\" data-modal=\"true\" data-title-text=\"%{mor_terms}\" href=\"%{terms_href}\">regler och villkor<\/a> och <a class=\"link--small\" data-modal=\"true\" data-title-text=\"%{privacy_policy}\" href=\"%{policy_href}\">integritetspolicy<\/a>. Global-e är en internationell distributionstjänst för %{shop_name}<\/div>",
+        "mor_disclaimer_html": "<div>Genom att klicka nedan och slutföra din order godkänner du att köpa dina artiklar från Global-e som ansvarig handlare för transaktionen, samt samtycker till Global-e:s <a class=\"link--small\" data-modal=\"true\" data-title-text=\"%{mor_terms}\" href=\"%{terms_href}\">regler och villkor</a> och <a class=\"link--small\" data-modal=\"true\" data-title-text=\"%{privacy_policy}\" href=\"%{policy_href}\">integritetspolicy</a>. Global-e är en internationell distributionstjänst för %{shop_name}</div>",
         "pending_payment": {
           "due_notice": "Din betalning på %{amount_due} förfaller den %{due_date}.",
           "multibanco": {
@@ -894,18 +894,18 @@
           "other": "Produkter inte tillgängliga"
         },
         "products_not_available": {
-          "one": "Den här produkten kommer att tas bort från din kundvagn eftersom den inte är tillgänglig i ditt land\/din region.",
-          "other": "Dessa produkter kommer att tas bort från din kundvagn eftersom de inte är tillgängliga i ditt land\/din region."
+          "one": "Den här produkten kommer att tas bort från din kundvagn eftersom den inte är tillgänglig i ditt land/din region.",
+          "other": "Dessa produkter kommer att tas bort från din kundvagn eftersom de inte är tillgängliga i ditt land/din region."
         },
         "all_products_in_cart_unavailable": {
-          "one": "Denna produkt är inte tillgänglig i ditt land\/din region.",
-          "other": "Dessa produkter är inte tillgängliga i ditt land\/din region."
+          "one": "Denna produkt är inte tillgänglig i ditt land/din region.",
+          "other": "Dessa produkter är inte tillgängliga i ditt land/din region."
         },
         "unavailable_label": "Inte tillgänglig"
       },
       "payment_summary": {
         "gift_card_current_balance_notice": "Aktuellt saldo %{amount}",
-        "credit_card_expires_on_notice": "Går ut den %{month}\/%{year}",
+        "credit_card_expires_on_notice": "Går ut den %{month}/%{year}",
         "express_payment_gateway_label": "Express",
         "manual_payment_gateway_label": "Manuell",
         "billing_address_title": "Faktureringsadress",
@@ -949,7 +949,7 @@
       "expired": "har löpt ut",
       "invalid_start_date_or_issue_number_for_debit": "ett giltigt startdatum eller utfärdandenummer krävs",
       "invalid_expiry_year": "är inte ett giltigt utgångsår",
-      "reset_password_html": "Den här e-postadressen är redan kopplad till ett konto. Om det här kontot är ditt kan du <a href=\"\/account\/login#recover\">återställa ditt lösenord<\/a>",
+      "reset_password_html": "Den här e-postadressen är redan kopplad till ett konto. Om det här kontot är ditt kan du <a href=\"/account/login#recover\">återställa ditt lösenord</a>",
       "verify_email": "Vi har skickat ett e-postmeddelande till %{customer_email}. Klicka på länken i e-postmeddelandet för att verifiera din e-postadress.",
       "blocked_address": "Platsen stöds inte.",
       "product_not_available": "produkten är inte publicerad för denna kund.",
@@ -1013,7 +1013,7 @@
         "too_many_line_items_error": "Din varukorg kan inte innehålla mer än %{max} artiklar.",
         "link_expired": "Länken har löpt ut",
         "link_no_longer_exists": "Länken finns inte längre.",
-        "stock_problems_html": "<div>En eller flera artiklar är inte längre tillgängliga. Vi har tillhandahållit en <a href=\"%{link}\">uppdaterad kundvagn<\/a>.<\/div>",
+        "stock_problems_html": "<div>En eller flera artiklar är inte längre tillgängliga. Vi har tillhandahållit en <a href=\"%{link}\">uppdaterad kundvagn</a>.</div>",
         "changed": "Kundvagn bytt",
         "items_changed": "En eller flera objekt har ändrats.",
         "product_sold_out": "Produkten '%{name}' är tyvärr slutsåld.",
@@ -1059,7 +1059,7 @@
       "prefecture": "Prefektur",
       "province": "Provins",
       "state": "stat",
-      "state_and_territory": "Stat\/territorium",
+      "state_and_territory": "Stat/territorium",
       "county": "Grevskap",
       "emirate": "Emirat",
       "governorate": "Governorate",
@@ -1283,7 +1283,7 @@
         "address_map_marker": "Leveransadress"
       },
       "location": "Plats",
-      "not_applicable": "N\/A",
+      "not_applicable": "N/A",
       "fully_refunded_label": "ÅTERBETALAD",
       "partially_refunded_label": "DELVIS ÅTERBETALAD",
       "refunded_amount": "Återbetalas",

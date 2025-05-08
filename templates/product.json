@@ -53,7 +53,7 @@
         "description": {
           "type": "description",
           "settings": {
-            "is_tab": true
+            "is_tab": false
           }
         },
         "tab_JFJWyF": {
@@ -62,6 +62,17 @@
             "title": "Item info",
             "content": "<p>Use collapsible tabs for more detailed information that will help customers make a purchasing decision.</p><p>Ex: Shipping and return policies, size guides, and other common questions.</p>",
             "content_right": "<p>Use collapsible tabs for more detailed information that will help customers make a purchasing decision.</p><p>Ex: Shipping and return policies, size guides, and other common questions.</p>",
+            "page": "",
+            "remove_bottom_margin": false,
+            "top_border": false
+          }
+        },
+        "tab_9BTPDj": {
+          "type": "tab",
+          "settings": {
+            "title": "Fit Recommendation",
+            "content": "{{ product.metafields.custom.fit_recommendation | metafield_tag }}",
+            "content_right": "",
             "page": "",
             "remove_bottom_margin": false,
             "top_border": false
@@ -97,17 +108,6 @@
             "phone": false
           }
         },
-        "tab_9BTPDj": {
-          "type": "tab",
-          "settings": {
-            "title": "Fit Recommendation",
-            "content": "{{ product.metafields.custom.fit_recommendation | metafield_tag }}",
-            "content_right": "",
-            "page": "",
-            "remove_bottom_margin": false,
-            "top_border": false
-          }
-        },
         "share": {
           "type": "share",
           "disabled": true,
@@ -139,10 +139,10 @@
         "8ad2d001-4e07-4199-a85d-bd7c31bf3551",
         "description",
         "tab_JFJWyF",
+        "tab_9BTPDj",
         "a320946d-f761-4710-91fc-5114986a1c17",
         "tab",
         "contact",
-        "tab_9BTPDj",
         "share",
         "4e55968f-4595-4d89-9bed-6d2ffb659f8e",
         "d8fb8a7d-5ad3-4a32-81d8-5ec95bf73cbd"
